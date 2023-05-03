@@ -17,12 +17,12 @@
   -webkit-text-size-adjust: 100%;
 }
 .dark{
-  background-color: #242424;
+  background-color: #09090b;
   color: white;
 }
 .light{
   background-color: #d8dbe0;
-  color: black;
+  color: #09090b;
 }
 
 

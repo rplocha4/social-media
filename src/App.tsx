@@ -1,7 +1,7 @@
 import './App.css';
 import { useState } from 'react';
 import ThemeToggler from './components/ThemeToggler/ThemeToggler';
-import Post from './components/UserPost/Post';
+import Posts from './components/UserPost/Posts';
 function App() {
   const [darkTheme, setDarkTheme] = useState(true);
   return (
@@ -10,8 +10,8 @@ function App() {
         onToggle={() => setDarkTheme((prev) => !prev)}
         darkTheme={darkTheme}
       />
-      <div className="flex flex-col justify-center items-center ">
-        <Post />
+      <div className="flex flex-col justify-center items-center w-full">
+        <Posts />
       </div>
     </div>
   );

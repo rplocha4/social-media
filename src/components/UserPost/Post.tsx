@@ -1,6 +1,10 @@
-import React from 'react';
 import { FaRegComment, FaRegHeart, FaRegShareSquare } from 'react-icons/fa';
-const Post = () => {
+import { useGetPostsQuery } from '../../store/features/serverApi';
+import { useEffect } from 'react';
+import { TPost } from '../../types/types';
+
+const Post: React.FC<{ post: TPost }> = ({ post }) => {
+
   return (
     <div className="flex w-1/3 gap-3">
       <img
@@ -11,18 +15,13 @@ const Post = () => {
       />
       <div className="flex flex-col gap-3">
         <div className="flex items-center gap-1 ">
-          <p className="font-bold">Username</p>
-          <p className="text-gray-500">@Username</p>
+          <p className="font-bold">{post.username}</p>
+          <p className="text-gray-500">@{post.username}</p>
           <p className="text-gray-500 font-bold">·</p>
           <p className="text-gray-500">38m</p>
         </div>
         <div>
-          <p>
-            Chers analystes Twitter Comment expliquez-vous qu'après tant
-            d'années de LoL, avec le contenu ouvert (tout est dispo pour
-            "copier"), il y ait encore des équipes qui empestent la merguez dans
-            un tournoi Inter ?
-          </p>
+          <p>{post.content}</p>
         </div>
         <div className="flex gap-10 items-center">
           <span className="flex justify-center items-center gap-2 hover:text-blue-400 hover:cursor-pointer">

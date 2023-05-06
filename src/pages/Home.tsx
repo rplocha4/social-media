@@ -8,7 +8,7 @@ export default function Home() {
   //   const data: any = useLoaderData();
   //   const { posts } = data;
 
-  const { data, isLoading, refetch } = useGetPostsQuery(2);
+  const { data, isLoading, refetch } = useGetPostsQuery(1);
   if (isLoading) {
     return <div>Loading...</div>;
   }

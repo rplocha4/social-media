@@ -46,6 +46,7 @@ function Post() {
               username={post.data.username}
               img={post.data.avatar}
               content={post.data.content}
+              link={`/post/${post.data.post_id}`}
             />
 
             <div className="flex items-center gap-2 text-gray-500 py-2">

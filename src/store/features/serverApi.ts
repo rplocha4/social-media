@@ -17,7 +17,21 @@ export const serverApi = createApi({
     getPostLikes: builder.query({
         query: (post_id) => `/likes/${post_id}`,
     }),
+    likePost: builder.mutation({
+        query: ({post_id,user_id}) => ({
+            url: `/likes/${post_id}/${user_id}`,
+            method: 'POST',
+        }),
+    }),
+    unlikePost: builder.mutation({
+        query: ({post_id,user_id}) => ({
+            url: `/likes/${post_id}/${user_id}`,
+            method: 'DELETE',
+        }),
+    }),
+
+
   })
 })
 
-export const { useGetPostsQuery, useGetPostCommentsQuery, useGetPostLikesQuery, useGetPostQuery } = serverApi
+export const { useGetPostsQuery, useGetPostCommentsQuery, useGetPostLikesQuery, useGetPostQuery, useLikePostMutation, useUnlikePostMutation } = serverApi

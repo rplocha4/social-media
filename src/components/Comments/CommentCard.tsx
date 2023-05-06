@@ -9,6 +9,7 @@ const CommentCard: React.FC<{ comment: any }> = ({ comment }) => {
           username={comment.username}
           img={comment.avatar}
           content={comment.content}
+          link={`/post/${comment.post_id}`}
         />
       </div>
     </div>

@@ -6,8 +6,14 @@ export const serverApi = createApi({
   endpoints: builder => ({
     getPosts: builder.query({
       query: (user_id) => `/posts/friends/${user_id}`,
-    })
+    }),
+    getPostComments: builder.query({
+        query: (post_id) => `/comments/${post_id}`,
+    }),
+    getPostLikes: builder.query({
+        query: (post_id) => `/likes/${post_id}`,
+    }),
   })
 })
 
-export const { useGetPostsQuery } = serverApi
+export const { useGetPostsQuery, useGetPostCommentsQuery, useGetPostLikesQuery } = serverApi

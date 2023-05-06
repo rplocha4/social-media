@@ -1,20 +1,19 @@
-import Post from './Post';
+import PostCard from './PostCard';
 import { TPost } from '../../types/types';
-import { useGetPostsQuery } from '../../store/features/serverApi';
 
-function Posts() {
-  const { data, isLoading } = useGetPostsQuery(1);
-  if (isLoading) {
-    return <div>Loading...</div>;
-  }
+const Posts: React.FC<{ posts: TPost[] }> = ({ posts }) => {
+  //   const { data, isLoading } = useGetPostsQuery(1);
+  //   if (isLoading) {
+  //     return <div>Loading...</div>;
+  //   }
 
   return (
-    <>
-      {data.data.map((post: TPost, i: number) => {
-        return <Post key={i} post={post} />;
+    <div className="flex flex-col gap-2  w-full">
+      {posts.map((post: TPost, i: number) => {
+        return <PostCard key={i} post={post} />;
       })}
-    </>
+    </div>
   );
-}
+};
 
 export default Posts;

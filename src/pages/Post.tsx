@@ -1,46 +1,70 @@
-import React from 'react';
-import { Await, defer, useLoaderData } from 'react-router';
-import { TPost } from '../types/types';
+import { useLoaderData } from 'react-router';
 import UserData from '../components/UserPost/UserData';
-import Posts from '../components/UserPost/Posts';
-import CreatePost from '../components/UserPost/CreatePost';
 import Comments from '../components/Comments/Comments';
+import {
+  useGetPostCommentsQuery,
+  useGetPostQuery,
+} from '../store/features/serverApi';
+import CreatePost from '../components/UserPost/CreatePost';
 
 function Post() {
   const data: any = useLoaderData();
-  const { post }: { post: TPost } = data;
-  const { comments } = data;
+  const { id } = data;
+  // const { comments } = data;
+
+  const { data: post, isLoading: postLoading } = useGetPostQuery(id);
+  const {
+    data: comments,
+    isLoading: commentsLoading,
+    refetch,
+  } = useGetPostCommentsQuery(id);
+
+  const createCommentHandler = (content: string) => {
+    fetch(`http://localhost:3000/api/comments`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content: content,
+        post_id: id,
+        user_id: 3,
+      }),
+    }).then(() => {
+      refetch();
+    });
+  };
 
   return (
     <div className="w-full flex-col  p-2">
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={post}>
-          {(loadedPost) => {
-            console.log(loadedPost);
-            return (
-              <div className="flex flex-col w-full gap-3 border-b-2 border-gray-600">
-                <UserData
-                  username={loadedPost.data.username}
-                  img={loadedPost.data.avatar}
-                  content={loadedPost.data.content}
-                />
-                {/* <PostData post_id={loadedPost.data.post_id} /> */}
-                <div className="flex items-center gap-2 text-gray-500 py-2">
-                  <p>{loadedPost.data.timestamp.split('T')[0]}</p>
-                  <p>{loadedPost.data.timestamp.split('T')[1].split('.')[0]}</p>
-                </div>
-              </div>
-            );
-          }}
-        </Await>
-        <CreatePost placeholder="Type your reply" />
+      <div className="flex flex-col w-full gap-3 border-b-2 border-gray-600">
+        {postLoading ? (
+          <div>Loading...</div>
+        ) : (
+          <>
+            <UserData
+              username={post.data.username}
+              img={post.data.avatar}
+              content={post.data.content}
+            />
 
-        <Await resolve={comments}>
-          {(loadedComments) => {
-            return <Comments comments={loadedComments.data} />;
-          }}
-        </Await>
-      </React.Suspense>
+            <div className="flex items-center gap-2 text-gray-500 py-2">
+              <p>{post.data.timestamp.split('T')[0]}</p>
+              <p>{post.data.timestamp.split('T')[1].split('.')[0]}</p>
+            </div>
+          </>
+        )}
+      </div>
+      <CreatePost
+        placeholder="Type your reply"
+        onCreate={createCommentHandler}
+      />
+
+      {commentsLoading ? (
+        <div>Loading...</div>
+      ) : (
+        <Comments comments={comments.data} />
+      )}
     </div>
   );
 }
@@ -49,11 +73,8 @@ export default Post;
 export async function loader({ params }: any) {
   const { id } = params;
 
-  const res = fetch(`http://localhost:3000/api/post/${id}`);
-  const comments = fetch(`http://localhost:3000/api/comments/${id}`);
+  // const res = fetch(`http://localhost:3000/api/post/${id}`);
+  // const comments = fetch(`http://localhost:3000/api/comments/${id}`);
 
-  return defer({
-    post: res.then((res) => res.json()),
-    comments: comments.then((res) => res.json()),
-  });
+  return { id };
 }

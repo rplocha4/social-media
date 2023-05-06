@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './store/store.ts';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Post, { loader as postLoader } from './pages/Post.tsx';
-import Home, { loader as homeLoader } from './pages/Home.tsx';
+import Home from './pages/Home.tsx';
 
 const router = createBrowserRouter([
   {
@@ -16,7 +16,7 @@ const router = createBrowserRouter([
       {
         path: 'home',
         element: <Home />,
-        loader: homeLoader,
+        // loader: homeLoader,
       },
       {
         path: 'post/:id',

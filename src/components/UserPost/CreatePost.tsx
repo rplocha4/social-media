@@ -2,7 +2,20 @@ import React from 'react';
 import { BiImageAlt } from 'react-icons/bi';
 import { AiOutlineGif } from 'react-icons/ai';
 import { BsEmojiSmileFill } from 'react-icons/bs';
-const CreatePost: React.FC<{ placeholder: string }> = ({ placeholder }) => {
+const CreatePost: React.FC<{
+  placeholder: string;
+  onCreate: (content: string) => void;
+}> = ({ placeholder, onCreate }) => {
+  const [content, setContent] = React.useState('');
+  const formSubmitHandler = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (content.trim().length === 0) {
+      return;
+    }
+    onCreate(content);
+    setContent('');
+  };
   return (
     <div className="flex w-full py-4">
       <img
@@ -12,10 +25,16 @@ const CreatePost: React.FC<{ placeholder: string }> = ({ placeholder }) => {
         style={{ height: '50px', width: '50px' }}
       />
       <div className="flex w-full">
-        <form className="flex flex-col w-full" action="">
+        <form
+          className="flex flex-col w-full"
+          action=""
+          onSubmit={formSubmitHandler}
+        >
           <textarea
             placeholder={placeholder}
             className="w-full bg-transparent outline-none h-16 overflow-clip "
+            value={content}
+            onChange={(e) => setContent(e.target.value)}
           />
           <div className="flex justify-between ">
             <div className="flex items-end gap-2 text-xl text-blue-600">

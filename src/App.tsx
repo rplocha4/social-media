@@ -11,7 +11,7 @@ function App() {
         onToggle={() => setDarkTheme((prev) => !prev)}
         darkTheme={darkTheme}
       />
-      <div className="flex justify-center items-center w-full h-screen ">
+      <div className="flex justify-center items-center w-full  ">
         <div className="w-1/4 h-full px-2"></div>
         <div className="flex flex-col w-2/4 min-h-full border-x border-gray-800">
           {/* <div className="w-full flex justify-center items-center p-2">

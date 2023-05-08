@@ -19,10 +19,17 @@
 .dark{
   background-color: #09090b;
   color: white;
+
 }
 .light{
   background-color: #d8dbe0;
   color: #09090b;
+}
+.darkHover:hover{
+  background-color: rgb(30 41 59)
+}
+.lightHover:hover{
+  background-color: rgb(148 163 184)
 }
 
 

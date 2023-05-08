@@ -1,9 +1,10 @@
 import React from 'react';
 import classes from './ThemeToggler.module.css';
-const ThemeToggler: React.FC<{ onToggle: () => void; darkTheme: boolean }> = ({
-  onToggle,
-  darkTheme,
-}) => {
+import { useSelector } from 'react-redux';
+import { RootState } from '../../store/store';
+const ThemeToggler: React.FC<{ onToggle: () => void }> = ({ onToggle }) => {
+  const uiSelector = useSelector((state: RootState) => state.ui);
+  const darkTheme = uiSelector.darkMode;
   return (
     <div className={`${classes.toggleSwitch}`}>
       <label>

@@ -5,4 +5,7 @@ export type TPost = {
     user_id: string;
     username: string;
     timestamp: string;
+    likes: number;
+    comments: number;
+    liked: number;
 }

@@ -12,27 +12,28 @@ import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useEffect, useState } from 'react';
 
 const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
-  const {
-    data: likes,
-    isLoading: likesLoading,
-    refetch: refetchLikes,
-  } = useGetPostLikesQuery(post.post_id);
-  const { data: comments, isLoading: commentsLoading } =
-    useGetPostCommentsQuery(post.post_id);
+  // const {
+  //   data: likes,
+  //   isLoading: likesLoading,
+  //   refetch: refetchLikes,
+  // } = useGetPostLikesQuery(post.post_id);
+  // const { data: comments, isLoading: commentsLoading } =
+  //   useGetPostCommentsQuery(post.post_id);
 
-  const [isLiking, setIsLiking] = useState(false);
+  const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
+  const [likes, setLikes] = useState(post.likes);
 
-  useEffect(() => {
-    if (!likes?.data) return;
-    setIsLiking(likes.data.some((like: any) => like.user_id === 1));
-  }, [likes?.data]);
+  // useEffect(() => {
+  //   if (!likes?.data) return;
+  //   setIsLiking(likes.data.some((like: any) => like.user_id === 1));
+  // }, [likes?.data]);
 
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
 
-  if (likesLoading || commentsLoading) {
-    return <div>Loading...</div>;
-  }
+  // if (likesLoading || commentsLoading) {
+  //   return <div>Loading...</div>;
+  // }
   // const isLiking = likes.data.some((like: any) => like.user_id === 1);
 
   return (
@@ -54,15 +55,20 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
         <div className="flex gap-10 items-center mx-16 text-gray-600 text-lg">
           <span className="flex justify-center items-center gap-2 hover:text-blue-400 hover:cursor-pointer">
             <FaRegComment />
-            <p>{comments.data.length}</p>
+            <p>{post.comments}</p>
           </span>
           <span
             className="flex justify-center items-center gap-2  hover:text-red-400 hover:cursor-pointer"
             onClick={() => {
-              isLiking
-                ? unlikePost({ post_id: post.post_id, user_id: 1 })
-                : likePost({ post_id: post.post_id, user_id: 1 });
-              refetchLikes();
+              if (isLiking) {
+                unlikePost({ post_id: post.post_id, user_id: 1 });
+                setIsLiking(false);
+                setLikes((prev) => prev - 1);
+              } else {
+                likePost({ post_id: post.post_id, user_id: 1 });
+                setIsLiking(true);
+                setLikes((prev) => prev + 1);
+              }
             }}
           >
             {isLiking ? (
@@ -70,7 +76,7 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
             ) : (
               <AiOutlineHeart />
             )}
-            <p>{likes.data.length}</p>
+            <p>{likes}</p>
           </span>
         </div>
       </div>

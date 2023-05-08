@@ -1,7 +1,5 @@
 import './App.css';
-import { useState } from 'react';
 import ThemeToggler from './components/ThemeToggler/ThemeToggler';
-import Posts from './components/UserPost/Posts';
 import { Outlet } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
@@ -14,7 +12,7 @@ function App() {
   const darkTheme = uiSelector.darkMode;
 
   return (
-    <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen min-w-full`}>
+    <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen w-full`}>
       <ThemeToggler onToggle={() => dispatch(toggleDarkMode())} />
       <div className="flex justify-center items-center w-full  ">
         <div className="self-start pt-20 w-1/6 h-full px-2">

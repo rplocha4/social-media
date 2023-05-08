@@ -1,12 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { BiImageAlt } from 'react-icons/bi';
 import { AiOutlineGif } from 'react-icons/ai';
 import { BsEmojiSmileFill } from 'react-icons/bs';
+import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 const CreatePost: React.FC<{
   placeholder: string;
   onCreate: (content: string) => void;
 }> = ({ placeholder, onCreate }) => {
   const [content, setContent] = React.useState('');
+  const textAreaRef = useRef<HTMLTextAreaElement>(null);
+
+  useAutosizeTextArea(textAreaRef.current, content);
+
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -30,17 +35,20 @@ const CreatePost: React.FC<{
           action=""
           onSubmit={formSubmitHandler}
         >
-          <textarea
-            placeholder={placeholder}
-            className="w-full bg-transparent outline-none h-16 overflow-clip "
-            value={content}
-            onChange={(e) => setContent(e.target.value)}
-          />
+          <div className="min-h-16 ">
+            <textarea
+              placeholder={placeholder}
+              className="w-full bg-transparent outline-none  resize-none "
+              value={content}
+              ref={textAreaRef}
+              onChange={(e) => setContent(e.target.value)}
+            />
+          </div>
           <div className="flex justify-between ">
             <div className="flex items-end gap-2 text-xl text-blue-600">
-              <AiOutlineGif className="cursor-pointer hover:scale-105" />
-              <BiImageAlt className="cursor-pointer hover:scale-105" />
-              <BsEmojiSmileFill className="cursor-pointer hover:scale-105" />
+              <AiOutlineGif className="cursor-pointer hover:scale-125" />
+              <BiImageAlt className="cursor-pointer hover:scale-125" />
+              <BsEmojiSmileFill className="cursor-pointer hover:scale-125" />
             </div>
             <button className="bg-blue-500 px-2 py-1 rounded-xl mr-3">
               Tweet

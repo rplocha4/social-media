@@ -1,34 +1,27 @@
-import React from 'react';
-import { Await, defer, useLoaderData } from 'react-router';
 import Posts from '../components/UserPost/Posts';
 import CreatePost from '../components/UserPost/CreatePost';
-import { useGetPostsQuery } from '../store/features/serverApi';
+import {
+  useCreatePostMutation,
+  useGetPostsQuery,
+} from '../store/features/serverApi';
 
 export default function Home() {
   //   const data: any = useLoaderData();
   //   const { posts } = data;
 
   const { data, isLoading, refetch } = useGetPostsQuery(1);
+  const [createPost] = useCreatePostMutation();
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   const createPostHandler = (content: string) => {
-    fetch(`http://localhost:3000/api/posts`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        content: content,
-        user_id: 3,
-      }),
-    }).then(() => {
+    createPost({ content: content, user_id: 3 }).then(() => {
       refetch();
     });
   };
   return (
-    <div className="flex flex-col w-full">
+    <div className="flex flex-col w-full ">
       <CreatePost
         placeholder="What's happening?"
         onCreate={createPostHandler}

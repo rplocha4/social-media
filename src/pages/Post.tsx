@@ -2,6 +2,7 @@ import { useLoaderData } from 'react-router';
 import UserData from '../components/UserPost/UserData';
 import Comments from '../components/Comments/Comments';
 import {
+  useCreateCommentMutation,
   useGetPostCommentsQuery,
   useGetPostQuery,
 } from '../store/features/serverApi';
@@ -13,6 +14,7 @@ function Post() {
   // const { comments } = data;
 
   const { data: post, isLoading: postLoading } = useGetPostQuery(id);
+  const [createComment] = useCreateCommentMutation();
   const {
     data: comments,
     isLoading: commentsLoading,
@@ -20,19 +22,23 @@ function Post() {
   } = useGetPostCommentsQuery(id);
 
   const createCommentHandler = (content: string) => {
-    fetch(`http://localhost:3000/api/comments`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        content: content,
-        post_id: id,
-        user_id: 3,
-      }),
-    }).then(() => {
+    createComment({ content: content, user_id: 3, post_id: id }).then(() => {
       refetch();
     });
+
+    // fetch(`http://localhost:3000/api/comments`, {
+    //   method: 'POST',
+    //   headers: {
+    //     'Content-Type': 'application/json',
+    //   },
+    //   body: JSON.stringify({
+    //     content: content,
+    //     post_id: id,
+    //     user_id: 3,
+    //   }),
+    // }).then(() => {
+    //   refetch();
+    // });
   };
 
   return (
@@ -71,7 +77,7 @@ function Post() {
 }
 
 export default Post;
-export async function loader({ params }: any) {
+export async function loader({ params }: { params: { id: string } }) {
   const { id } = params;
 
   // const res = fetch(`http://localhost:3000/api/post/${id}`);

@@ -1,15 +1,14 @@
 import React from 'react';
 import CommentCard from './CommentCard';
+import { TComment } from '../../types/types';
 
-const Comments: React.FC<{ comments: any }> = ({ comments }) => {
-  console.log(comments);
-
+const Comments: React.FC<{ comments: TComment[] }> = ({ comments }) => {
   return (
-    <>
-      {comments.map((comment: any) => {
+    <div className="">
+      {comments.map((comment: TComment) => {
         return <CommentCard key={comment.comment_id} comment={comment} />;
       })}
-    </>
+    </div>
   );
 };
 

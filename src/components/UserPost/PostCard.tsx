@@ -1,15 +1,12 @@
-import { FaRegComment, FaRegHeart, FaRegShareSquare } from 'react-icons/fa';
+import { FaRegComment } from 'react-icons/fa';
 import {
-  useGetPostCommentsQuery,
-  useGetPostLikesQuery,
-  useGetPostsQuery,
   useLikePostMutation,
   useUnlikePostMutation,
 } from '../../store/features/serverApi';
 import { TPost } from '../../types/types';
 import UserData from './UserData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
@@ -19,7 +16,7 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
   const [unlikePost] = useUnlikePostMutation();
 
   return (
-    <div className="border-t border-gray-600 w-full p-2">
+    <div className="border-t border-gray-600 p-2">
       <div className="flex flex-col gap-3">
         <UserData
           username={post.username}

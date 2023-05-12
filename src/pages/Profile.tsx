@@ -6,6 +6,7 @@ import {
   useLazyGetUserPostsQuery,
 } from '../store/features/serverApi';
 import Posts from '../components/UserPost/Posts';
+import Loading from '../components/UI/Loading';
 
 function Profile() {
   const username = useLoaderData();
@@ -52,13 +53,28 @@ function Profile() {
   return (
     <div>
       <div className="flex justify-center items-center gap-5">
-        <button onClick={() => setFilter('posts')}>Posts</button>
-        <button onClick={() => setFilter('likes')}>Likes</button>
-        <button onClick={() => setFilter('comments')}>Comments</button>
+        <button
+          className="px-4 py-2 rounded-lg"
+          onClick={() => setFilter('posts')}
+        >
+          Posts
+        </button>
+        <button
+          className="px-4 py-2 rounded-lg"
+          onClick={() => setFilter('likes')}
+        >
+          Likes
+        </button>
+        <button
+          className="px-4 py-2 rounded-lg"
+          onClick={() => setFilter('comments')}
+        >
+          Comments
+        </button>
       </div>
       <div className="flex flex-col gap-2">
         {loading ? (
-          <div>Loading...</div>
+          <Loading />
         ) : results.length > 0 ? (
           <Posts posts={results} />
         ) : (

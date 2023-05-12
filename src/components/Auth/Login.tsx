@@ -22,10 +22,7 @@ const Login = () => {
         username: '',
       }}
       validate={(values) => {
-        const errors: {
-          password: string;
-          username: string;
-        } = {};
+        const errors: any = {};
 
         if (!values.password) {
           errors.password = 'Required';
@@ -50,11 +47,10 @@ const Login = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'Auth successful') {
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('user_id', data.user.user_id);
-              localStorage.setItem('username', data.user.username);
+              dispatch(login(data.user));
+
               // dispatch(
-              //   login({ token: data.token, user_id: data.user.user_id })
+              //   login({ token: data.token, user_id: data.user.user_id, username:data.user.username })
               // );
               dispatch(
                 showInfo({ message: 'Logged in successfully!', color: 'green' })

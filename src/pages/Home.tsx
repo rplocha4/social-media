@@ -6,6 +6,7 @@ import {
 } from '../store/features/serverApi';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import Loading from '../components/UI/Loading';
 
 export default function Home() {
   const userSelector = useSelector((state: RootState) => state.user);
@@ -14,7 +15,7 @@ export default function Home() {
 
   const [createPost] = useCreatePostMutation();
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   const createPostHandler = (content: string) => {

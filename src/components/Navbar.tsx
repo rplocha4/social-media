@@ -48,9 +48,8 @@ function Navbar() {
             }
           bg-slate-40`}
             onClick={() => {
-              localStorage.removeItem('token');
-              localStorage.removeItem('user_id');
-              // dispatch(logout());
+
+              dispatch(logout());
               window.location.reload();
 
               dispatch(

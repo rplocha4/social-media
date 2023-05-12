@@ -7,13 +7,13 @@ import {
   useGetPostQuery,
 } from '../store/features/serverApi';
 import CreatePost from '../components/UserPost/CreatePost';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import Loading from '../components/UI/Loading';
+import { showInfo } from '../store/uiSlice';
 
 function Post() {
-  const data: any = useLoaderData();
-  const { id } = data;
-  // const { comments } = data;
+  const id = useLoaderData() as string;
 
   const userSelector = useSelector((state: RootState) => state.user);
   const { data: post, isLoading: postLoading } = useGetPostQuery(id);
@@ -23,8 +23,14 @@ function Post() {
     isLoading: commentsLoading,
     refetch,
   } = useGetPostCommentsQuery(id);
+  const dispatch = useDispatch();
 
   const createCommentHandler = (content: string) => {
+    if (!userSelector.user_id) {
+      dispatch(
+        showInfo({ infoMessage: 'You need to be logged in', color: 'red' })
+      );
+    }
     createComment({
       content: content,
       user_id: userSelector.user_id,
@@ -32,27 +38,13 @@ function Post() {
     }).then(() => {
       refetch();
     });
-
-    // fetch(`http://localhost:3000/api/comments`, {
-    //   method: 'POST',
-    //   headers: {
-    //     'Content-Type': 'application/json',
-    //   },
-    //   body: JSON.stringify({
-    //     content: content,
-    //     post_id: id,
-    //     user_id: 3,
-    //   }),
-    // }).then(() => {
-    //   refetch();
-    // });
   };
 
   return (
     <div className="w-full flex-col  p-2">
       <div className="flex flex-col w-full gap-3 border-b-2 border-gray-600">
         {postLoading ? (
-          <div>Loading...</div>
+          <Loading />
         ) : (
           <>
             <UserData
@@ -75,11 +67,7 @@ function Post() {
         noUserMessage="You need to login to create a comment"
       />
 
-      {commentsLoading ? (
-        <div>Loading...</div>
-      ) : (
-        <Comments comments={comments.data} />
-      )}
+      {commentsLoading ? <Loading /> : <Comments comments={comments.data} />}
     </div>
   );
 }
@@ -87,9 +75,5 @@ function Post() {
 export default Post;
 export async function loader({ params }: { params: { id: string } }) {
   const { id } = params;
-  
-  // const res = fetch(`http://localhost:3000/api/post/${id}`);
-  // const comments = fetch(`http://localhost:3000/api/comments/${id}`);
-
-  return { id };
+  return id;
 }

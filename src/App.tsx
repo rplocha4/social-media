@@ -20,7 +20,7 @@ function App() {
     const user_id = localStorage.getItem('user_id');
     const username = localStorage.getItem('username');
     if (localStorage.getItem('token') === null) {
-      dispatch(logout());
+      // dispatch(logout());
       return;
     }
     dispatch(login({ token, user_id, username }));

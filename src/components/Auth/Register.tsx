@@ -19,12 +19,7 @@ const Register = () => {
         repeatPassword: '',
       }}
       validate={(values) => {
-        const errors: {
-          email: string;
-          password: string;
-          username: string;
-          repeatPassword: string;
-        } = {};
+        const errors: any = {};
         if (!values.email) {
           errors.email = 'Required';
         } else if (

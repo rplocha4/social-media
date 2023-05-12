@@ -20,6 +20,7 @@ export const uiSlice = createSlice({
     hideInfo: (state) => {
       state.showInfo = false;
       state.infoMessage = '';
+      state.color = 'blue'; 
     },
   },
 });

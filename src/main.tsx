@@ -7,6 +7,8 @@ import store from './store/store.ts';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import Post, { loader as postLoader } from './pages/Post.tsx';
 import Home from './pages/Home.tsx';
+import Register from './components/Auth/Register.tsx';
+import Login from './components/Auth/Login.tsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,14 @@ const router = createBrowserRouter([
         loader: postLoader,
       },
     ],
+  },
+  {
+    path: '/register',
+    element: <Register />,
+  },
+  {
+    path: '/login',
+    element: <Login />,
   },
 ]);
 

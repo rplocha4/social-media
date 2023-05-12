@@ -8,7 +8,13 @@ const ThemeToggler: React.FC<{ onToggle: () => void }> = ({ onToggle }) => {
   return (
     <div className={`${classes.toggleSwitch}`}>
       <label>
-        <input type="checkbox" onClick={() => onToggle()} checked={darkTheme} />
+        <input
+          type="checkbox"
+          checked={darkTheme}
+          onChange={() => {
+            onToggle();
+          }}
+        />
         <span className={`${classes.slider}`}></span>
       </label>
     </div>

@@ -1,15 +1,21 @@
 import './App.css';
 import ThemeToggler from './components/ThemeToggler/ThemeToggler';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from './store/uiSlice';
 import Search from './components/Search';
 import { RootState } from './store/store';
+import { useEffect } from 'react';
 function App() {
   const dispatch = useDispatch();
   const uiSelector = useSelector((state: RootState) => state.ui);
   const darkTheme = uiSelector.darkMode;
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    navigate('/home');
+  }, [navigate]);
 
   return (
     <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen w-full`}>

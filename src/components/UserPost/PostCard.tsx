@@ -7,10 +7,13 @@ import { TPost } from '../../types/types';
 import UserData from './UserData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { hideInfo, showInfo } from '../../store/uiSlice';
 
 const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
   const [likes, setLikes] = useState(post.likes);
+  const dispatch = useDispatch();
 
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
@@ -37,10 +40,18 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
                 unlikePost({ post_id: post.post_id, user_id: 1 });
                 setIsLiking(false);
                 setLikes((prev) => prev - 1);
+                dispatch(showInfo('Successfully unliked post'));
+                setTimeout(() => {
+                  dispatch(hideInfo());
+                }, 2000);
               } else {
                 likePost({ post_id: post.post_id, user_id: 1 });
                 setIsLiking(true);
                 setLikes((prev) => prev + 1);
+                dispatch(showInfo('Successfully liked post'));
+                setTimeout(() => {
+                  dispatch(hideInfo());
+                }, 2000);
               }
             }}
           >

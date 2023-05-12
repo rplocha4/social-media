@@ -1,16 +1,20 @@
 // Render Prop
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useEffect } from 'react';
+import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
+import { login } from '../../store/userSlice';
+import { hideInfo, showInfo } from '../../store/uiSlice';
 
 const Login = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
       navigate('/home');
     }
-  }, []);
+  }, [navigate]);
 
   return (
     <Formik
@@ -47,8 +51,15 @@ const Login = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'Auth successful') {
-              localStorage.setItem('token', data.token);
-              localStorage.setItem('user_id', data.user.user_id);
+              // localStorage.setItem('token', data.token);
+              // localStorage.setItem('user_id', data.user.user_id);
+              dispatch(
+                login({ token: data.token, user_id: data.user.user_id })
+              );
+              dispatch(showInfo('Logged in successfully!'));
+              setTimeout(() => {
+                dispatch(hideInfo());
+              }, 2000);
               navigate('/home');
             }
           });

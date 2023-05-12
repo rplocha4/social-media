@@ -8,11 +8,11 @@ function Search() {
   const uiSelector = useSelector((state: RootState) => state.ui);
   const darkTheme = uiSelector.darkMode;
   return (
-    <div className="w-full flex justify-center items-center">
+    <div className=" p-2 flex items-center fixed">
       <span
         className={`flex items-center gap-2 ${
           darkTheme ? 'bg-gray-900' : 'bg-zinc-200'
-        } w-4/5 rounded-2xl p-3 my-2 border ${
+        } w-full   rounded-2xl p-3 my-2 border ${
           focus
             ? 'border-blue-500'
             : darkTheme

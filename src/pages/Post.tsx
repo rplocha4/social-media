@@ -65,6 +65,7 @@ function Post() {
       <CreatePost
         placeholder="Type your reply"
         onCreate={createCommentHandler}
+        noUserMessage="You need to login to create a comment"
       />
 
       {commentsLoading ? (

@@ -25,6 +25,7 @@ export default function Home() {
       <CreatePost
         placeholder="What's happening?"
         onCreate={createPostHandler}
+        noUserMessage="You need to login to create a post"
       />
       <Posts posts={data.data} />
       {/* <React.Suspense fallback={<div>Loading...</div>}>

@@ -7,12 +7,15 @@ import {
   useGetPostQuery,
 } from '../store/features/serverApi';
 import CreatePost from '../components/UserPost/CreatePost';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 function Post() {
   const data: any = useLoaderData();
   const { id } = data;
   // const { comments } = data;
 
+  const userSelector = useSelector((state: RootState) => state.user);
   const { data: post, isLoading: postLoading } = useGetPostQuery(id);
   const [createComment] = useCreateCommentMutation();
   const {
@@ -22,7 +25,11 @@ function Post() {
   } = useGetPostCommentsQuery(id);
 
   const createCommentHandler = (content: string) => {
-    createComment({ content: content, user_id: 3, post_id: id }).then(() => {
+    createComment({
+      content: content,
+      user_id: userSelector.user_id,
+      post_id: id,
+    }).then(() => {
       refetch();
     });
 

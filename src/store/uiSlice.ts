@@ -6,6 +6,7 @@ export const uiSlice = createSlice({
     darkMode: true,
     showInfo: false,
     infoMessage: '',
+    color: 'blue',
   },
   reducers: {
     toggleDarkMode: (state) => {
@@ -13,13 +14,13 @@ export const uiSlice = createSlice({
     },
     showInfo: (state, action) => {
       state.showInfo = true;
-      state.infoMessage = action.payload;
+      state.infoMessage = action.payload.message;
+      state.color = action.payload.color;
     },
     hideInfo: (state) => {
       state.showInfo = false;
       state.infoMessage = '';
     },
-
   },
 });
 

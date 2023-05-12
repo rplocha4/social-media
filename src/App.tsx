@@ -11,21 +11,19 @@ import { login, logout } from './store/userSlice';
 function App() {
   const dispatch = useDispatch();
   const uiSelector = useSelector((state: RootState) => state.ui);
-  const userSelector = useSelector((state: RootState) => state.user);
+  // const userSelector = useSelector((state: RootState) => state.user);
   const darkTheme = uiSelector.darkMode;
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   console.log('asd');
-
-  //   const token = localStorage.getItem('token');
-  //   const user_id = localStorage.getItem('user_id');
-  //   if (localStorage.getItem('token') === null) {
-  //     logout();
-  //     return;
-  //   }
-  //   login({ token, user_id });
-  // }, []);
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    const user_id = localStorage.getItem('user_id');
+    if (localStorage.getItem('token') === null) {
+      dispatch(logout());
+      return;
+    }
+    dispatch(login({ token, user_id }));
+  }, []);
 
   useEffect(() => {
     // if url is /, redirect to /home
@@ -49,7 +47,10 @@ function App() {
           <Search />
         </div>
         {uiSelector.showInfo && (
-          <div className=" fixed bottom-10  bg-blue-500 rounded-xl px-5 py-2 ease-linear ">
+          <div
+            className=" fixed bottom-10 rounded-xl px-5 py-2 ease-linear "
+            style={{ backgroundColor: uiSelector.color }}
+          >
             <p className="text-center">{uiSelector.infoMessage}</p>
           </div>
         )}

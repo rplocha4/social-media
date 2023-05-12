@@ -7,13 +7,17 @@ import { TPost } from '../../types/types';
 import UserData from './UserData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../../store/uiSlice';
+import { RootState } from '../../store/store';
 
 const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
   const [likes, setLikes] = useState(post.likes);
   const dispatch = useDispatch();
+  const userSelector = useSelector((state: RootState) => {
+    return state.user;
+  });
 
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
@@ -36,11 +40,29 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
           <span
             className="flex justify-center items-center gap-2  hover:text-red-400 hover:cursor-pointer"
             onClick={() => {
+              if (userSelector.user_id === null) {
+                dispatch(
+                  showInfo({
+                    message: 'You must be logged in to like posts',
+                    color: 'red',
+                  })
+                );
+                setTimeout(() => {
+                  dispatch(hideInfo());
+                }, 2000);
+                return;
+              }
+
               if (isLiking) {
                 unlikePost({ post_id: post.post_id, user_id: 1 });
                 setIsLiking(false);
                 setLikes((prev) => prev - 1);
-                dispatch(showInfo('Successfully unliked post'));
+                dispatch(
+                  showInfo({
+                    message: 'Successfully unliked post',
+                    color: 'blue',
+                  })
+                );
                 setTimeout(() => {
                   dispatch(hideInfo());
                 }, 2000);
@@ -48,7 +70,12 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
                 likePost({ post_id: post.post_id, user_id: 1 });
                 setIsLiking(true);
                 setLikes((prev) => prev + 1);
-                dispatch(showInfo('Successfully liked post'));
+                dispatch(
+                  showInfo({
+                    message: 'Successfully liked post',
+                    color: 'blue',
+                  })
+                );
                 setTimeout(() => {
                   dispatch(hideInfo());
                 }, 2000);

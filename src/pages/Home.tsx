@@ -4,19 +4,21 @@ import {
   useCreatePostMutation,
   useGetPostsQuery,
 } from '../store/features/serverApi';
+import { useSelector } from 'react-redux';
+import { RootState } from '../store/store';
 
 export default function Home() {
-  //   const data: any = useLoaderData();
-  //   const { posts } = data;
+  const userSelector = useSelector((state: RootState) => state.user);
 
-  const { data, isLoading, refetch } = useGetPostsQuery(1);
+  const { data, isLoading, refetch } = useGetPostsQuery(userSelector.user_id);
+
   const [createPost] = useCreatePostMutation();
   if (isLoading) {
     return <div>Loading...</div>;
   }
 
   const createPostHandler = (content: string) => {
-    createPost({ content: content, user_id: 3 }).then(() => {
+    createPost({ content: content, user_id: userSelector.user_id }).then(() => {
       refetch();
     });
   };
@@ -28,22 +30,6 @@ export default function Home() {
         noUserMessage="You need to login to create a post"
       />
       <Posts posts={data.data} />
-      {/* <React.Suspense fallback={<div>Loading...</div>}>
-        <Await resolve={posts}>
-          {(loadedPosts) => {
-            return <Posts posts={loadedPosts.data} />;
-          }}
-        </Await>
-      </React.Suspense> */}
     </div>
   );
 }
-
-// export async function loader({ params }: any) {
-//   //   const user_id = params.id;
-//   const res = fetch(`http://localhost:3000/api/posts/friends/${1}`);
-
-//   return defer({
-//     posts: res.then((res) => res.json()),
-//   });
-// }

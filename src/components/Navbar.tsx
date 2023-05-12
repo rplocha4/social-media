@@ -35,12 +35,14 @@ function Navbar() {
           }
           bg-slate-40`}
           onClick={() => {
-            // localStorage.removeItem('token');
-            // localStorage.removeItem('user_id');
-            dispatch(logout());
+            localStorage.removeItem('token');
+            localStorage.removeItem('user_id');
+            // dispatch(logout());
             window.location.reload();
 
-            dispatch(showInfo('Successfully logged out'));
+            dispatch(
+              showInfo({ message: 'Successfully logged out', color: 'green' })
+            );
             setTimeout(() => {
               dispatch(hideInfo());
             }, 2000);

@@ -64,7 +64,7 @@ const CreatePost: React.FC<{
               <BsEmojiSmileFill className="cursor-pointer hover:scale-125" />
             </div>
             <button className="bg-blue-500 px-2 py-1 rounded-xl mr-3">
-              Tweet
+              Post
             </button>
           </div>
         </form>

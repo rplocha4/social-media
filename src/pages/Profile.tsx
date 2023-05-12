@@ -9,8 +9,10 @@ import Posts from '../components/UserPost/Posts';
 
 function Profile() {
   const username = useLoaderData();
+  // const userSelector = useSelector((state: RootState) => state.user);
   const [results, setResults] = React.useState([]);
   const [filter, setFilter] = React.useState('posts');
+  const [loading, setLoading] = React.useState(true);
   const [getPosts] = useLazyGetUserPostsQuery();
   const [getLikes] = useLazyGetUserLikesQuery();
   const [getComments] = useLazyGetUserCommentsQuery();
@@ -21,16 +23,19 @@ function Profile() {
         case 'posts':
           getPosts(username).then((res) => {
             setResults(res.data.data);
+            setLoading(false);
           });
           break;
         case 'likes':
           getLikes(username).then((res) => {
             setResults(res.data.data);
+            setLoading(false);
           });
           break;
         case 'comments':
           getComments(username).then((res) => {
             setResults(res.data.data);
+            setLoading(false);
           });
           break;
         default:
@@ -40,6 +45,7 @@ function Profile() {
     [getComments, getLikes, getPosts, username]
   );
   useEffect(() => {
+    setLoading(true);
     fetchData(filter);
   }, [filter, fetchData]);
 
@@ -51,7 +57,13 @@ function Profile() {
         <button onClick={() => setFilter('comments')}>Comments</button>
       </div>
       <div className="flex flex-col gap-2">
-        {results ? <Posts posts={results} /> : <div>No results</div>}
+        {loading ? (
+          <div>Loading...</div>
+        ) : results.length > 0 ? (
+          <Posts posts={results} />
+        ) : (
+          <div>No results</div>
+        )}
       </div>
     </div>
   );

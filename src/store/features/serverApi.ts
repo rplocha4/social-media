@@ -53,7 +53,11 @@ export const serverApi = createApi({
       }),
     }),
     getUserPosts: builder.query({
-      query: (username) => `/posts/${username}`,
+      query: (username) => ({
+        url: `/posts/${username}`,
+        method: 'GET',
+        authorization: `Bearer ${localStorage.getItem('token')}`,
+      }),
     }),
     getUserComments: builder.query({
       query: (username) => `/user/comments/${username}`,

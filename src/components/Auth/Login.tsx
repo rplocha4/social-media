@@ -52,6 +52,7 @@ const Login = () => {
             if (data.message === 'Auth successful') {
               localStorage.setItem('token', data.token);
               localStorage.setItem('user_id', data.user.user_id);
+              localStorage.setItem('username', data.user.username);
               // dispatch(
               //   login({ token: data.token, user_id: data.user.user_id })
               // );

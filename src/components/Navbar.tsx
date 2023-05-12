@@ -5,6 +5,7 @@ import { RootState } from '../store/store';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
+import { FaUserAlt } from 'react-icons/fa';
 
 function Navbar() {
   const uiSelector = useSelector((state: RootState) => state.ui);
@@ -29,28 +30,41 @@ function Navbar() {
       </div>
 
       {userSelector.user_id !== null ? (
-        <span
-          className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl mb-20 cursor-pointer ${
-            darkTheme ? 'darkHover' : 'lightHover'
-          }
+        <div className="flex flex-col items mb-20 gap-3">
+          <Link to={`/profile/${userSelector.username}`} className="">
+            <span
+              className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
+                darkTheme ? 'darkHover' : 'lightHover'
+              }
+            bg-slate-40`}
+            >
+              <FaUserAlt className="" />
+              <p>Profile</p>
+            </span>
+          </Link>
+          <span
+            className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
+              darkTheme ? 'darkHover' : 'lightHover'
+            }
           bg-slate-40`}
-          onClick={() => {
-            localStorage.removeItem('token');
-            localStorage.removeItem('user_id');
-            // dispatch(logout());
-            window.location.reload();
+            onClick={() => {
+              localStorage.removeItem('token');
+              localStorage.removeItem('user_id');
+              // dispatch(logout());
+              window.location.reload();
 
-            dispatch(
-              showInfo({ message: 'Successfully logged out', color: 'green' })
-            );
-            setTimeout(() => {
-              dispatch(hideInfo());
-            }, 2000);
-          }}
-        >
-          <FiLogOut className="" />
-          <p>Logout</p>
-        </span>
+              dispatch(
+                showInfo({ message: 'Successfully logged out', color: 'green' })
+              );
+              setTimeout(() => {
+                dispatch(hideInfo());
+              }, 2000);
+            }}
+          >
+            <FiLogOut className="" />
+            <p>Logout</p>
+          </span>
+        </div>
       ) : (
         <Link to="/login" className="">
           <span

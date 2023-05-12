@@ -17,9 +17,12 @@ const UserData: React.FC<{
       />
       <div className="flex flex-col gap-2 ">
         <div className="flex gap-1 ">
-          <p className=" font-bold hover:underline  hover:cursor-pointer">
+          <Link
+            to={`/profile/${username}`}
+            className=" font-bold hover:underline  hover:cursor-pointer"
+          >
             {username}
-          </p>
+          </Link>
           <p className="text-gray-500">@{username}</p>
         </div>
         <Link to={link} className="flex-1 break-all ">

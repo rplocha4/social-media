@@ -18,12 +18,13 @@ function App() {
   useEffect(() => {
     const token = localStorage.getItem('token');
     const user_id = localStorage.getItem('user_id');
+    const username = localStorage.getItem('username');
     if (localStorage.getItem('token') === null) {
       dispatch(logout());
       return;
     }
-    dispatch(login({ token, user_id }));
-  }, []);
+    dispatch(login({ token, user_id, username }));
+  }, [dispatch]);
 
   useEffect(() => {
     // if url is /, redirect to /home

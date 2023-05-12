@@ -52,6 +52,15 @@ export const serverApi = createApi({
         body: { user_id, post_id, content },
       }),
     }),
+    getUserPosts: builder.query({
+      query: (username) => `/posts/${username}`,
+    }),
+    getUserComments: builder.query({
+      query: (username) => `/user/comments/${username}`,
+    }),
+    getUserLikes: builder.query({
+      query: (username) => `/user/likes/${username}`,
+    }),
   }),
 });
 
@@ -64,4 +73,7 @@ export const {
   useUnlikePostMutation,
   useCreatePostMutation,
   useCreateCommentMutation,
+  useLazyGetUserCommentsQuery,
+  useLazyGetUserLikesQuery,
+  useLazyGetUserPostsQuery,
 } = serverApi;

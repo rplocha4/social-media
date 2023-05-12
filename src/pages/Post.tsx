@@ -87,7 +87,7 @@ function Post() {
 export default Post;
 export async function loader({ params }: { params: { id: string } }) {
   const { id } = params;
-
+  
   // const res = fetch(`http://localhost:3000/api/post/${id}`);
   // const comments = fetch(`http://localhost:3000/api/comments/${id}`);
 

@@ -54,7 +54,10 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
               }
 
               if (isLiking) {
-                unlikePost({ post_id: post.post_id, user_id: 1 });
+                unlikePost({
+                  post_id: post.post_id,
+                  user_id: userSelector.user_id,
+                });
                 setIsLiking(false);
                 setLikes((prev) => prev - 1);
                 dispatch(
@@ -67,7 +70,10 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
                   dispatch(hideInfo());
                 }, 2000);
               } else {
-                likePost({ post_id: post.post_id, user_id: 1 });
+                likePost({
+                  post_id: post.post_id,
+                  user_id: userSelector.user_id,
+                });
                 setIsLiking(true);
                 setLikes((prev) => prev + 1);
                 dispatch(

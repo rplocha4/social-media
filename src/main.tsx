@@ -9,6 +9,8 @@ import Post, { loader as postLoader } from './pages/Post.tsx';
 import Home from './pages/Home.tsx';
 import Register from './components/Auth/Register.tsx';
 import Login from './components/Auth/Login.tsx';
+import Profile from './pages/Profile.tsx';
+import { loader as profileLoader } from './pages/Profile.tsx';
 
 const router = createBrowserRouter([
   {
@@ -24,6 +26,11 @@ const router = createBrowserRouter([
         path: 'post/:id',
         element: <Post />,
         loader: postLoader,
+      },
+      {
+        path: 'profile/:id',
+        element: <Profile />,
+        loader: profileLoader,
       },
     ],
   },

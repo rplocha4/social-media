@@ -4,9 +4,11 @@ import {
   useLazyGetUserCommentsQuery,
   useLazyGetUserLikesQuery,
   useLazyGetUserPostsQuery,
+  useGetUserQuery,
 } from '../store/features/serverApi';
 import Posts from '../components/UserPost/Posts';
 import Loading from '../components/UI/Loading';
+import { BsCalendar3WeekFill } from 'react-icons/bs';
 
 function Profile() {
   const username = useLoaderData();
@@ -14,6 +16,8 @@ function Profile() {
   const [results, setResults] = React.useState([]);
   const [filter, setFilter] = React.useState('posts');
   const [loading, setLoading] = React.useState(true);
+
+  const { data, isLoading: userIsLoading } = useGetUserQuery(username);
   const [getPosts] = useLazyGetUserPostsQuery();
   const [getLikes] = useLazyGetUserLikesQuery();
   const [getComments] = useLazyGetUserCommentsQuery();
@@ -51,22 +55,61 @@ function Profile() {
   }, [filter, fetchData]);
 
   return (
-    <div>
-      <div className="flex justify-center items-center gap-5">
+    <div className="flex flex-col">
+      <div className="grid grid-rows-4 mt-10 grid-cols-1">
+        <div className="row-start-1 row-span-2 col-start-1 bg-gray-400"></div>
+        <div className="flex items-center p-2 justify-between row-start-2 row-span-2 col-start-1 ">
+          <img
+            className="rounded-full self-start border-2 border-gray-900"
+            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
+            alt="user profile"
+            style={{ height: '150px', width: '150px' }}
+          />
+          <button className="mt-10 border rounded-lg px-3 py-1 darkHover">
+            Follow
+          </button>
+        </div>
+        <div>
+          {userIsLoading ? (
+            <Loading />
+          ) : (
+            <div className="p-2 flex flex-col gap-2">
+              <p className="font-bold text-xl">{data.data.username}</p>
+              <p className="text-gray-500">
+                <span className="flex items-center gap-3">
+                  <BsCalendar3WeekFill />
+                  Joined {data.data.date_joined.split('T')[0]}
+                </span>
+              </p>
+              <p className="text-gray-500 flex gap-2 items-center">
+                <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
+                  <p className="text-white font-bold">{data.data.following}</p>
+                  <p>Following</p>
+                </span>
+                <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
+                  <p className="text-white font-bold">{data.data.followers}</p>
+                  <p>Followers</p>
+                </span>
+              </p>
+            </div>
+          )}
+        </div>
+      </div>
+      <div className="flex justify-between items-center ">
         <button
-          className="px-4 py-2 rounded-lg"
+          className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
           onClick={() => setFilter('posts')}
         >
           Posts
         </button>
         <button
-          className="px-4 py-2 rounded-lg"
+          className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
           onClick={() => setFilter('likes')}
         >
           Likes
         </button>
         <button
-          className="px-4 py-2 rounded-lg"
+          className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
           onClick={() => setFilter('comments')}
         >
           Comments
@@ -75,7 +118,7 @@ function Profile() {
       <div className="flex flex-col gap-2">
         {loading ? (
           <Loading />
-        ) : results.length > 0 ? (
+        ) : results?.length > 0 ? (
           <Posts posts={results} />
         ) : (
           <div>No results</div>

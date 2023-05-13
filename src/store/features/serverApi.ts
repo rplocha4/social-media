@@ -56,14 +56,34 @@ export const serverApi = createApi({
       query: (username) => ({
         url: `/posts/${username}`,
         method: 'GET',
-        authorization: `Bearer ${localStorage.getItem('token')}`,
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
       }),
     }),
     getUserComments: builder.query({
-      query: (username) => `/user/comments/${username}`,
+      query: (username) => ({
+        url: `/user/comments/${username}`,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
     }),
     getUserLikes: builder.query({
-      query: (username) => `/user/likes/${username}`,
+      query: (username) => ({
+        url: `/user/likes/${username}`,
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    getUser: builder.query({
+      query: (username) => `/user/${username}`,
     }),
   }),
 });
@@ -80,4 +100,5 @@ export const {
   useLazyGetUserCommentsQuery,
   useLazyGetUserLikesQuery,
   useLazyGetUserPostsQuery,
+  useGetUserQuery,
 } = serverApi;

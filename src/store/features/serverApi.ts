@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const serverApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    // baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
-    baseUrl: 'http://localhost:3000/api',
+    baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
+    // baseUrl: 'http://localhost:3000/api',
   }),
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -40,13 +40,15 @@ export const serverApi = createApi({
       }),
     }),
     createComment: builder.mutation({
-      query: ({ user_id, post_id, content }) => ({
+      query: ({ body }) => ({
         url: `/comments`,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: { user_id, post_id, content },
+        // headers: {
+        //   'Content-Type': 'application/json',
+        //   Authorization: `Bearer ${localStorage.getItem('token')}`,
+        // },
+
+        body: body,
       }),
     }),
     getUserPosts: builder.query({

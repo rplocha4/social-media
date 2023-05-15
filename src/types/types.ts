@@ -19,4 +19,5 @@ export type TComment = {
     user_id: string;
     username: string;
     avatar: string;
+    image: string;
 }

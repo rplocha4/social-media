@@ -47,7 +47,7 @@ const Login = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'Auth successful') {
-              dispatch(login(data.user));
+              dispatch(login({ ...data.user, token: data.token }));
 
               // dispatch(
               //   login({ token: data.token, user_id: data.user.user_id, username:data.user.username })

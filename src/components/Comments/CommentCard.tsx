@@ -10,6 +10,7 @@ const CommentCard: React.FC<{ comment: TComment }> = ({ comment }) => {
           username={comment.username}
           img={comment.avatar}
           content={comment.content}
+          image={comment.image}
           link={`/post/${comment.post_id}`}
         />
       </div>

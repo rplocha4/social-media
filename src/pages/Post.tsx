@@ -31,6 +31,7 @@ function Post() {
         showInfo({ infoMessage: 'You need to be logged in', color: 'red' })
       );
     }
+    formData.append('post_id', id);
     createComment({
       body: formData,
     }).then(() => {
@@ -49,7 +50,7 @@ function Post() {
               username={post.data.username}
               img={post.data.avatar}
               content={post.data.content}
-              image={post.data.image ? post.data.image.data : []}
+              image={post.data.image}
               link={`/post/${post.data.post_id}`}
             />
 

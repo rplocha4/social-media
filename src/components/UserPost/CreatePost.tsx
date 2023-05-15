@@ -1,11 +1,11 @@
 import React, { useRef } from 'react';
 import { BiImageAlt } from 'react-icons/bi';
-import { AiOutlineGif } from 'react-icons/ai';
-import { BsEmojiSmileFill } from 'react-icons/bs';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../../store/store';
+import { BsEmojiSmileFill } from 'react-icons/bs';
+import { AiOutlineGif } from 'react-icons/ai';
 const CreatePost: React.FC<{
   placeholder: string;
   noUserMessage: string;
@@ -14,6 +14,7 @@ const CreatePost: React.FC<{
   const [content, setContent] = React.useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const userSelector = useSelector((state: RootState) => state.user);
+  const ref = useRef<HTMLInputElement>(null);
 
   useAutosizeTextArea(textAreaRef.current, content);
 
@@ -21,21 +22,25 @@ const CreatePost: React.FC<{
 
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
-
     if (content.trim().length === 0 && !image) {
       return;
     }
+    if (!userSelector.user_id) {
+      return;
+    }
+
     const formData = new FormData();
     formData.append('content', content);
-    formData.append('user_id', userSelector.user_id!);
+    formData.append('user_id', userSelector.user_id);
     if (image) {
       formData.append('image', image);
     }
-
     onCreate(formData);
+
     setContent('');
     setImage(null);
   };
+
   if (userSelector.user_id === null) {
     return (
       <div className="flex justify-center items-center p-2 text-xl font-bold text-blue-500">
@@ -74,21 +79,30 @@ const CreatePost: React.FC<{
               />
             )}
           </div>
-          <div className="flex justify-between ">
+          <div className="flex justify-between pb-4 ">
             <div className="flex items-end gap-2 text-xl text-blue-600">
-              <AiOutlineGif className="cursor-pointer hover:scale-125" />
-              <span>
-                <BiImageAlt className="cursor-pointer hover:scale-125" />
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="myImage"
-                  onChange={(event) => {
-                    setImage(event.target.files[0]);
-                  }}
-                />
-              </span>
+              <BiImageAlt
+                className="cursor-pointer hover:scale-125"
+                onClick={() => {
+                  ref.current?.click();
+                }}
+              />
+
+              <input
+                id="image-input"
+                className="hidden"
+                type="file"
+                accept="image/*"
+                name="myImage"
+                ref={ref}
+                onChange={(event) => {
+                  event.target.files && setImage(event.target.files[0]);
+                }}
+              />
+
               <BsEmojiSmileFill className="cursor-pointer hover:scale-125" />
+
+              <AiOutlineGif className="cursor-pointer hover:scale-125" />
             </div>
             <button className="bg-blue-500 px-2 py-1 rounded-xl mr-3">
               Post

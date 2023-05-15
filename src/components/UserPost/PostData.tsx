@@ -1,18 +1,19 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import imageFromBinary from '../../utils/imageFromBinary';
 
 const PostData: React.FC<{
   img: string;
   username: string;
   content: string;
   link: string;
-  image: number[];
+  image: string;
 }> = ({ img, content, username, link, image }) => {
-  let imageData = '';
-  if (image) {
-    imageData = imageFromBinary(image);
-  }
+  // let imageData = '';
+  // const [loading, setLoading] = React.useState(true);
+
+  // if (image.length > 0) {
+  //   imageData = imageFromBinary(image);
+  // }
 
   return (
     <div className="flex items-center gap-2 ">
@@ -32,14 +33,10 @@ const PostData: React.FC<{
           </Link>
           <p className="text-gray-500">@{username}</p>
         </div>
-        <Link to={link} className="flex-1 break-all ">
-          {content}
-          {image.length > 0 && (
-            <img
-              src={imageData}
-              alt="post"
-              className="w-full h-80 object-cover"
-            />
+        <Link to={link} className="flex-1 flex-col flex gap-3 ">
+          <p className="break-all">{content}</p>
+          {image && (
+            <img src={image} alt="post" className="w-full h-80 object-cover" />
           )}
         </Link>
       </div>

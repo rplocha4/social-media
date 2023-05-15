@@ -9,6 +9,7 @@ import {
 import Posts from '../components/UserPost/Posts';
 import Loading from '../components/UI/Loading';
 import { BsCalendar3WeekFill } from 'react-icons/bs';
+import { AiOutlineEdit } from 'react-icons/ai';
 
 function Profile() {
   const username = useLoaderData();
@@ -16,6 +17,8 @@ function Profile() {
   const [results, setResults] = React.useState([]);
   const [filter, setFilter] = React.useState('posts');
   const [loading, setLoading] = React.useState(true);
+  const [profileHover, setProfileHover] = React.useState(false);
+  const [backgroundHover, setBackgroundHover] = React.useState(false);
 
   const { data, isLoading: userIsLoading } = useGetUserQuery(username);
   const [getPosts] = useLazyGetUserPostsQuery();
@@ -50,6 +53,8 @@ function Profile() {
     [getComments, getLikes, getPosts, username]
   );
   useEffect(() => {
+    console.log('asd');
+
     setLoading(true);
     fetchData(filter);
   }, [filter, fetchData]);
@@ -63,12 +68,31 @@ function Profile() {
       <div className="grid grid-rows-4 mt-10 grid-cols-1">
         <div className="row-start-1 row-span-2 col-start-1 bg-gray-400"></div>
         <div className="flex items-center p-2 justify-between row-start-2 row-span-2 col-start-1 ">
-          <img
-            className="rounded-full self-start border-2 border-gray-900"
-            src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
-            alt="user profile"
-            style={{ height: '150px', width: '150px' }}
-          />
+          <div
+            className="self-start relative"
+            onMouseEnter={() => {
+              setProfileHover(true);
+            }}
+            onMouseLeave={() => {
+              setProfileHover(false);
+            }}
+          >
+            <img
+              className="rounded-full  border-2 border-gray-900"
+              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
+              alt="user profile"
+              style={{ height: '150px', width: '150px' }}
+            />
+            {profileHover && (
+              <div
+                className="absolute bg-black opacity-70 top-0 rounded-full flex justify-center items-center text-4xl text-white"
+                style={{ height: '150px', width: '150px' }}
+              >
+                <AiOutlineEdit />
+              </div>
+            )}
+          </div>
+
           <button className="mt-10 border rounded-lg px-3 py-1 darkHover">
             Follow
           </button>

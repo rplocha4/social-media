@@ -4,7 +4,7 @@ import {
   useUnlikePostMutation,
 } from '../../store/features/serverApi';
 import { TPost } from '../../types/types';
-import UserData from './UserData';
+import PostData from './PostData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -26,7 +26,7 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
   return (
     <div className="border-t border-gray-600 p-2">
       <div className="flex flex-col gap-3">
-        <UserData
+        <PostData
           username={post.username}
           img={post.avatar}
           content={post.content}

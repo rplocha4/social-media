@@ -18,10 +18,20 @@ export default function Home() {
     return <Loading />;
   }
 
-  const createPostHandler = (content: string) => {
-    createPost({ content: content, user_id: userSelector.user_id }).then(() => {
+  const createPostHandler = (formData: FormData) => {
+    createPost({
+      body: formData,
+    }).then(() => {
       refetch();
     });
+
+    // createPost({
+    //   content: content,
+    //   image: image ? image : null,
+    //   user_id: userSelector.user_id,
+    // }).then(() => {
+    //   refetch();
+    // });
   };
   return (
     <div className="flex flex-col w-full ">

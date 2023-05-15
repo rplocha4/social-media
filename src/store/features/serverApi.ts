@@ -33,13 +33,10 @@ export const serverApi = createApi({
       }),
     }),
     createPost: builder.mutation({
-      query: ({ user_id, content }) => ({
+      query: ({ body }) => ({
         url: `/posts`,
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: { content, user_id },
+        body: body,
       }),
     }),
     createComment: builder.mutation({

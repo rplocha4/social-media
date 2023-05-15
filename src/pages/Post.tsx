@@ -1,5 +1,5 @@
 import { useLoaderData } from 'react-router';
-import UserData from '../components/UserPost/UserData';
+import PostData from '../components/UserPost/PostData';
 import Comments from '../components/Comments/Comments';
 import {
   useCreateCommentMutation,
@@ -25,16 +25,14 @@ function Post() {
   } = useGetPostCommentsQuery(id);
   const dispatch = useDispatch();
 
-  const createCommentHandler = (content: string) => {
+  const createCommentHandler = (formData: FormData) => {
     if (!userSelector.user_id) {
       dispatch(
         showInfo({ infoMessage: 'You need to be logged in', color: 'red' })
       );
     }
     createComment({
-      content: content,
-      user_id: userSelector.user_id,
-      post_id: id,
+      body: formData,
     }).then(() => {
       refetch();
     });
@@ -47,7 +45,7 @@ function Post() {
           <Loading />
         ) : (
           <>
-            <UserData
+            <PostData
               username={post.data.username}
               img={post.data.avatar}
               content={post.data.content}

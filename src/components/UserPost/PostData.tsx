@@ -2,7 +2,7 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import imageFromBinary from '../../utils/imageFromBinary';
 
-const UserData: React.FC<{
+const PostData: React.FC<{
   img: string;
   username: string;
   content: string;
@@ -13,6 +13,7 @@ const UserData: React.FC<{
   if (image) {
     imageData = imageFromBinary(image);
   }
+
   return (
     <div className="flex items-center gap-2 ">
       <img
@@ -33,7 +34,7 @@ const UserData: React.FC<{
         </div>
         <Link to={link} className="flex-1 break-all ">
           {content}
-          {image && (
+          {image.length > 0 && (
             <img
               src={imageData}
               alt="post"
@@ -46,4 +47,4 @@ const UserData: React.FC<{
   );
 };
 
-export default UserData;
+export default PostData;

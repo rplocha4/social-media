@@ -1,5 +1,5 @@
 import React from 'react';
-import UserData from '../UserPost/UserData';
+import UserData from '../UserPost/PostData';
 import { TComment } from '../../types/types';
 
 const CommentCard: React.FC<{ comment: TComment }> = ({ comment }) => {

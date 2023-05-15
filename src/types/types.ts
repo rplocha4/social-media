@@ -8,6 +8,10 @@ export type TPost = {
     likes: number;
     comments: number;
     liked: number;
+    image: {
+        type: string;
+        data: number[];
+    };
 }
 export type TComment = {
     comment_id: string;

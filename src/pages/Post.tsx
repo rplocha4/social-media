@@ -51,6 +51,7 @@ function Post() {
               username={post.data.username}
               img={post.data.avatar}
               content={post.data.content}
+              image={post.data.image ? post.data.image.data : []}
               link={`/post/${post.data.post_id}`}
             />
 

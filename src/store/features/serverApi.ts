@@ -85,6 +85,9 @@ export const serverApi = createApi({
     getUser: builder.query({
       query: (username) => `/user/${username}`,
     }),
+    searchUsers: builder.query({
+      query: (username) => `/search/${username}`,
+    }),
   }),
 });
 
@@ -101,4 +104,5 @@ export const {
   useLazyGetUserLikesQuery,
   useLazyGetUserPostsQuery,
   useGetUserQuery,
+  useLazySearchUsersQuery,
 } = serverApi;

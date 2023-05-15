@@ -54,6 +54,10 @@ function Profile() {
     fetchData(filter);
   }, [filter, fetchData]);
 
+  if (userIsLoading) {
+    return <Loading />;
+  }
+
   return (
     <div className="flex flex-col">
       <div className="grid grid-rows-4 mt-10 grid-cols-1">
@@ -70,29 +74,25 @@ function Profile() {
           </button>
         </div>
         <div>
-          {userIsLoading ? (
-            <Loading />
-          ) : (
-            <div className="p-2 flex flex-col gap-2">
-              <p className="font-bold text-xl">{data.data.username}</p>
-              <p className="text-gray-500">
-                <span className="flex items-center gap-3">
-                  <BsCalendar3WeekFill />
-                  Joined {data.data.date_joined.split('T')[0]}
-                </span>
-              </p>
-              <p className="text-gray-500 flex gap-2 items-center">
-                <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
-                  <p className="text-white font-bold">{data.data.following}</p>
-                  <p>Following</p>
-                </span>
-                <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
-                  <p className="text-white font-bold">{data.data.followers}</p>
-                  <p>Followers</p>
-                </span>
-              </p>
-            </div>
-          )}
+          <div className="p-2 flex flex-col gap-2">
+            <p className="font-bold text-xl">{data.data.username}</p>
+            <p className="text-gray-500">
+              <span className="flex items-center gap-3">
+                <BsCalendar3WeekFill />
+                Joined {data.data.date_joined.split('T')[0]}
+              </span>
+            </p>
+            <p className="text-gray-500 flex gap-2 items-center">
+              <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
+                <p className="text-white font-bold">{data.data.following}</p>
+                <p>Following</p>
+              </span>
+              <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
+                <p className="text-white font-bold">{data.data.followers}</p>
+                <p>Followers</p>
+              </span>
+            </p>
+          </div>
         </div>
       </div>
       <div className="flex justify-between items-center ">

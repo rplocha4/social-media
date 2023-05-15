@@ -1,14 +1,28 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
+import { useLazySearchUsersQuery } from '../store/features/serverApi';
+import { Link } from 'react-router-dom';
 
 function Search() {
   const [focus, setFocus] = useState(false);
+  const [search, setSearch] = useState('');
+  const [results, setResults] = useState([]);
   const uiSelector = useSelector((state: RootState) => state.ui);
   const darkTheme = uiSelector.darkMode;
+  const [getResults] = useLazySearchUsersQuery();
+
+  useEffect(() => {
+    if (search.length > 0) {
+      getResults(search).then((res) => {
+        setResults(res.data.data);
+      });
+    }
+  }, [getResults, search]);
+
   return (
-    <div className=" p-2 flex items-center fixed">
+    <div className=" p-2 flex items-center fixed flex-col">
       <span
         className={`flex items-center gap-2 ${
           darkTheme ? 'bg-gray-900' : 'bg-zinc-200'
@@ -31,8 +45,38 @@ function Search() {
           onBlur={() => {
             setFocus(false);
           }}
+          onChange={(e) => {
+            setSearch(e.target.value);
+          }}
+          value={search}
         />
       </span>
+
+      {search && results.length > 0 && (
+        <div className="flex flex-col w-full h-80 overflow-y-scroll">
+          {results.map((user: any) => {
+            return (
+              <Link
+                to={`/profile/${user.username}`}
+                key={user.user_id}
+                className="flex gap-1 items-center darkHover p-2"
+                onClick={() => {
+                  setSearch('');
+                  setResults([]);
+                }}
+              >
+                <img
+                  className="rounded-full"
+                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
+                  alt="user profile"
+                  style={{ height: '50px', width: '50px' }}
+                />
+                <p>{user.username}</p>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

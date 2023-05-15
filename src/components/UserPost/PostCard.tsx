@@ -10,6 +10,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../../store/uiSlice';
 import { RootState } from '../../store/store';
+import imageFromBinary from '../../utils/imageFromBinary';
 
 const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
@@ -29,6 +30,7 @@ const PostCard: React.FC<{ post: TPost }> = ({ post }) => {
           username={post.username}
           img={post.avatar}
           content={post.content}
+          image={post.image ? post.image.data : []}
           link={`/post/${post.post_id}`}
         />
 

@@ -67,7 +67,10 @@ function Search() {
               >
                 <img
                   className="rounded-full"
-                  src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
+                  src={
+                    user.avatar ||
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU'
+                  }
                   alt="user profile"
                   style={{ height: '50px', width: '50px' }}
                 />

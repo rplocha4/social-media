@@ -73,7 +73,7 @@ function Post() {
 }
 
 export default Post;
-export async function loader({ params }: { params: { id: string } }) {
+export async function loader({ params }: { params: any }) {
   const { id } = params;
   return id;
 }

@@ -5,11 +5,14 @@ import {
   useLazyGetUserLikesQuery,
   useLazyGetUserPostsQuery,
   useGetUserQuery,
+  useUpdateUserMutation,
 } from '../store/features/serverApi';
 import Posts from '../components/UserPost/Posts';
 import Loading from '../components/UI/Loading';
 import { BsCalendar3WeekFill } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
+import { useDispatch } from 'react-redux';
+import { hideInfo, showInfo } from '../store/uiSlice';
 
 function Profile() {
   const username = useLoaderData();
@@ -19,11 +22,22 @@ function Profile() {
   const [loading, setLoading] = React.useState(true);
   const [profileHover, setProfileHover] = React.useState(false);
   const [backgroundHover, setBackgroundHover] = React.useState(false);
+  const dispatch = useDispatch();
 
-  const { data, isLoading: userIsLoading } = useGetUserQuery(username);
+  const isUserPage = username === localStorage.getItem('username');
+
+  const {
+    data,
+    isLoading: userIsLoading,
+    refetch: refetchUser,
+  } = useGetUserQuery(username);
   const [getPosts] = useLazyGetUserPostsQuery();
   const [getLikes] = useLazyGetUserLikesQuery();
   const [getComments] = useLazyGetUserCommentsQuery();
+
+  const [updateUser] = useUpdateUserMutation();
+  const backgroundRef = React.useRef<HTMLInputElement>(null);
+  const avatarRef = React.useRef<HTMLInputElement>(null);
 
   const fetchData = useCallback(
     (filter: string) => {
@@ -53,8 +67,6 @@ function Profile() {
     [getComments, getLikes, getPosts, username]
   );
   useEffect(() => {
-    console.log('asd');
-
     setLoading(true);
     fetchData(filter);
   }, [filter, fetchData]);
@@ -63,10 +75,69 @@ function Profile() {
     return <Loading />;
   }
 
+  const updateProfileHandler = (file: File, type: string) => {
+    const formData = new FormData();
+    formData.append('image', file);
+    formData.append(type, 'true');
+    formData.append('user_id', data.data.user_id);
+    updateUser({
+      body: formData,
+    }).then(() => {
+      dispatch(
+        showInfo({
+          message: `${type} updated successfully`,
+          color: 'green',
+        })
+      );
+      setTimeout(() => {
+        dispatch(hideInfo());
+      }, 2000);
+      refetchUser();
+    });
+  };
+
   return (
     <div className="flex flex-col">
       <div className="grid grid-rows-4 mt-10 grid-cols-1">
-        <div className="row-start-1 row-span-2 col-start-1 bg-gray-400"></div>
+        <div
+          className="row-start-1 row-span-2 col-start-1 bg-gray-400 relative"
+          style={{
+            backgroundImage: `url(${data.data.background_image})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+          onMouseEnter={() => {
+            setBackgroundHover(true);
+          }}
+          onMouseLeave={() => {
+            setBackgroundHover(false);
+          }}
+        >
+          {isUserPage && backgroundHover && (
+            <div
+              className="absolute bg-black opacity-70 top-0 w-full h-full flex justify-center items-center text-4xl text-white"
+              onClick={() => {
+                backgroundRef.current?.click();
+              }}
+            >
+              <AiOutlineEdit />
+              <input
+                type="file"
+                accept="image/*"
+                ref={backgroundRef}
+                className="hidden"
+                onChange={() => {
+                  if (backgroundRef.current?.files) {
+                    updateProfileHandler(
+                      backgroundRef.current.files[0],
+                      'background_image'
+                    );
+                  }
+                }}
+              />
+            </div>
+          )}
+        </div>
         <div className="flex items-center p-2 justify-between row-start-2 row-span-2 col-start-1 ">
           <div
             className="self-start relative"
@@ -79,23 +150,45 @@ function Profile() {
           >
             <img
               className="rounded-full  border-2 border-gray-900"
-              src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
+              src={
+                data.data.avatar
+                  ? data.data.avatar
+                  : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU'
+              }
               alt="user profile"
               style={{ height: '150px', width: '150px' }}
             />
-            {profileHover && (
+            {isUserPage && profileHover && (
               <div
                 className="absolute bg-black opacity-70 top-0 rounded-full flex justify-center items-center text-4xl text-white"
                 style={{ height: '150px', width: '150px' }}
+                onClick={() => {
+                  avatarRef.current?.click();
+                }}
               >
                 <AiOutlineEdit />
+                <input
+                  type="file"
+                  accept="image/*"
+                  ref={avatarRef}
+                  className="hidden"
+                  onChange={() => {
+                    if (avatarRef.current?.files) {
+                      updateProfileHandler(
+                        avatarRef.current.files[0],
+                        'avatar'
+                      );
+                    }
+                  }}
+                />
               </div>
             )}
           </div>
-
-          <button className="mt-10 border rounded-lg px-3 py-1 darkHover">
-            Follow
-          </button>
+          {!isUserPage && (
+            <button className="mt-10 border rounded-lg px-3 py-1 darkHover">
+              Follow
+            </button>
+          )}
         </div>
         <div>
           <div className="p-2 flex flex-col gap-2">
@@ -154,7 +247,7 @@ function Profile() {
 
 export default Profile;
 
-export async function loader({ params }: { params: { id: string } }) {
+export async function loader({ params }: { params: any }) {
   const { id } = params;
 
   return id;

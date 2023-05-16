@@ -53,7 +53,11 @@ const CreatePost: React.FC<{
     <div className="flex w-full py-4">
       <img
         className="rounded-full  mx-2"
-        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU"
+        src={
+          userSelector.avatar
+            ? userSelector.avatar
+            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU'
+        }
         alt="user profile"
         style={{ height: '50px', width: '50px' }}
       />

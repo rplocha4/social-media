@@ -19,11 +19,12 @@ function App() {
     const token = localStorage.getItem('token');
     const user_id = localStorage.getItem('user_id');
     const username = localStorage.getItem('username');
+    const avatar = localStorage.getItem('avatar');
     if (localStorage.getItem('token') === null) {
       // dispatch(logout());
       return;
     }
-    dispatch(login({ token, user_id, username }));
+    dispatch(login({ token, user_id, username, avatar }));
   }, [dispatch]);
 
   useEffect(() => {

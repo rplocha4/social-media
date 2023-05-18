@@ -1,6 +1,6 @@
 function Loading() {
   return (
-    <div className="flex justify-center items-center w-full h-screen ">
+    <div className="flex justify-center items-center w-full h-full ">
       <svg
         aria-hidden="true"
         className="w-11 h-11 mr-2 text-gray-200 animate-spin dark:text-gray-600 fill-white"

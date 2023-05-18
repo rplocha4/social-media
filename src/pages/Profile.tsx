@@ -236,7 +236,12 @@ function Profile() {
         {loading ? (
           <Loading />
         ) : results?.length > 0 ? (
-          <Posts posts={results} />
+          <Posts
+            posts={results}
+            onRefetch={() => {
+              fetchData(filter);
+            }}
+          />
         ) : (
           <div>No results</div>
         )}

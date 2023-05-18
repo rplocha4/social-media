@@ -67,7 +67,11 @@ function Post() {
         noUserMessage="You need to login to create a comment"
       />
 
-      {commentsLoading ? <Loading /> : <Comments comments={comments.data} />}
+      {commentsLoading ? (
+        <Loading />
+      ) : (
+        <Comments comments={comments.data} onRefetch={refetch} />
+      )}
     </div>
   );
 }

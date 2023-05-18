@@ -52,7 +52,7 @@ export default function Home() {
         noUserMessage="You need to login to create a post"
       />
 
-      <Posts posts={data.data} />
+      <Posts posts={data?.data} onRefetch={refetch} />
     </div>
   );
 }

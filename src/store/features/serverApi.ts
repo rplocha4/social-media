@@ -97,6 +97,24 @@ export const serverApi = createApi({
         body: body,
       }),
     }),
+    deleteComment: builder.mutation({
+      query: (comment_id) => ({
+        url: `/comments/${comment_id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    deletePost: builder.mutation({
+      query: (post_id) => ({
+        url: `/posts/${post_id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -115,4 +133,6 @@ export const {
   useGetUserQuery,
   useLazySearchUsersQuery,
   useUpdateUserMutation,
+  useDeleteCommentMutation,
+  useDeletePostMutation,
 } = serverApi;

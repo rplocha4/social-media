@@ -43,8 +43,6 @@ function Chat() {
   useEffect(() => {
     if (!receiver.username) return;
     getMessages({ user1_id: sender.id, user2_id: receiver.id }).then((res) => {
-      console.log(res.data);
-
       setMessages(
         res.data.map(
           (message: {
@@ -87,8 +85,10 @@ function Chat() {
       socket.emit('username', { username: sender.username });
       setIsConnected(true);
     });
-    socket.on('chat message', ({ message, sender }) => {
-      setMessages((prev) => [...prev, { message, sender: sender.username }]);
+    socket.on('chat message', ({ message, senderMsg }) => {
+      if (senderMsg !== receiver.username) return;
+
+      setMessages((prev) => [...prev, { message, sender: senderMsg }]);
     });
     socket.on('typing', (data) => {
       setReceiverTyping(true);
@@ -111,7 +111,7 @@ function Chat() {
       socket.off('connect');
       socket.off('disconnect');
     };
-  }, [sender.username]);
+  }, [sender.username, receiver.username]);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!receiver.username) return;

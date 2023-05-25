@@ -11,6 +11,7 @@ import Register from './components/Auth/Register.tsx';
 import Login from './components/Auth/Login.tsx';
 import Profile from './pages/Profile.tsx';
 import { loader as profileLoader } from './pages/Profile.tsx';
+import Chat from './components/Chat/Chat.tsx';
 
 const router = createBrowserRouter([
   {
@@ -31,6 +32,10 @@ const router = createBrowserRouter([
         path: 'profile/:id',
         element: <Profile />,
         loader: profileLoader,
+      },
+      {
+        path: '/chat',
+        element: <Chat />,
       },
     ],
   },

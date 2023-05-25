@@ -7,7 +7,7 @@ import {
 import { TPost } from '../../types/types';
 import PostData from './PostData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../../store/uiSlice';
 import { RootState } from '../../store/store';
@@ -29,6 +29,22 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   const [likePost] = useLikePostMutation();
   const [unlikePost] = useUnlikePostMutation();
 
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setOptionsOpen(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, [ref]);
+
   return (
     <div className="border-t border-gray-600 p-2 relative">
       <div className="flex flex-col gap-3">
@@ -47,7 +63,10 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
           />
         </div>
         {userPost && optionsOpen && (
-          <div className="absolute right-3 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md ">
+          <div
+            className="absolute -right-32 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md "
+            ref={ref}
+          >
             <span
               className="hover:cursor-pointer hover:bg-blue-400 w-full bg-blue-600 flex items-center justify-center rounded-lg p-2"
               onClick={() => {

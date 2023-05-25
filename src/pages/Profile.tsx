@@ -98,11 +98,11 @@ function Profile() {
 
   return (
     <div className="flex flex-col">
-      <div className="grid grid-rows-4 mt-10 grid-cols-1">
+      <div className="grid grid-rows-4 grid-cols-1">
         <div
-          className="row-start-1 row-span-2 col-start-1 bg-gray-400 relative"
+          className="row-start-1 row-span-3 col-start-1 bg-gray-400 relative"
           style={{
-            backgroundImage: `url(${data.data.background_image})`,
+            backgroundImage: `url(${data?.data.background_image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -138,7 +138,7 @@ function Profile() {
             </div>
           )}
         </div>
-        <div className="flex items-center p-2 justify-between row-start-2 row-span-2 col-start-1 ">
+        <div className="flex items-center p-2 justify-between row-start-3 row-span-2 col-start-1 ">
           <div
             className="self-start relative"
             onMouseEnter={() => {
@@ -193,13 +193,13 @@ function Profile() {
         <div>
           <div className="p-2 flex flex-col gap-2">
             <p className="font-bold text-xl">{data.data.username}</p>
-            <p className="text-gray-500">
-              <span className="flex items-center gap-3">
+            <span className="text-gray-500">
+              <p className="flex items-center gap-3">
                 <BsCalendar3WeekFill />
                 Joined {data.data.date_joined.split('T')[0]}
-              </span>
-            </p>
-            <p className="text-gray-500 flex gap-2 items-center">
+              </p>
+            </span>
+            <span className="text-gray-500 flex gap-2 items-center">
               <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
                 <p className="text-white font-bold">{data.data.following}</p>
                 <p>Following</p>
@@ -208,7 +208,7 @@ function Profile() {
                 <p className="text-white font-bold">{data.data.followers}</p>
                 <p>Followers</p>
               </span>
-            </p>
+            </span>
           </div>
         </div>
       </div>

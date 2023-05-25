@@ -4,12 +4,17 @@ import { IoSend } from 'react-icons/io5';
 import Search from '../Search';
 import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import {
+  useLazyGetMessagesQuery,
+  useSendMessagesMutation,
+} from '../../store/features/serverApi';
 function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [receiver, setReceiver] = useState<{
     username: string;
     avatar: string;
-  }>({ username: '', avatar: '' });
+    id: string;
+  }>({ username: '', avatar: '', id: '' });
   const [message, setMessage] = useState('');
   const [receiverTyping, setReceiverTyping] = useState(false);
   const [typing, setTyping] = useState(false);
@@ -17,20 +22,49 @@ function Chat() {
   const sender = {
     username: userSelector.username || '',
     avatar: userSelector.avatar || '',
+    id: userSelector.user_id || '',
   };
+  const [sendMessage] = useSendMessagesMutation();
+  const [getMessages] = useLazyGetMessagesQuery();
   const [messages, setMessages] = useState<
     { message: string; sender: string }[]
   >([]);
 
-  const messagesRef = useRef(null);
+  const messagesRef = useRef<null | HTMLDivElement>(null);
 
   const scrollBottom = () => {
-    messagesRef.current?.scrollIntoView({ behavior: 'smooth' });
+    messagesRef.current?.scrollTo(0, messagesRef.current?.scrollHeight);
   };
 
   useEffect(() => {
     scrollBottom();
   }, [messages]);
+
+  useEffect(() => {
+    if (!receiver.username) return;
+    getMessages({ user1_id: sender.id, user2_id: receiver.id }).then((res) => {
+      console.log(res.data);
+
+      setMessages(
+        res.data.map(
+          (message: {
+            conversation_id: number;
+            message_id: number;
+            message: string;
+            sender_id: string;
+          }) => {
+            return {
+              message: message.message,
+              sender:
+                message.sender_id == sender.id
+                  ? sender.username
+                  : receiver.username,
+            };
+          }
+        )
+      );
+    });
+  }, [receiver.id, sender.id, getMessages, receiver.username, sender.username]);
 
   useEffect(() => {
     if (typing) {
@@ -40,13 +74,13 @@ function Chat() {
     }
   }, [typing, receiver.username]);
 
-  function connect() {
+  useEffect(() => {
     socket.connect();
-  }
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
-  function disconnect() {
-    socket.disconnect();
-  }
   useEffect(() => {
     socket.on('id', ({ id }) => {
       localStorage.setItem('socketId', id);
@@ -54,8 +88,6 @@ function Chat() {
       setIsConnected(true);
     });
     socket.on('chat message', ({ message, sender }) => {
-      console.log(message, sender);
-
       setMessages((prev) => [...prev, { message, sender: sender.username }]);
     });
     socket.on('typing', (data) => {
@@ -64,12 +96,20 @@ function Chat() {
     socket.on('stop typing', (data) => {
       setReceiverTyping(false);
     });
+    socket.on('connect', () => {
+      setIsConnected(true);
+    });
+    socket.on('disconnect', () => {
+      setIsConnected(false);
+    });
 
     return () => {
       socket.off('id');
       socket.off('chat message');
       socket.off('typing');
       socket.off('stop typing');
+      socket.off('connect');
+      socket.off('disconnect');
     };
   }, [sender.username]);
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
@@ -82,6 +122,14 @@ function Chat() {
       message,
       sender: sender.username,
     });
+    sendMessage({
+      body: {
+        user1_id: sender.id,
+        user2_id: receiver.id,
+        message,
+      },
+    });
+
     setMessages((prev) => [...prev, { message, sender: sender.username }]);
     setTyping(false);
     setMessage('');
@@ -89,7 +137,7 @@ function Chat() {
 
   return (
     <div className=" w-full h-screen max-h-screen p-2 relative flex flex-col">
-      <button
+      {/* <button
         type="button"
         onClick={() => {
           connect();
@@ -105,7 +153,15 @@ function Chat() {
       >
         disconnect
       </button>
-      <div className="border-b flex justify-between">
+      <button
+        type="button"
+        onClick={() => {
+          scrollBottom();
+        }}
+      >
+        scroll
+      </button> */}
+      <div className="border-b flex justify-between h-1/6">
         <div className="flex justify-center items-center gap-3">
           {!receiver.username ? (
             <span className="text-xl font-bold">Select a user</span>
@@ -124,14 +180,16 @@ function Chat() {
         <div className="">
           <Search
             onConfirm={(user) => {
-              setReceiver(user as { username: string; avatar: string });
+              setReceiver(
+                user as { username: string; avatar: string; id: string }
+              );
             }}
           />
         </div>
       </div>
       {receiver.username && (
         <div
-          className="flex flex-col w-full  overflow-y-auto grow"
+          className="flex flex-col w-full overflow-y-auto h-5/6"
           ref={messagesRef}
         >
           {messages.map((message, index) => {
@@ -146,7 +204,7 @@ function Chat() {
               >
                 <span
                   className={`p-2 rounded-xl flex items-center gap-2 ${
-                    message.sender === sender.username
+                    message.sender !== sender.username && 'flex-row-reverse'
                     // ? 'bg-slate-900 text-white'
                     // : 'bg-zinc-200 text-black'
                   }`}
@@ -168,19 +226,20 @@ function Chat() {
           })}
         </div>
       )}
-      <div className="h-24">
-        {receiverTyping && (
-          <div className="flex items-center justify-center">
-            <span className="text-xl font-bold">Typing...</span>
-          </div>
-        )}
-      </div>
+      <div className="h-1/6"></div>
 
       <form
         action=""
         onSubmit={submitHandler}
         className="absolute bottom-5 w-4/5"
       >
+        {receiverTyping && (
+          <div className="flex items-center justify-center">
+            <span className="text-xl font-bold">
+              {receiver.username} typing...
+            </span>
+          </div>
+        )}
         <span className="w-full rounded-xl  flex items-center justify-between bg-slate-900 p-2">
           <input
             type="text"

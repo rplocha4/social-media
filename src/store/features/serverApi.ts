@@ -115,6 +115,26 @@ export const serverApi = createApi({
         },
       }),
     }),
+    sendMessages: builder.mutation({
+      query: ({ body }) => ({
+        url: `/messages`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
+    getMessages: builder.query({
+      query: ({ user1_id, user2_id }) => ({
+        url: `/messages/${user1_id}/${user2_id}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    // body: body,
   }),
 });
 
@@ -135,4 +155,6 @@ export const {
   useUpdateUserMutation,
   useDeleteCommentMutation,
   useDeletePostMutation,
+  useSendMessagesMutation,
+  useLazyGetMessagesQuery,
 } = serverApi;

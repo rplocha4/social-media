@@ -56,7 +56,7 @@ const CreatePost: React.FC<{
         src={
           userSelector.avatar
             ? userSelector.avatar
-            : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU'
+            : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
         }
         alt="user profile"
         style={{ height: '50px', width: '50px' }}

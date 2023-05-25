@@ -7,7 +7,7 @@ export const userSlice = createSlice({
         user_id: null,
         token: null,
         username:null,
-        avatar:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU',
+        avatar:'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
     },
     reducers: {
         login: (state, action) => {
@@ -26,14 +26,18 @@ export const userSlice = createSlice({
             state.user_id = null;
             state.token = null;
             state.username = null;
-            state.avatar = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU';
+            state.avatar = 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png';
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
             localStorage.removeItem('username');
             localStorage.removeItem('avatar');
+        },
+        setAvatar: (state, action) => {
+            state.avatar = action.payload;
+            localStorage.setItem('avatar', action.payload);
         }
+
 
     }
 });
-
-export const { login,logout } = userSlice.actions;
+export const { login,logout,setAvatar } = userSlice.actions;

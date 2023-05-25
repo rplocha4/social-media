@@ -13,6 +13,7 @@ import { BsCalendar3WeekFill } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useDispatch } from 'react-redux';
 import { hideInfo, showInfo } from '../store/uiSlice';
+import { setAvatar } from '../store/userSlice';
 
 function Profile() {
   const username = useLoaderData();
@@ -80,9 +81,14 @@ function Profile() {
     formData.append('image', file);
     formData.append(type, 'true');
     formData.append('user_id', data.data.user_id);
+
     updateUser({
       body: formData,
-    }).then(() => {
+    }).then((res) => {
+      const avatar = res.data.avatar;
+
+      dispatch(setAvatar(avatar));
+
       dispatch(
         showInfo({
           message: `${type} updated successfully`,
@@ -153,7 +159,7 @@ function Profile() {
               src={
                 data.data.avatar
                   ? data.data.avatar
-                  : 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU'
+                  : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
               }
               alt="user profile"
               style={{ height: '150px', width: '150px' }}

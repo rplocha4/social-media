@@ -47,7 +47,7 @@ function App() {
         </div>
         <div className="w-2/6 h-full self-start ">
           <Search
-            onConfirm={(username) => {
+            onConfirm={({ username }) => {
               navigate(`profile/${username}`);
             }}
           />

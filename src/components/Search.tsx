@@ -7,7 +7,9 @@ import { useLazySearchUsersQuery } from '../store/features/serverApi';
 function Search({
   onConfirm,
 }: {
-  onConfirm: (value: string | { username: string; avatar: string }) => void;
+  onConfirm: (
+    value: string | { username: string; avatar: string; id: string }
+  ) => void;
 }) {
   const [focus, setFocus] = useState(false);
   const [search, setSearch] = useState('');
@@ -65,9 +67,10 @@ function Search({
                 onClick={() => {
                   onConfirm({
                     username: user.username,
+                    id: user.user_id,
                     avatar:
                       user.avatar ||
-                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU',
+                      'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
                   });
                   setSearch('');
                   setResults([]);
@@ -77,7 +80,7 @@ function Search({
                   className="rounded-full"
                   src={
                     user.avatar ||
-                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU'
+                    'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                   }
                   alt="user profile"
                   style={{ height: '50px', width: '50px' }}

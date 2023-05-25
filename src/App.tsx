@@ -45,8 +45,12 @@ function App() {
           </div> */}
           <Outlet />
         </div>
-        <div className="w-2/6 h-full self-start">
-          <Search />
+        <div className="w-2/6 h-full self-start ">
+          <Search
+            onConfirm={(username) => {
+              navigate(`profile/${username}`);
+            }}
+          />
         </div>
         {uiSelector.showInfo && (
           <div

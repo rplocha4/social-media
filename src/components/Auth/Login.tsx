@@ -8,6 +8,7 @@ import { hideInfo, showInfo } from '../../store/uiSlice';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -47,9 +48,14 @@ const Login = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'Auth successful') {
-
               dispatch(
-                login({ ...data.user, token: data.token, avatar: data.avatar })
+                login({
+                  ...data.user,
+                  token: data.token,
+                  avatar:
+                    data.avatar ||
+                    'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU',
+                })
               );
 
               // dispatch(

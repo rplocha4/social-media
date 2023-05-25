@@ -7,7 +7,7 @@ export const userSlice = createSlice({
         user_id: null,
         token: null,
         username:null,
-        avatar:null,
+        avatar:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU',
     },
     reducers: {
         login: (state, action) => {
@@ -26,7 +26,7 @@ export const userSlice = createSlice({
             state.user_id = null;
             state.token = null;
             state.username = null;
-            state.avatar = null;
+            state.avatar = 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU';
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
             localStorage.removeItem('username');

@@ -3,9 +3,12 @@ import { AiOutlineSearch } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useLazySearchUsersQuery } from '../store/features/serverApi';
-import { Link } from 'react-router-dom';
 
-function Search() {
+function Search({
+  onConfirm,
+}: {
+  onConfirm: (value: string | { username: string; avatar: string }) => void;
+}) {
   const [focus, setFocus] = useState(false);
   const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
@@ -22,7 +25,7 @@ function Search() {
   }, [getResults, search]);
 
   return (
-    <div className=" p-2 flex items-center fixed flex-col">
+    <div className={`p-2 flex flex-col relative`}>
       <span
         className={`flex items-center gap-2 ${
           darkTheme ? 'bg-gray-900' : 'bg-zinc-200'
@@ -38,7 +41,7 @@ function Search() {
         <input
           type="text"
           placeholder="Search"
-          className=" bg-inherit outline-none"
+          className=" bg-inherit outline-none w-full"
           onFocus={() => {
             setFocus(true);
           }}
@@ -53,14 +56,19 @@ function Search() {
       </span>
 
       {search && results.length > 0 && (
-        <div className="flex flex-col w-full h-80 overflow-y-scroll">
+        <div className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl">
           {results.map((user: any) => {
             return (
-              <Link
-                to={`/profile/${user.username}`}
+              <div
                 key={user.user_id}
-                className="flex gap-1 items-center darkHover p-2"
+                className="flex gap-1 items-center darkHover p-2 hover:cursor-pointer"
                 onClick={() => {
+                  onConfirm({
+                    username: user.username,
+                    avatar:
+                      user.avatar ||
+                      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQP7ARHenfnGXcxCIhmDxObHocM8FPbjyaBg&usqp=CAU',
+                  });
                   setSearch('');
                   setResults([]);
                 }}
@@ -75,7 +83,7 @@ function Search() {
                   style={{ height: '50px', width: '50px' }}
                 />
                 <p>{user.username}</p>
-              </Link>
+              </div>
             );
           })}
         </div>

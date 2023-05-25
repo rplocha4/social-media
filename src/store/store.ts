@@ -9,7 +9,10 @@ const store = configureStore({
             user: userSlice.reducer,
             [serverApi.reducerPath]: serverApi.reducer
     },
-    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(serverApi.middleware)
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware({
+        immutableCheck: false,
+        serializableCheck: false,
+    }).concat(serverApi.middleware)
 })
 
 export default store;

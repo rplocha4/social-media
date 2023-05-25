@@ -134,7 +134,44 @@ export const serverApi = createApi({
         },
       }),
     }),
-    // body: body,
+    followUser: builder.mutation({
+      query: ({ user_id, follower }) => ({
+        url: `/follow/${user_id}`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { user_id: follower },
+      }),
+    }),
+    unfollowUser: builder.mutation({
+      query: ({ user_id, follower }) => ({
+        url: `/follow/${user_id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { user_id: follower },
+      }),
+    }),
+    getFollowers: builder.query({
+      query: (user_id) => ({
+        url: `/followers/${user_id}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    getFollowing: builder.query({
+      query: (user_id) => ({
+        url: `/following/${user_id}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -157,4 +194,8 @@ export const {
   useDeletePostMutation,
   useSendMessagesMutation,
   useLazyGetMessagesQuery,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
+  useGetFollowersQuery,
+  useGetFollowingQuery,
 } = serverApi;

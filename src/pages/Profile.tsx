@@ -6,26 +6,42 @@ import {
   useLazyGetUserPostsQuery,
   useGetUserQuery,
   useUpdateUserMutation,
+  useGetFollowersQuery,
+  useGetFollowingQuery,
+  useFollowUserMutation,
+  useUnfollowUserMutation,
 } from '../store/features/serverApi';
 import Posts from '../components/UserPost/Posts';
 import Loading from '../components/UI/Loading';
 import { BsCalendar3WeekFill } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { setAvatar } from '../store/userSlice';
+import { RootState } from '../store/store';
 
 function Profile() {
-  const username = useLoaderData();
+  const { username, id } = useLoaderData();
+
   // const userSelector = useSelector((state: RootState) => state.user);
   const [results, setResults] = React.useState([]);
   const [filter, setFilter] = React.useState('posts');
   const [loading, setLoading] = React.useState(true);
   const [profileHover, setProfileHover] = React.useState(false);
   const [backgroundHover, setBackgroundHover] = React.useState(false);
+
+  const userSelector = useSelector((state: RootState) => state.user);
+
+  const { data: followers } = useGetFollowersQuery(id);
+  // const { data: following } = useGetFollowingQuery(id);
+  const [isFollowing, setIsFollowing] = React.useState(false);
+
+  const [follow] = useFollowUserMutation();
+  const [unfollow] = useUnfollowUserMutation();
+
   const dispatch = useDispatch();
 
-  const isUserPage = username === localStorage.getItem('username');
+  const isUserPage = username === userSelector.username;
 
   const {
     data,
@@ -67,14 +83,6 @@ function Profile() {
     },
     [getComments, getLikes, getPosts, username]
   );
-  useEffect(() => {
-    setLoading(true);
-    fetchData(filter);
-  }, [filter, fetchData]);
-
-  if (userIsLoading) {
-    return <Loading />;
-  }
 
   const updateProfileHandler = (file: File, type: string) => {
     const formData = new FormData();
@@ -101,6 +109,22 @@ function Profile() {
       refetchUser();
     });
   };
+  // useEffect(() => {
+  //   if (followers) {
+  //     const isFollowing = followers.data.some(
+  //       (follower) => follower.user_id === userSelector.user_id
+  //     );
+  //     setIsFollowing(isFollowing);
+  //   }
+  // }, [followers, userSelector.user_id]);
+  useEffect(() => {
+    setLoading(true);
+    fetchData(filter);
+  }, [filter, fetchData]);
+
+  if (userIsLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="flex flex-col">
@@ -191,8 +215,65 @@ function Profile() {
             )}
           </div>
           {!isUserPage && (
-            <button className="mt-10 border rounded-lg px-3 py-1 darkHover">
-              Follow
+            <button
+              className="mt-10 border rounded-lg px-3 py-1 darkHover"
+              onClick={() =>
+                isFollowing
+                  ? unfollow({
+                      user_id: id,
+                      follower: localStorage.getItem('user_id'),
+                    }).then((res) => {
+                      if (res.error) {
+                        dispatch(
+                          showInfo({
+                            message: res.error.data.message,
+                            color: 'red',
+                          })
+                        );
+                        setTimeout(() => {
+                          dispatch(hideInfo());
+                        }, 2000);
+                      } else {
+                        dispatch(
+                          showInfo({
+                            message: res.data.message,
+                            color: 'green',
+                          })
+                        );
+                        setTimeout(() => {
+                          dispatch(hideInfo());
+                        }, 2000);
+                      }
+                    })
+                  : follow({
+                      user_id: id,
+                      follower: localStorage.getItem('user_id'),
+                    }).then((res) => {
+                      if (res.error) {
+                        dispatch(
+                          showInfo({
+                            message: res.error.data.message,
+                            color: 'red',
+                          })
+                        );
+                        setTimeout(() => {
+                          dispatch(hideInfo());
+                        }, 2000);
+                      } else {
+                        dispatch(
+                          showInfo({
+                            message: res.data.message,
+                            color: 'green',
+                          })
+                        );
+                        setTimeout(() => {
+                          dispatch(hideInfo());
+                        }, 2000);
+                      }
+                    })
+              }
+            >
+              {isFollowing ? 'Unfollow' : 'Follow'}
             </button>
           )}
         </div>
@@ -259,7 +340,10 @@ function Profile() {
 export default Profile;
 
 export async function loader({ params }: { params: any }) {
-  const { id } = params;
+  const { username } = params;
+  const res = await fetch(`http://localhost:3000/api/user/${username}`);
+  const data = await res.json();
+  const id = data.data.user_id;
 
-  return id;
+  return { username, id };
 }

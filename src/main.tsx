@@ -29,7 +29,7 @@ const router = createBrowserRouter([
         loader: postLoader,
       },
       {
-        path: 'profile/:id',
+        path: 'profile/:username',
         element: <Profile />,
         loader: profileLoader,
       },

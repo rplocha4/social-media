@@ -8,6 +8,9 @@ import {
   useLazyGetMessagesQuery,
   useSendMessagesMutation,
 } from '../../store/features/serverApi';
+import Loading from '../UI/Loading';
+import Navbar from '../Navbar';
+import { Link } from 'react-router-dom';
 function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [receiver, setReceiver] = useState<{
@@ -18,6 +21,7 @@ function Chat() {
   const [message, setMessage] = useState('');
   const [receiverTyping, setReceiverTyping] = useState(false);
   const [typing, setTyping] = useState(false);
+  const [loadingMessages, setLoadingMessages] = useState(false);
   const userSelector = useSelector((state: RootState) => state.user);
   const sender = {
     username: userSelector.username || '',
@@ -42,6 +46,7 @@ function Chat() {
 
   useEffect(() => {
     if (!receiver.username) return;
+    setLoadingMessages(true);
     getMessages({ user1_id: sender.id, user2_id: receiver.id }).then((res) => {
       setMessages(
         res.data.map(
@@ -61,6 +66,7 @@ function Chat() {
           }
         )
       );
+      setLoadingMessages(false);
     });
   }, [receiver.id, sender.id, getMessages, receiver.username, sender.username]);
 
@@ -137,36 +143,15 @@ function Chat() {
 
   return (
     <div className=" w-full h-screen max-h-screen p-2 relative flex flex-col">
-      {/* <button
-        type="button"
-        onClick={() => {
-          connect();
-        }}
-      >
-        Connect
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          disconnect();
-        }}
-      >
-        disconnect
-      </button>
-      <button
-        type="button"
-        onClick={() => {
-          scrollBottom();
-        }}
-      >
-        scroll
-      </button> */}
       <div className="border-b flex justify-between h-1/6">
         <div className="flex justify-center items-center gap-3">
           {!receiver.username ? (
             <span className="text-xl font-bold">Select a user</span>
           ) : (
-            <>
+            <Link
+              className="hover:underline flex items-center gap-2"
+              to={`/profile/${receiver.username}`}
+            >
               <img
                 src={receiver.avatar}
                 alt=""
@@ -174,7 +159,7 @@ function Chat() {
                 style={{ height: '50px', width: '50px' }}
               />
               <span>{receiver.username}</span>
-            </>
+            </Link>
           )}
         </div>
         <div className="">
@@ -187,45 +172,50 @@ function Chat() {
           />
         </div>
       </div>
-      {receiver.username && (
-        <div
-          className="flex flex-col w-full overflow-y-auto h-5/6"
-          ref={messagesRef}
-        >
-          {messages.map((message, index) => {
-            return (
-              <div
-                key={index}
-                className={`flex flex-col w-full ${
-                  message.sender === sender.username
-                    ? 'items-end'
-                    : 'items-start'
-                }`}
-              >
-                <span
-                  className={`p-2 rounded-xl flex items-center gap-2 ${
-                    message.sender !== sender.username && 'flex-row-reverse'
-                    // ? 'bg-slate-900 text-white'
-                    // : 'bg-zinc-200 text-black'
+      {loadingMessages ? (
+        <Loading />
+      ) : (
+        receiver.username && (
+          <div
+            className="flex flex-col w-full overflow-y-auto h-5/6"
+            ref={messagesRef}
+          >
+            {messages.map((message, index) => {
+              return (
+                <div
+                  key={index}
+                  className={`flex flex-col w-full ${
+                    message.sender === sender.username
+                      ? 'items-end'
+                      : 'items-start'
                   }`}
                 >
-                  <p className="break-all">{message.message}</p>
-                  <img
-                    src={
-                      message.sender === sender.username
-                        ? sender.avatar
-                        : receiver.avatar
-                    }
-                    alt=""
-                    className="rounded-full"
-                    style={{ height: '50px', width: '50px' }}
-                  />
-                </span>
-              </div>
-            );
-          })}
-        </div>
+                  <span
+                    className={`p-2 rounded-xl flex items-center gap-2 ${
+                      message.sender !== sender.username && 'flex-row-reverse'
+                      // ? 'bg-slate-900 text-white'
+                      // : 'bg-zinc-200 text-black'
+                    }`}
+                  >
+                    <p className="break-all">{message.message}</p>
+                    <img
+                      src={
+                        message.sender === sender.username
+                          ? sender.avatar
+                          : receiver.avatar
+                      }
+                      alt=""
+                      className="rounded-full"
+                      style={{ height: '50px', width: '50px' }}
+                    />
+                  </span>
+                </div>
+              );
+            })}
+          </div>
+        )
       )}
+
       <div className="h-1/6"></div>
 
       <form

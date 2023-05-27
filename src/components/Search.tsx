@@ -1,9 +1,10 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import { useLazySearchUsersQuery } from '../store/features/serverApi';
 import Loading from './UI/Loading';
+import useClickOutside from '../hooks/useClickOutside';
 
 function Search({
   onConfirm,
@@ -19,14 +20,23 @@ function Search({
   const [loading, setLoading] = useState(false);
   const darkTheme = uiSelector.darkMode;
   const [getResults] = useLazySearchUsersQuery();
+  const ref = useRef<HTMLDivElement>(null);
+
+  const [open, setOpen] = useClickOutside(ref);
 
   useEffect(() => {
     if (search.length > 0) {
+      let ignore = false;
       setLoading(true);
       getResults(search).then((res) => {
-        setResults(res.data.data);
-        setLoading(false);
+        if (!ignore) {
+          setResults(res.data.data);
+          setLoading(false);
+        }
       });
+      return () => {
+        ignore = true;
+      };
     }
   }, [getResults, search]);
 
@@ -50,9 +60,11 @@ function Search({
           className=" bg-inherit outline-none w-full"
           onFocus={() => {
             setFocus(true);
+            setOpen(true);
           }}
           onBlur={() => {
             setFocus(false);
+            // setOpen(false);
           }}
           onChange={(e) => {
             setSearch(e.target.value);
@@ -64,8 +76,12 @@ function Search({
         <Loading />
       ) : (
         search &&
-        results.length > 0 && (
-          <div className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl">
+        results.length > 0 &&
+        open && (
+          <div
+            className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl"
+            ref={ref}
+          >
             {results.map((user: any) => {
               return (
                 <div

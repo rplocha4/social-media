@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../../store/uiSlice';
 import { RootState } from '../../store/store';
 import { BsThreeDots } from 'react-icons/bs';
+import useClickOutside from '../../hooks/useClickOutside';
 
 const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   post,
@@ -19,7 +20,7 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
 }) => {
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
   const [likes, setLikes] = useState(post.likes);
-  const [optionsOpen, setOptionsOpen] = useState(false);
+  // const [optionsOpen, setOptionsOpen] = useState(false);
   const dispatch = useDispatch();
   const userSelector = useSelector((state: RootState) => {
     return state.user;
@@ -30,20 +31,21 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   const [unlikePost] = useUnlikePostMutation();
 
   const ref = useRef<HTMLDivElement>(null);
+  const [optionsOpen, setOptionsOpen] = useClickOutside(ref);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setOptionsOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (ref.current && !ref.current.contains(event.target as Node)) {
+  //       setOptionsOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener('mousedown', handleClickOutside);
+  //   document.addEventListener('mousedown', handleClickOutside);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref]);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [ref]);
 
   return (
     <div className="border-t border-gray-600 p-2 relative">

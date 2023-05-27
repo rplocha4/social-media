@@ -7,7 +7,6 @@ import {
   useGetUserQuery,
   useUpdateUserMutation,
   useGetFollowersQuery,
-  useGetFollowingQuery,
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from '../store/features/serverApi';
@@ -21,7 +20,7 @@ import { setAvatar } from '../store/userSlice';
 import { RootState } from '../store/store';
 
 function Profile() {
-  const { username, id } = useLoaderData();
+  const { username, id }: any = useLoaderData();
 
   // const userSelector = useSelector((state: RootState) => state.user);
   const [results, setResults] = React.useState([]);
@@ -84,6 +83,30 @@ function Profile() {
     [getComments, getLikes, getPosts, username]
   );
 
+  const showMessage = (res: any) => {
+    if (res.error) {
+      dispatch(
+        showInfo({
+          message: res.error.data.message,
+          color: 'red',
+        })
+      );
+      setTimeout(() => {
+        dispatch(hideInfo());
+      }, 2000);
+    } else {
+      dispatch(
+        showInfo({
+          message: res.data.message,
+          color: 'green',
+        })
+      );
+      setTimeout(() => {
+        dispatch(hideInfo());
+      }, 2000);
+    }
+  };
+
   const updateProfileHandler = (file: File, type: string) => {
     const formData = new FormData();
     formData.append('image', file);
@@ -92,7 +115,7 @@ function Profile() {
 
     updateUser({
       body: formData,
-    }).then((res) => {
+    }).then((res: any) => {
       const avatar = res.data.avatar;
 
       dispatch(setAvatar(avatar));
@@ -222,54 +245,14 @@ function Profile() {
                   ? unfollow({
                       user_id: id,
                       follower: localStorage.getItem('user_id'),
-                    }).then((res) => {
-                      if (res.error) {
-                        dispatch(
-                          showInfo({
-                            message: res.error.data.message,
-                            color: 'red',
-                          })
-                        );
-                        setTimeout(() => {
-                          dispatch(hideInfo());
-                        }, 2000);
-                      } else {
-                        dispatch(
-                          showInfo({
-                            message: res.data.message,
-                            color: 'green',
-                          })
-                        );
-                        setTimeout(() => {
-                          dispatch(hideInfo());
-                        }, 2000);
-                      }
+                    }).then((res: any) => {
+                      showMessage(res);
                     })
                   : follow({
                       user_id: id,
                       follower: localStorage.getItem('user_id'),
-                    }).then((res) => {
-                      if (res.error) {
-                        dispatch(
-                          showInfo({
-                            message: res.error.data.message,
-                            color: 'red',
-                          })
-                        );
-                        setTimeout(() => {
-                          dispatch(hideInfo());
-                        }, 2000);
-                      } else {
-                        dispatch(
-                          showInfo({
-                            message: res.data.message,
-                            color: 'green',
-                          })
-                        );
-                        setTimeout(() => {
-                          dispatch(hideInfo());
-                        }, 2000);
-                      }
+                    }).then((res: any) => {
+                      showMessage(res);
                     })
               }
             >

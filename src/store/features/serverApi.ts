@@ -191,6 +191,16 @@ export const serverApi = createApi({
         body: body,
       }),
     }),
+    updateComment: builder.mutation({
+      query: ({ body, comment_id }) => ({
+        url: `/comment/${comment_id}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -219,4 +229,5 @@ export const {
   useGetFollowingQuery,
   useLazyGetConversationsQuery,
   useUpdatePostMutation,
+  useUpdateCommentMutation,
 } = serverApi;

@@ -2,9 +2,15 @@ import React, { useEffect, useRef, useState } from 'react';
 import UserData from '../UserPost/PostData';
 import { TComment } from '../../types/types';
 import { BsThreeDots } from 'react-icons/bs';
-import { useDeleteCommentMutation } from '../../store/features/serverApi';
-import { useSelector } from 'react-redux';
+import {
+  useDeleteCommentMutation,
+  useUpdateCommentMutation,
+} from '../../store/features/serverApi';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
+import CreatePost from '../UserPost/CreatePost';
+import Modal from '../UI/Modal';
+import { hideInfo, showInfo } from '../../store/uiSlice';
 
 const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   comment,
@@ -16,8 +22,11 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
     return state.user;
   });
   const userComment = userSelector.username === comment.username;
+  const [editOpen, setEditOpen] = useState(false);
+  const [editComment] = useUpdateCommentMutation();
 
   const ref = useRef<HTMLDivElement>(null);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,51 +42,86 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
     };
   }, [ref]);
   return (
-    <div className="border-t border-gray-600 w-full px-2 py-5 relative">
-      <div className="flex flex-col gap-3">
-        <UserData
-          username={comment.username}
-          img={comment.avatar}
-          content={comment.content}
-          image={comment.image}
-          link={`/post/${comment.post_id}`}
-        />
-        <div className="absolute right-3 top-5 hover:cursor-pointer">
-          <BsThreeDots
-            onClick={() => {
-              setOptionsOpen(true);
+    <>
+      {editOpen && (
+        <Modal
+          onClose={() => {
+            setEditOpen(false);
+          }}
+        >
+          <CreatePost
+            data={comment.content}
+            imageFile={comment.image}
+            onCreate={(formData) => {
+              editComment({
+                comment_id: comment.comment_id,
+                body: formData,
+              }).then(() => {
+                setEditOpen(false);
+                onRefetch();
+                dispatch(
+                  showInfo({
+                    message: 'Comment updated',
+                    color: 'green',
+                  })
+                );
+                setTimeout(() => {
+                  dispatch(hideInfo());
+                }, 3000);
+                setOptionsOpen(false);
+              });
             }}
           />
-        </div>
-        {userComment && optionsOpen && (
-          <div
-            className="absolute -right-32 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md "
-            ref={ref}
-          >
-            <span
-              className="hover:cursor-pointer hover:bg-blue-400 w-full bg-blue-600  flex items-center justify-center rounded-lg p-2"
-              onClick={() => {
-                setOptionsOpen(false);
-              }}
-            >
-              Edit
-            </span>
-            <span
-              className="hover:cursor-pointer hover:bg-red-400  bg-red-600 w-full flex items-center justify-center rounded-lg p-2"
-              onClick={() => {
-                deleteComment(comment.comment_id).then(() => {
-                  onRefetch();
-                });
+        </Modal>
+      )}
 
-                setOptionsOpen(false);
+      <div className="border-t border-gray-600 w-full px-2 py-5 relative">
+        <div className="flex flex-col gap-3">
+          <UserData
+            username={comment.username}
+            img={comment.avatar}
+            content={comment.content}
+            image={comment.image}
+            link={`/post/${comment.post_id}`}
+          />
+          <div className="absolute right-3 top-5 hover:cursor-pointer">
+            <BsThreeDots
+              onClick={() => {
+                setOptionsOpen(true);
               }}
-            >
-              Delete
-            </span>
+            />
           </div>
-        )}
+          {userComment && optionsOpen && (
+            <div
+              className="absolute -right-32 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md "
+              ref={ref}
+            >
+              <span
+                className="hover:cursor-pointer hover:bg-blue-400 w-full bg-blue-600  flex items-center justify-center rounded-lg p-2"
+                onClick={() => {
+                  setOptionsOpen(false);
+                  setEditOpen(true);
+                }}
+              >
+                Edit
+              </span>
+              <span
+                className="hover:cursor-pointer hover:bg-red-400  bg-red-600 w-full flex items-center justify-center rounded-lg p-2"
+                onClick={() => {
+                  deleteComment(comment.comment_id).then(() => {
+                    onRefetch();
+                  });
+
+                  setOptionsOpen(false);
+                }}
+              >
+                Delete
+              </span>
+            </div>
+          )}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

@@ -13,6 +13,17 @@ import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
 import Typing from '../UI/Typing/Typing';
 import PrevChats from './PrevChats';
+
+const convertDate = (date: string) => {
+  const d = new Date(date);
+  const day = d.getDate();
+  const month = d.getMonth();
+  const year = d.getFullYear();
+  const hours = d.getHours();
+  const minutes = d.getMinutes();
+  const seconds = d.getSeconds();
+  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+};
 function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [receiver, setReceiver] = useState<{
@@ -57,9 +68,11 @@ function Chat() {
             message_id: number;
             message: string;
             sender_id: string;
+            created_at: string;
           }) => {
             return {
               message: message.message,
+              created_at: message.created_at,
               sender:
                 message.sender_id == sender.id
                   ? sender.username
@@ -218,6 +231,7 @@ function Chat() {
                       className="rounded-full"
                       style={{ height: '50px', width: '50px' }}
                     />
+                    {/* {convertDate(message.created_at)} */}
                   </span>
                 </div>
               );

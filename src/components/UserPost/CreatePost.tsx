@@ -6,12 +6,20 @@ import { Link } from 'react-router-dom';
 import { RootState } from '../../store/store';
 import { BsEmojiSmileFill } from 'react-icons/bs';
 import { AiOutlineGif } from 'react-icons/ai';
+import { RxCross1 } from 'react-icons/rx';
+
+const buffer = new ArrayBuffer(32);
+
+new Blob([buffer]);
+
 const CreatePost: React.FC<{
-  placeholder: string;
-  noUserMessage: string;
+  placeholder?: string;
+  noUserMessage?: string;
   onCreate: (formData: FormData) => void;
-}> = ({ placeholder, onCreate, noUserMessage }) => {
-  const [content, setContent] = React.useState('');
+  data?: string;
+  imageFile?: string;
+}> = ({ placeholder, onCreate, noUserMessage, data, imageFile }) => {
+  const [content, setContent] = React.useState(data || '');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const userSelector = useSelector((state: RootState) => state.user);
 
@@ -20,6 +28,9 @@ const CreatePost: React.FC<{
   useAutosizeTextArea(textAreaRef.current, content);
 
   const [image, setImage] = React.useState<File | null>(null);
+  const [editImage, setEditImage] = React.useState<string | null>(
+    imageFile as string | null
+  );
 
   const formSubmitHandler = (e: React.FormEvent) => {
     e.preventDefault();
@@ -76,12 +87,24 @@ const CreatePost: React.FC<{
               ref={textAreaRef}
               onChange={(e) => setContent(e.target.value)}
             />
-            {image && (
-              <img
-                alt="not found"
-                width={'250px'}
-                src={URL.createObjectURL(image)}
-              />
+            {(image || editImage) && (
+              <div className="relative w-60">
+                <img
+                  alt="not found"
+                  src={
+                    image ? URL.createObjectURL(image) : (editImage as string)
+                  }
+                />
+                <RxCross1
+                  className="
+                absolute top-0 left-0 text-2xl text-white bg-black opacity-80 rounded-full cursor-pointer hover:scale-110"
+                  onClick={() => {
+                    setImage(null);
+                    setEditImage(null);
+                  }}
+                  title="Remove image"
+                />
+              </div>
             )}
           </div>
           <div className="flex justify-between pb-4 ">

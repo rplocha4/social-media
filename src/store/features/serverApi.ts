@@ -181,6 +181,16 @@ export const serverApi = createApi({
         },
       }),
     }),
+    updatePost: builder.mutation({
+      query: ({ body, post_id }) => ({
+        url: `/post/${post_id}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
   }),
 });
 
@@ -208,4 +218,5 @@ export const {
   useGetFollowersQuery,
   useGetFollowingQuery,
   useLazyGetConversationsQuery,
+  useUpdatePostMutation,
 } = serverApi;

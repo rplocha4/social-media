@@ -172,6 +172,15 @@ export const serverApi = createApi({
         },
       }),
     }),
+    getConversations: builder.query({
+      query: (user_id) => ({
+        url: `/conversations/${user_id}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -198,4 +207,5 @@ export const {
   useUnfollowUserMutation,
   useGetFollowersQuery,
   useGetFollowingQuery,
+  useLazyGetConversationsQuery,
 } = serverApi;

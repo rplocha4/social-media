@@ -12,6 +12,7 @@ import Loading from '../UI/Loading';
 import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
 import Typing from '../UI/Typing/Typing';
+import PrevChats from './PrevChats';
 function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [receiver, setReceiver] = useState<{
@@ -144,26 +145,34 @@ function Chat() {
 
   return (
     <div className=" w-full h-screen max-h-screen p-2 relative flex flex-col">
-      <div className="border-b flex justify-between h-1/6">
-        <div className="flex justify-center items-center gap-3">
-          {!receiver.username ? (
-            <span className="text-xl font-bold">Select a user</span>
-          ) : (
-            <Link
-              className="hover:underline flex items-center gap-2"
-              to={`/profile/${receiver.username}`}
-            >
-              <img
-                src={receiver.avatar}
-                alt=""
-                className="rounded-full"
-                style={{ height: '50px', width: '50px' }}
-              />
-              <span>{receiver.username}</span>
-            </Link>
-          )}
+      <div className="border-b flex justify-between ">
+        <div className="flex flex-col gap-5">
+          <div className="flex justify-between items-center gap-3">
+            {!receiver.username ? (
+              <span className="text-xl font-bold self-end h-20">
+                Select a user
+              </span>
+            ) : (
+              <Link
+                className="hover:underline flex items-center gap-2 h-20"
+                to={`/profile/${receiver.username}`}
+              >
+                <img
+                  src={receiver.avatar}
+                  alt=""
+                  className="rounded-full"
+                  style={{ height: '50px', width: '50px' }}
+                />
+                <span>{receiver.username}</span>
+              </Link>
+            )}
+          </div>
+          <div className="">
+            <PrevChats onSelect={setReceiver} />
+          </div>
         </div>
-        <div className="">
+
+        <div className="absolute right-0">
           <Search
             onConfirm={(user) => {
               setReceiver(

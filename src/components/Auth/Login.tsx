@@ -8,7 +8,6 @@ import { hideInfo, showInfo } from '../../store/uiSlice';
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -68,6 +67,11 @@ const Login = () => {
                 dispatch(hideInfo());
               }, 2000);
               navigate('/home');
+            } else {
+              dispatch(showInfo({ message: data.message, color: 'red' }));
+              setTimeout(() => {
+                dispatch(hideInfo());
+              }, 2000);
             }
           });
       }}

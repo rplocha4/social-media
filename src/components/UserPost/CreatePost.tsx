@@ -14,6 +14,7 @@ const CreatePost: React.FC<{
   const [content, setContent] = React.useState('');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
   const userSelector = useSelector((state: RootState) => state.user);
+
   const ref = useRef<HTMLInputElement>(null);
 
   useAutosizeTextArea(textAreaRef.current, content);

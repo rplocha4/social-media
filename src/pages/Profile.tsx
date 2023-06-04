@@ -43,7 +43,7 @@ function Profile() {
   const isUserPage = username === userSelector.username;
 
   const {
-    data,
+    data: user,
     isLoading: userIsLoading,
     refetch: refetchUser,
   } = useGetUserQuery(username);
@@ -111,7 +111,7 @@ function Profile() {
     const formData = new FormData();
     formData.append('image', file);
     formData.append(type, 'true');
-    formData.append('user_id', data.data.user_id);
+    formData.append('user_id', user.data.user_id);
 
     updateUser({
       body: formData,
@@ -155,7 +155,7 @@ function Profile() {
         <div
           className="row-start-1 row-span-3 col-start-1 bg-gray-400 relative"
           style={{
-            backgroundImage: `url(${data?.data.background_image})`,
+            backgroundImage: `url(${user?.data.background_image})`,
             backgroundSize: 'cover',
             backgroundPosition: 'center',
           }}
@@ -204,8 +204,8 @@ function Profile() {
             <img
               className="rounded-full  border-2 border-gray-900"
               src={
-                data.data.avatar
-                  ? data.data.avatar
+                user.data.avatar
+                  ? user.data.avatar
                   : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
               }
               alt="user profile"
@@ -262,20 +262,20 @@ function Profile() {
         </div>
         <div>
           <div className="p-2 flex flex-col gap-2">
-            <p className="font-bold text-xl">{data.data.username}</p>
+            <p className="font-bold text-xl">{user.data.username}</p>
             <span className="text-gray-500">
               <p className="flex items-center gap-3">
                 <BsCalendar3WeekFill />
-                Joined {data.data.date_joined.split('T')[0]}
+                Joined {user.data.date_joined.split('T')[0]}
               </p>
             </span>
             <span className="text-gray-500 flex gap-2 items-center">
               <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
-                <p className="text-white font-bold">{data.data.following}</p>
+                <p className="text-white font-bold">{user.data.following}</p>
                 <p>Following</p>
               </span>
               <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
-                <p className="text-white font-bold">{data.data.followers}</p>
+                <p className="text-white font-bold">{user.data.followers}</p>
                 <p>Followers</p>
               </span>
             </span>

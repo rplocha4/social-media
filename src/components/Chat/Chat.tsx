@@ -11,6 +11,7 @@ import {
 import Loading from '../UI/Loading';
 import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
+import Typing from '../UI/Typing/Typing';
 function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [receiver, setReceiver] = useState<{
@@ -224,10 +225,11 @@ function Chat() {
         className="absolute bottom-5 w-4/5"
       >
         {receiverTyping && (
-          <div className="flex items-center justify-center">
-            <span className="text-xl font-bold">
+          <div className="flex items-center -translate-y-5 translate-x-3">
+            {/* <span className="text-xl font-bold">
               {receiver.username} typing...
-            </span>
+            </span> */}
+            <Typing />
           </div>
         )}
         <span className="w-full rounded-xl  flex items-center justify-between bg-slate-900 p-2">

@@ -6,6 +6,7 @@ import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
 import { FaUserAlt } from 'react-icons/fa';
+import { BsFillChatDotsFill } from 'react-icons/bs';
 
 function Navbar() {
   const uiSelector = useSelector((state: RootState) => state.ui);
@@ -25,6 +26,17 @@ function Navbar() {
           >
             <AiFillHome className="" />
             <p>Home</p>
+          </span>
+        </Link>
+        <Link to="/chat" className="">
+          <span
+            className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl ${
+              darkTheme ? 'darkHover' : 'lightHover'
+            } 
+          bg-slate-40`}
+          >
+            <BsFillChatDotsFill className="" />
+            <p>Chat</p>
           </span>
         </Link>
       </div>
@@ -48,7 +60,6 @@ function Navbar() {
             }
           bg-slate-40`}
             onClick={() => {
-
               dispatch(logout());
               window.location.reload();
 

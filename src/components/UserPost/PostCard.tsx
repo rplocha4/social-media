@@ -90,14 +90,16 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
             image={post.image}
             link={`/post/${post.post_id}`}
           />
-          <div className="absolute right-3 top-5 hover:cursor-pointer">
-            <BsThreeDots
-              onClick={() => {
-                setOptionsOpen(true);
-              }}
-            />
-          </div>
-          {userPost && optionsOpen && (
+          {userPost && (
+            <div className="absolute right-3 top-5 hover:cursor-pointer">
+              <BsThreeDots
+                onClick={() => {
+                  setOptionsOpen(true);
+                }}
+              />
+            </div>
+          )}
+          {optionsOpen && (
             <div
               className="absolute -right-32 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md "
               ref={ref}

@@ -13,6 +13,7 @@ function App() {
   const uiSelector = useSelector((state: RootState) => state.ui);
   // const userSelector = useSelector((state: RootState) => state.user);
   const darkTheme = uiSelector.darkMode;
+  const user = useSelector((state: RootState) => state.user);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -29,8 +30,9 @@ function App() {
 
   useEffect(() => {
     // if url is /, redirect to /home
+    if (!user.username) navigate('/login');
     if (window.location.pathname === '/') navigate('/home');
-  }, [navigate]);
+  }, [navigate, user.username]);
 
   return (
     <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen w-full`}>

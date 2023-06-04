@@ -9,6 +9,7 @@ import {
   useGetFollowersQuery,
   useFollowUserMutation,
   useUnfollowUserMutation,
+  useGetFollowingQuery,
 } from '../store/features/serverApi';
 import Posts from '../components/UserPost/Posts';
 import Loading from '../components/UI/Loading';
@@ -18,6 +19,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { setAvatar } from '../store/userSlice';
 import { RootState } from '../store/store';
+import Follows from '../components/Follows';
 
 function Profile() {
   const { username, id }: any = useLoaderData();
@@ -31,9 +33,19 @@ function Profile() {
 
   const userSelector = useSelector((state: RootState) => state.user);
 
-  const { data: followers } = useGetFollowersQuery(id);
-  // const { data: following } = useGetFollowingQuery(id);
-  const [isFollowing, setIsFollowing] = React.useState(false);
+  const {
+    data: followers,
+    isLoading: followersLoading,
+    refetch: refetchFollowers,
+  } = useGetFollowersQuery(id);
+  const { data: following, isLoading: followingLoading } =
+    useGetFollowingQuery(id);
+
+  const isFollowing = followers
+    ? followers.followers.some((f: any) => {
+        return f.user_id == userSelector.user_id;
+      })
+    : false;
 
   const [follow] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
@@ -132,14 +144,7 @@ function Profile() {
       refetchUser();
     });
   };
-  // useEffect(() => {
-  //   if (followers) {
-  //     const isFollowing = followers.data.some(
-  //       (follower) => follower.user_id === userSelector.user_id
-  //     );
-  //     setIsFollowing(isFollowing);
-  //   }
-  // }, [followers, userSelector.user_id]);
+
   useEffect(() => {
     setLoading(true);
     fetchData(filter);
@@ -246,12 +251,14 @@ function Profile() {
                       user_id: id,
                       follower: localStorage.getItem('user_id'),
                     }).then((res: any) => {
+                      refetchFollowers();
                       showMessage(res);
                     })
                   : follow({
                       user_id: id,
                       follower: localStorage.getItem('user_id'),
                     }).then((res: any) => {
+                      refetchFollowers();
                       showMessage(res);
                     })
               }
@@ -270,14 +277,16 @@ function Profile() {
               </p>
             </span>
             <span className="text-gray-500 flex gap-2 items-center">
-              <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
-                <p className="text-white font-bold">{user.data.following}</p>
-                <p>Following</p>
-              </span>
-              <span className="flex items-center gap-1 hover:underline hover:cursor-pointer">
-                <p className="text-white font-bold">{user.data.followers}</p>
-                <p>Followers</p>
-              </span>
+              <Follows
+                type="Followers"
+                data={followers ? followers.followers : []}
+                isLoading={followersLoading}
+              />
+              <Follows
+                type="Following"
+                data={following ? following.following : []}
+                isLoading={followingLoading}
+              />
             </span>
           </div>
         </div>

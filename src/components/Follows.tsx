@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Loading from './UI/Loading';
 import Modal from './UI/Modal';
-import { info } from 'sass';
 
 function Follows({
   type,

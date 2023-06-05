@@ -11,12 +11,12 @@ import { RootState } from '../../store/store';
 import CreatePost from '../UserPost/CreatePost';
 import Modal from '../UI/Modal';
 import { hideInfo, showInfo } from '../../store/uiSlice';
+import useClickOutside from '../../hooks/useClickOutside';
 
 const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   comment,
   onRefetch,
 }) => {
-  const [optionsOpen, setOptionsOpen] = useState(false);
   const [deleteComment] = useDeleteCommentMutation();
   const userSelector = useSelector((state: RootState) => {
     return state.user;
@@ -26,21 +26,23 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   const [editComment] = useUpdateCommentMutation();
 
   const ref = useRef<HTMLDivElement>(null);
+  const [optionsOpen, setOptionsOpen] = useClickOutside(ref);
+
   const dispatch = useDispatch();
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (ref.current && !ref.current.contains(event.target as Node)) {
-        setOptionsOpen(false);
-      }
-    };
+  // useEffect(() => {
+  //   const handleClickOutside = (event: MouseEvent) => {
+  //     if (ref.current && !ref.current.contains(event.target as Node)) {
+  //       setOptionsOpen(false);
+  //     }
+  //   };
 
-    document.addEventListener('mousedown', handleClickOutside);
+  //   document.addEventListener('mousedown', handleClickOutside);
 
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
-    };
-  }, [ref]);
+  //   return () => {
+  //     document.removeEventListener('mousedown', handleClickOutside);
+  //   };
+  // }, [ref]);
   return (
     <>
       {editOpen && (

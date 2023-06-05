@@ -9,21 +9,20 @@ import {
   useSendMessagesMutation,
 } from '../../store/features/serverApi';
 import Loading from '../UI/Loading';
-import Navbar from '../Navbar';
 import { Link } from 'react-router-dom';
 import Typing from '../UI/Typing/Typing';
 import PrevChats from './PrevChats';
 
-const convertDate = (date: string) => {
-  const d = new Date(date);
-  const day = d.getDate();
-  const month = d.getMonth();
-  const year = d.getFullYear();
-  const hours = d.getHours();
-  const minutes = d.getMinutes();
-  const seconds = d.getSeconds();
-  return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
-};
+// const convertDate = (date: string) => {
+//   const d = new Date(date);
+//   const day = d.getDate();
+//   const month = d.getMonth();
+//   const year = d.getFullYear();
+//   const hours = d.getHours();
+//   const minutes = d.getMinutes();
+//   const seconds = d.getSeconds();
+//   return `${day}/${month}/${year} ${hours}:${minutes}:${seconds}`;
+// };
 function Chat() {
   const [isConnected, setIsConnected] = useState(socket.connected);
   const [receiver, setReceiver] = useState<{
@@ -111,17 +110,17 @@ function Chat() {
 
       setMessages((prev) => [...prev, { message, sender: senderMsg }]);
     });
-    socket.on('typing', (data) => {
+    socket.on('typing', () => {
       setReceiverTyping(true);
     });
-    socket.on('stop typing', (data) => {
+    socket.on('stop typing', () => {
       setReceiverTyping(false);
     });
     socket.on('connect', () => {
       setIsConnected(true);
     });
     socket.on('disconnect', () => {
-      setIsConnected(false);
+      isConnected && setIsConnected(false);
     });
 
     return () => {

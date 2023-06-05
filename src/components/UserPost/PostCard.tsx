@@ -8,7 +8,7 @@ import {
 import { TPost } from '../../types/types';
 import PostData from './PostData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { hideInfo, showInfo } from '../../store/uiSlice';
 import { RootState } from '../../store/store';

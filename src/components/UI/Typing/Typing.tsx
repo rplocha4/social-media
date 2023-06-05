@@ -1,4 +1,3 @@
-import React from 'react';
 import classes from './Typing.module.scss';
 function Typing() {
   return (

@@ -1,5 +1,5 @@
 // Render Prop
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router';
 
@@ -9,7 +9,7 @@ const Register = () => {
     if (localStorage.getItem('token')) {
       navigate('/home');
     }
-  }, []);
+  }, [navigate]);
   return (
     <Formik
       initialValues={{
@@ -45,13 +45,16 @@ const Register = () => {
 
         setSubmitting(false);
 
-        fetch('http://localhost:3000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values),
-        })
+        fetch(
+          'https://social-media-backend-tfft.onrender.com/api/auth/register',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'User successfully created') {

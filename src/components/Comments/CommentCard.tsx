@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useRef, useState } from 'react';
 import UserData from '../UserPost/PostData';
 import { TComment } from '../../types/types';
 import { BsThreeDots } from 'react-icons/bs';

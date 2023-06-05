@@ -82,36 +82,38 @@ function Search({
             className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl"
             ref={ref}
           >
-            {results.map((user: any) => {
-              return (
-                <div
-                  key={user.user_id}
-                  className="flex gap-1 items-center darkHover p-2 hover:cursor-pointer"
-                  onClick={() => {
-                    onConfirm({
-                      username: user.username,
-                      id: user.user_id,
-                      avatar:
+            {results.map(
+              (user: { user_id: string; username: string; avatar: string }) => {
+                return (
+                  <div
+                    key={user.user_id}
+                    className="flex gap-1 items-center darkHover p-2 hover:cursor-pointer"
+                    onClick={() => {
+                      onConfirm({
+                        username: user.username,
+                        id: user.user_id,
+                        avatar:
+                          user.avatar ||
+                          'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
+                      });
+                      setSearch('');
+                      setResults([]);
+                    }}
+                  >
+                    <img
+                      className="rounded-full"
+                      src={
                         user.avatar ||
-                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
-                    });
-                    setSearch('');
-                    setResults([]);
-                  }}
-                >
-                  <img
-                    className="rounded-full"
-                    src={
-                      user.avatar ||
-                      'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                    }
-                    alt="user profile"
-                    style={{ height: '50px', width: '50px' }}
-                  />
-                  <p>{user.username}</p>
-                </div>
-              );
-            })}
+                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                      }
+                      alt="user profile"
+                      style={{ height: '50px', width: '50px' }}
+                    />
+                    <p>{user.username}</p>
+                  </div>
+                );
+              }
+            )}
           </div>
         )
       )}

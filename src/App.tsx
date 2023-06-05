@@ -7,7 +7,7 @@ import { toggleDarkMode } from './store/uiSlice';
 import Search from './components/Search';
 import { RootState } from './store/store';
 import { useEffect } from 'react';
-import { login, logout } from './store/userSlice';
+import { login } from './store/userSlice';
 function App() {
   const dispatch = useDispatch();
   const uiSelector = useSelector((state: RootState) => state.ui);

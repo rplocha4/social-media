@@ -22,7 +22,10 @@ import { RootState } from '../store/store';
 import Follows from '../components/Follows';
 
 function Profile() {
-  const { username, id }: any = useLoaderData();
+  const { username, id } = useLoaderData() as {
+    username: string;
+    id: string;
+  };
 
   // const userSelector = useSelector((state: RootState) => state.user);
   const [results, setResults] = React.useState([]);
@@ -42,7 +45,7 @@ function Profile() {
     useGetFollowingQuery(id);
 
   const isFollowing = followers
-    ? followers.followers.some((f: any) => {
+    ? followers.followers.some((f: { user_id: string }) => {
         return f.user_id == userSelector.user_id;
       })
     : false;

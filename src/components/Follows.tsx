@@ -8,7 +8,11 @@ function Follows({
   isLoading,
 }: {
   type: string;
-  data: any;
+  data: {
+    user_id: string;
+    username: string;
+    avatar: string;
+  }[];
   isLoading: boolean;
 }) {
   const [infoOpen, setInfoOpen] = useState(false);
@@ -26,21 +30,23 @@ function Follows({
           }}
         >
           <div className="flex flex-col gap-2 h-40">
-            {data.map((user: any) => {
-              return (
-                <div className="flex items-center gap-2" key={user.user_id}>
-                  <img
-                    src={
-                      user.avatar ||
-                      'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                    }
-                    alt="avatar"
-                    className="w-10 h-10 rounded-full"
-                  />
-                  <p className="text-white">{user.username}</p>
-                </div>
-              );
-            })}
+            {data.map(
+              (user: { user_id: string; username: string; avatar: string }) => {
+                return (
+                  <div className="flex items-center gap-2" key={user.user_id}>
+                    <img
+                      src={
+                        user.avatar ||
+                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
+                      }
+                      alt="avatar"
+                      className="w-10 h-10 rounded-full"
+                    />
+                    <p className="text-white">{user.username}</p>
+                  </div>
+                );
+              }
+            )}
           </div>
         </Modal>
       )}

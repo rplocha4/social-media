@@ -22,7 +22,10 @@ const Login = () => {
         username: '',
       }}
       validate={(values) => {
-        const errors: any = {};
+        const errors: {
+          password?: string;
+          username?: string;
+        } = {};
 
         if (!values.password) {
           errors.password = 'Required';

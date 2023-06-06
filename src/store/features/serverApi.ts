@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const serverApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
-    // baseUrl: 'http://localhost:3000/api',
+    // baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
+    baseUrl: 'http://localhost:3000/api',
   }),
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -201,6 +201,15 @@ export const serverApi = createApi({
         body: body,
       }),
     }),
+    getUsers: builder.query({
+      query: () => ({
+        url: `/users`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -230,4 +239,5 @@ export const {
   useLazyGetConversationsQuery,
   useUpdatePostMutation,
   useUpdateCommentMutation,
+  useGetUsersQuery,
 } = serverApi;

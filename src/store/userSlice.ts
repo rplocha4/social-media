@@ -6,6 +6,7 @@ export const userSlice = createSlice({
     initialState: {
         user_id: null,
         token: null,
+        role : null,
         username:null,
         avatar:'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
     },
@@ -13,6 +14,7 @@ export const userSlice = createSlice({
         login: (state, action) => {
             
             state.user_id = action.payload.user_id;
+            state.role = action.payload.role;
             state.token = action.payload.token;
             state.username = action.payload.username;
             state.avatar = action.payload.avatar;
@@ -20,17 +22,20 @@ export const userSlice = createSlice({
             localStorage.setItem('user_id', action.payload.user_id);
             localStorage.setItem('username', action.payload.username);
             localStorage.setItem('avatar', action.payload.avatar);
+            localStorage.setItem('role', action.payload.role);
             
         },
         logout: (state) => {
             state.user_id = null;
             state.token = null;
             state.username = null;
+            state.role = null;
             state.avatar = 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png';
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
             localStorage.removeItem('username');
             localStorage.removeItem('avatar');
+            localStorage.removeItem('role');
         },
         setAvatar: (state, action) => {
             state.avatar = action.payload;

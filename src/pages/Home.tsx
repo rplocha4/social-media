@@ -11,6 +11,7 @@ import { hideInfo, showInfo } from '../store/uiSlice';
 export default function Home() {
   const userSelector = useSelector((state: RootState) => state.user);
 
+
   const { data, isLoading, refetch } = useGetPostsQuery(userSelector.user_id);
   const dispatch = useDispatch();
 

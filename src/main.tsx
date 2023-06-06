@@ -12,6 +12,7 @@ import Login from './components/Auth/Login.tsx';
 import Profile from './pages/Profile.tsx';
 import { loader as profileLoader } from './pages/Profile.tsx';
 import Chat from './components/Chat/Chat.tsx';
+import Admin from './pages/Admin.tsx';
 
 const router = createBrowserRouter([
   {
@@ -46,6 +47,10 @@ const router = createBrowserRouter([
   {
     path: '/login',
     element: <Login />,
+  },
+  {
+    path: '/admin',
+    element: <Admin />,
   },
 ]);
 

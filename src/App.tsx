@@ -1,6 +1,6 @@
 import './App.css';
 import ThemeToggler from './components/ThemeToggler/ThemeToggler';
-import { Outlet, useNavigate } from 'react-router-dom';
+import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleDarkMode } from './store/uiSlice';
@@ -21,11 +21,13 @@ function App() {
     const user_id = localStorage.getItem('user_id');
     const username = localStorage.getItem('username');
     const avatar = localStorage.getItem('avatar');
+    const role = localStorage.getItem('role');
+
     if (localStorage.getItem('token') === null) {
       // dispatch(logout());
       return;
     }
-    dispatch(login({ token, user_id, username, avatar }));
+    dispatch(login({ token, user_id, username, avatar, role }));
   }, [dispatch]);
 
   useEffect(() => {

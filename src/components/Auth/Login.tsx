@@ -40,7 +40,7 @@ const Login = () => {
         // alert(JSON.stringify(values, null, 2));
 
         setSubmitting(false);
-        fetch('https://social-media-backend-tfft.onrender.com/api/auth/login', {
+        fetch('http://localhost:3000/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -69,7 +69,9 @@ const Login = () => {
               setTimeout(() => {
                 dispatch(hideInfo());
               }, 2000);
-              navigate('/home');
+              data.user.role === 'admin'
+                ? navigate('/admin')
+                : navigate('/home');
             } else {
               dispatch(showInfo({ message: data.message, color: 'red' }));
               setTimeout(() => {

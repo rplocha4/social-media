@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import { Link } from 'react-router-dom';
 
 const PostData: React.FC<{
@@ -14,6 +14,23 @@ const PostData: React.FC<{
   // if (image.length > 0) {
   //   imageData = imageFromBinary(image);
   // }
+  const formattedContent = useMemo(() => {
+    const words = content.split(' ');
+    const newWords = words.map((word) => {
+      if (word.startsWith('@')) {
+        return (
+          <Link
+            to={`/profile/${word.slice(1)}`}
+            className="text-blue-500 hover:underline"
+          >
+            {word}
+          </Link>
+        );
+      }
+      return word;
+    });
+    return newWords.map((word) => <span>{word} </span>);
+  }, [content]);
 
   return (
     <div className="flex items-center gap-2 ">
@@ -38,7 +55,7 @@ const PostData: React.FC<{
           <p className="text-gray-500">@{username}</p>
         </div>
         <Link to={link} className="flex-1 flex-col flex gap-3 ">
-          <p className="break-all">{content}</p>
+          <p className="break-all">{formattedContent}</p>
           {image && (
             <img src={image} alt="post" className="w-full h-80 object-cover" />
           )}

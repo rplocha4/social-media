@@ -1,5 +1,4 @@
 import { Navigate } from 'react-router';
-import { useGetUsersQuery } from '../store/features/serverApi';
 import UserList from '../components/admin/UserList';
 
 function Admin() {

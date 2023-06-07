@@ -14,7 +14,6 @@ function Search({
   ) => void;
 }) {
   const [focus, setFocus] = useState(false);
-  const [search, setSearch] = useState('');
   const [results, setResults] = useState([]);
   const uiSelector = useSelector((state: RootState) => state.ui);
   const [loading, setLoading] = useState(false);
@@ -24,21 +23,18 @@ function Search({
 
   const [open, setOpen] = useClickOutside(ref);
 
-  useEffect(() => {
-    if (search.length > 0) {
-      let ignore = false;
-      setLoading(true);
-      getResults(search).then((res) => {
-        if (!ignore) {
-          setResults(res.data.data);
-          setLoading(false);
-        }
-      });
-      return () => {
-        ignore = true;
-      };
+  const getSearchResults = (value: string) => {
+    if (value.length === 0) {
+      setResults([]);
+      return;
     }
-  }, [getResults, search]);
+    setLoading(true);
+    getResults(value).then((res) => {
+      setResults(res.data.data);
+      setLoading(false);
+    });
+  };
+
 
   return (
     <div className={`p-2 flex flex-col relative`}>
@@ -67,15 +63,15 @@ function Search({
             // setOpen(false);
           }}
           onChange={(e) => {
-            setSearch(e.target.value);
+            // setSearch(e.target.value);
+            getSearchResults(e.target.value);
           }}
-          value={search}
+          // value={search}
         />
       </span>
       {loading ? (
         <Loading />
       ) : (
-        search &&
         results.length > 0 &&
         open && (
           <div
@@ -96,7 +92,6 @@ function Search({
                           user.avatar ||
                           'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
                       });
-                      setSearch('');
                       setResults([]);
                     }}
                   >

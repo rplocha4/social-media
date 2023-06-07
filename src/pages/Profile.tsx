@@ -20,6 +20,7 @@ import { hideInfo, showInfo } from '../store/uiSlice';
 import { setAvatar } from '../store/userSlice';
 import { RootState } from '../store/store';
 import Follows from '../components/Follows';
+import UserActions from '../components/UserActions';
 
 function Profile() {
   const { username, id } = useLoaderData() as {
@@ -245,7 +246,7 @@ function Profile() {
               </div>
             )}
           </div>
-          {!isUserPage && (
+          {!isUserPage ? (
             <button
               className="mt-10 border rounded-lg px-3 py-1 darkHover"
               onClick={() =>
@@ -268,6 +269,10 @@ function Profile() {
             >
               {isFollowing ? 'Unfollow' : 'Follow'}
             </button>
+          ) : (
+            <div className="mt-5">
+              <UserActions isPrivate={user.data?.private} />
+            </div>
           )}
         </div>
         <div>
@@ -314,20 +319,30 @@ function Profile() {
           Comments
         </button>
       </div>
-      <div className="flex flex-col gap-2">
-        {loading ? (
-          <Loading />
-        ) : results?.length > 0 ? (
-          <Posts
-            posts={results}
-            onRefetch={() => {
-              fetchData(filter);
-            }}
-          />
-        ) : (
-          <div>No results</div>
-        )}
-      </div>
+      {user.data.private && !isUserPage && !isFollowing ? (
+        <div className="flex justify-center items-center p-2 text-xl font-bold text-blue-500">
+          <p>This user's profile is private, follow to see their {filter}</p>
+        </div>
+      ) : (
+        <div className="flex flex-col gap-2">
+          {loading ? (
+            <Loading />
+          ) : results?.length > 0 ? (
+            <Posts
+              posts={results}
+              onRefetch={() => {
+                fetchData(filter);
+              }}
+            />
+          ) : (
+            <div className="flex justify-center items-center p-2 text-xl font-bold text-blue-500">
+              <p>
+                No {filter} by {isUserPage ? 'you' : user.data.username} found
+              </p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

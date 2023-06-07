@@ -98,11 +98,17 @@ function Chat() {
 
   useEffect(() => {
     if (typing) {
-      socket.emit('typing', { receiver: receiver.username });
+      socket.emit('typing', {
+        receiver: receiver.username,
+        sender: sender.username,
+      });
     } else {
-      socket.emit('stop typing', { receiver: receiver.username });
+      socket.emit('stop typing', {
+        receiver: receiver.username,
+        sender: sender.username,
+      });
     }
-  }, [typing, receiver.username]);
+  }, [typing, receiver.username, sender.username]);
 
   useEffect(() => {
     socket.on('id', ({ id }) => {
@@ -117,10 +123,13 @@ function Chat() {
       }
       setMessages((prev) => [...prev, { message, sender: senderMsg }]);
     });
-    socket.on('typing', () => {
+    socket.on('typing', ({ sender }) => {
+      if (sender !== receiver.username) return;
+
       setReceiverTyping(true);
     });
-    socket.on('stop typing', () => {
+    socket.on('stop typing', ({ sender }) => {
+      if (sender !== receiver.username) return;
       setReceiverTyping(false);
     });
     socket.on('connect', () => {
@@ -138,7 +147,7 @@ function Chat() {
       socket.off('connect');
       socket.off('disconnect');
     };
-  }, [sender.username, receiver.username, isConnected, dispatch]);
+  }, [sender.username, receiver.username, isConnected, displayNotification]);
 
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();

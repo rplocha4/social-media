@@ -59,10 +59,10 @@ function App() {
     <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen w-full`}>
       <ThemeToggler onToggle={() => dispatch(toggleDarkMode())} />
       <div className="flex justify-center items-center w-full  ">
-        <div className="self-start w-1/6 h-full px-2">
+        <div className="self-start w-1/6 h-full px-2 ">
           <Navbar />
         </div>
-        <div className="flex flex-col w-3/6 min-h-full border border-gray-800">
+        <div className="flex flex-col w-3/6 min-h-full border border-gray-800 grow ">
           {/* <div className="w-full flex justify-center items-center p-2">
             Tweet
           </div> */}

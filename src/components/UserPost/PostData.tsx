@@ -14,23 +14,24 @@ const PostData: React.FC<{
   // if (image.length > 0) {
   //   imageData = imageFromBinary(image);
   // }
-  const navigate = useNavigate();
+// const navigate = useNavigate();
   const formattedContent = useMemo(() => {
     const words = content.split(' ');
-    const newWords = words.map((word) => {
+    const newWords = words.map((word, i) => {
       if (word.startsWith('@')) {
         return (
           <Link
             to={`/profile/${word.slice(1)}`}
             className="text-blue-500 hover:underline"
+            key={i}
           >
-            {word}
+            {word}{' '}
           </Link>
         );
       }
-      return word;
+      return word + ' ';
     });
-    return newWords.map((word, i) => <span key={i}>{word} </span>);
+    return newWords;
   }, [content]);
 
   return (
@@ -57,9 +58,9 @@ const PostData: React.FC<{
         </div>
         <div
           className="flex-1 flex-col flex gap-3 "
-          onClick={() => {
-            navigate(link);
-          }}
+          // onMouseDown={() => {
+          //   navigate(link);
+          // }}
         >
           <p>{formattedContent}</p>
           {image && (

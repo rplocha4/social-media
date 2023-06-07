@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 const PostData: React.FC<{
   img: string;
@@ -14,6 +14,7 @@ const PostData: React.FC<{
   // if (image.length > 0) {
   //   imageData = imageFromBinary(image);
   // }
+  const navigate = useNavigate();
   const formattedContent = useMemo(() => {
     const words = content.split(' ');
     const newWords = words.map((word) => {
@@ -29,7 +30,7 @@ const PostData: React.FC<{
       }
       return word;
     });
-    return newWords.map((word) => <span>{word} </span>);
+    return newWords.map((word, i) => <span key={i}>{word} </span>);
   }, [content]);
 
   return (
@@ -54,12 +55,17 @@ const PostData: React.FC<{
           </Link>
           <p className="text-gray-500">@{username}</p>
         </div>
-        <Link to={link} className="flex-1 flex-col flex gap-3 ">
-          <p className="break-all">{formattedContent}</p>
+        <div
+          className="flex-1 flex-col flex gap-3 "
+          onClick={() => {
+            navigate(link);
+          }}
+        >
+          <p>{formattedContent}</p>
           {image && (
             <img src={image} alt="post" className="w-full h-80 object-cover" />
           )}
-        </Link>
+        </div>
       </div>
     </div>
   );

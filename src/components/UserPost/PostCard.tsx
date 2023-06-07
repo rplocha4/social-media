@@ -21,6 +21,8 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   post,
   onRefetch,
 }) => {
+  // console.log(post);
+
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
   const [likes, setLikes] = useState(post.likes);
   // const [optionsOpen, setOptionsOpen] = useState(false);

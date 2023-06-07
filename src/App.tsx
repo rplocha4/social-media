@@ -3,18 +3,31 @@ import ThemeToggler from './components/ThemeToggler/ThemeToggler';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleDarkMode } from './store/uiSlice';
+import { showNotification, toggleDarkMode } from './store/uiSlice';
 import Search from './components/Search';
 import { RootState } from './store/store';
 import { useEffect } from 'react';
 import { login } from './store/userSlice';
+import { socket } from './socket';
+import useNotification from './hooks/useNotification';
 function App() {
   const dispatch = useDispatch();
   const uiSelector = useSelector((state: RootState) => state.ui);
   // const userSelector = useSelector((state: RootState) => state.user);
   const darkTheme = uiSelector.darkMode;
-  const user = useSelector((state: RootState) => state.user);
+  // const { username } = useSelector((state: RootState) => state.user);
+  const username = localStorage.getItem('username');
   const navigate = useNavigate();
+  const { displayNotification } = useNotification();
+
+  useEffect(() => {
+    socket.on('id', ({ id }) => {
+      socket.emit('username', { username });
+    });
+    socket.on('chat message', ({ senderMsg }) => {
+      displayNotification(`New message from ${senderMsg}`);
+    });
+  }, [dispatch, username, displayNotification]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');
@@ -32,9 +45,15 @@ function App() {
 
   useEffect(() => {
     // if url is /, redirect to /home
-    if (!user.username) navigate('/login');
+    // if (!username) {
+    //   navigate('/login');
+    //   return;
+    // }
     if (window.location.pathname === '/') navigate('/home');
-  }, [navigate, user.username]);
+  }, [navigate]);
+  if (!username) {
+    return <Navigate to="/login" />;
+  }
 
   return (
     <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen w-full`}>
@@ -66,6 +85,11 @@ function App() {
           </div>
         )}
       </div>
+      {uiSelector.showNotification && (
+        <div className=" fixed  right-10 top-10 rounded-xl px-5 py-2 ease-linear bg-blue-800 ">
+          <p className="text-center">{uiSelector.notificationMessage}</p>
+        </div>
+      )}
     </div>
   );
 }

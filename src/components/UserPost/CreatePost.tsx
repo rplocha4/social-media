@@ -10,16 +10,16 @@ import { RxCross1 } from 'react-icons/rx';
 import { useLazySearchUsersQuery } from '../../store/features/serverApi';
 import Loading from '../UI/Loading';
 
-const buffer = new ArrayBuffer(32);
+// const buffer = new ArrayBuffer(32);
 
-new Blob([buffer]);
+// new Blob([buffer]);
 
 const CreatePost: React.FC<{
   placeholder?: string;
   noUserMessage?: string;
   onCreate: (formData: FormData) => void;
   data?: string;
-  imageFile?: string;
+  imageFile?: string | null;
 }> = ({ placeholder, onCreate, noUserMessage, data, imageFile }) => {
   const [content, setContent] = React.useState(data || '');
   const textAreaRef = useRef<HTMLTextAreaElement>(null);
@@ -30,6 +30,7 @@ const CreatePost: React.FC<{
   const [editImage, setEditImage] = React.useState<string | null>(
     imageFile as string | null
   );
+
   const [getResults] = useLazySearchUsersQuery();
   const [results, setResults] = React.useState([]);
   const [loading, setLoading] = React.useState(false);
@@ -46,8 +47,11 @@ const CreatePost: React.FC<{
     const formData = new FormData();
     formData.append('content', content);
     formData.append('user_id', userSelector.user_id);
+
     if (image) {
       formData.append('image', image);
+    } else if (editImage) {
+      formData.append('img', editImage);
     }
     onCreate(formData);
 
@@ -123,12 +127,11 @@ const CreatePost: React.FC<{
                             key={user.user_id}
                             className="flex gap-1 items-center darkHover p-2 hover:cursor-pointer"
                             onClick={() => {
-                              setContent(
-                                content.replace(
-                                  content.split(' ').pop() as string,
-                                  `@${user.username} `
-                                )
-                              );
+                              setContent((prev) => {
+                                const words = prev.split(' ');
+                                words[words.length - 1] = `@${user.username} `;
+                                return words.join(' ');
+                              });
                               textAreaRef.current?.focus();
                               setResults([]);
                             }}

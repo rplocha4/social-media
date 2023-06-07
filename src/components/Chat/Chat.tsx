@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { socket } from '../../socket';
 import { IoSend } from 'react-icons/io5';
 import Search from '../Search';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
   useLazyGetMessagesQuery,
@@ -12,6 +12,8 @@ import Loading from '../UI/Loading';
 import { Link } from 'react-router-dom';
 import Typing from '../UI/Typing/Typing';
 import PrevChats from './PrevChats';
+import { showNotification } from '../../store/uiSlice';
+import useNotification from '../../hooks/useNotification';
 
 // const convertDate = (date: string) => {
 //   const d = new Date(date);
@@ -45,12 +47,22 @@ function Chat() {
   const [messages, setMessages] = useState<
     { message: string; sender: string }[]
   >([]);
+  const { displayNotification } = useNotification();
 
   const messagesRef = useRef<null | HTMLDivElement>(null);
 
   const scrollBottom = () => {
     messagesRef.current?.scrollTo(0, messagesRef.current?.scrollHeight);
   };
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    };
+  }, []);
 
   useEffect(() => {
     scrollBottom();
@@ -93,21 +105,16 @@ function Chat() {
   }, [typing, receiver.username]);
 
   useEffect(() => {
-    socket.connect();
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
-
-  useEffect(() => {
     socket.on('id', ({ id }) => {
       localStorage.setItem('socketId', id);
       socket.emit('username', { username: sender.username });
       setIsConnected(true);
     });
     socket.on('chat message', ({ message, senderMsg }) => {
-      if (senderMsg !== receiver.username) return;
-
+      if (senderMsg !== receiver.username) {
+        displayNotification(`New message from ${senderMsg}`);
+        return;
+      }
       setMessages((prev) => [...prev, { message, sender: senderMsg }]);
     });
     socket.on('typing', () => {
@@ -131,7 +138,8 @@ function Chat() {
       socket.off('connect');
       socket.off('disconnect');
     };
-  }, [sender.username, receiver.username]);
+  }, [sender.username, receiver.username, isConnected, dispatch]);
+
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!receiver.username) return;

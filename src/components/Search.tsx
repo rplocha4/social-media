@@ -5,6 +5,7 @@ import { RootState } from '../store/store';
 import { useLazySearchUsersQuery } from '../store/features/serverApi';
 import Loading from './UI/Loading';
 import useClickOutside from '../hooks/useClickOutside';
+import { defaultAvatar } from '../types/types';
 
 function Search({
   onConfirm,
@@ -34,7 +35,6 @@ function Search({
       setLoading(false);
     });
   };
-
 
   return (
     <div className={`p-2 flex flex-col relative`}>
@@ -88,19 +88,14 @@ function Search({
                       onConfirm({
                         username: user.username,
                         id: user.user_id,
-                        avatar:
-                          user.avatar ||
-                          'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
+                        avatar: user.avatar || defaultAvatar,
                       });
                       setResults([]);
                     }}
                   >
                     <img
                       className="rounded-full"
-                      src={
-                        user.avatar ||
-                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                      }
+                      src={user.avatar || defaultAvatar}
                       alt="user profile"
                       style={{ height: '50px', width: '50px' }}
                     />

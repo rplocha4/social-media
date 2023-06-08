@@ -29,7 +29,7 @@ const reducer = (
 function Notifications({ onClose }: { onClose: () => void }) {
   const username = localStorage.getItem('username');
   const initialState = localStorage.getItem(
-    `notificationSettings-${username}`
+    `notificationSettings-${username}` || '{}'
   ) as string;
   const [setting, dispatch] = useReducer(reducer, {
     ...JSON.parse(initialState),

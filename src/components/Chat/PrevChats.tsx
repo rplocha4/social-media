@@ -3,6 +3,7 @@ import Loading from '../UI/Loading';
 import { useSelector } from 'react-redux';
 import { useLazyGetConversationsQuery } from '../../store/features/serverApi';
 import { RootState } from '../../store/store';
+import { defaultAvatar } from '../../types/types';
 
 const PrevChats: React.FC<{
   onSelect: (receiver: {
@@ -54,19 +55,14 @@ const PrevChats: React.FC<{
               onClick={() => {
                 onSelect({
                   username: chat.username,
-                  avatar:
-                    chat?.avatar ??
-                    'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
+                  avatar: chat?.avatar ?? defaultAvatar,
                   id: chat.user_id,
                 });
               }}
               className="flex flex-col items-center justify-center gap-2 p-2 rounded-xl cursor-pointer hover:bg-slate-800"
             >
               <img
-                src={
-                  chat?.avatar ??
-                  'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                }
+                src={chat?.avatar ?? defaultAvatar}
                 alt=""
                 style={{
                   height: '50px',

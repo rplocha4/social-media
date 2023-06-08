@@ -21,3 +21,4 @@ export type TComment = {
     avatar: string;
     image: string;
 }
+export const defaultAvatar = 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'

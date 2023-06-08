@@ -10,6 +10,7 @@ import { RxCross1 } from 'react-icons/rx';
 import { useLazySearchUsersQuery } from '../../store/features/serverApi';
 import Loading from '../UI/Loading';
 import { socket } from '../../socket';
+import { defaultAvatar } from '../../types/types';
 
 // const buffer = new ArrayBuffer(32);
 
@@ -98,11 +99,7 @@ const CreatePost: React.FC<{
     <div className="flex w-full py-4">
       <img
         className="rounded-full  mx-2"
-        src={
-          userSelector.avatar
-            ? userSelector.avatar
-            : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-        }
+        src={userSelector.avatar ? userSelector.avatar : defaultAvatar}
         alt="user profile"
         style={{ height: '50px', width: '50px' }}
       />
@@ -150,10 +147,7 @@ const CreatePost: React.FC<{
                           >
                             <img
                               className="rounded-full"
-                              src={
-                                user.avatar ||
-                                'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                              }
+                              src={user.avatar || defaultAvatar}
                               alt="user profile"
                               style={{ height: '50px', width: '50px' }}
                             />

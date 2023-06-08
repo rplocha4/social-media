@@ -1,4 +1,5 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { defaultAvatar } from '../types/types';
 
 
 export const userSlice = createSlice({
@@ -8,7 +9,7 @@ export const userSlice = createSlice({
         token: null,
         role : null,
         username:null,
-        avatar:'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
+        avatar:defaultAvatar,
     },
     reducers: {
         login: (state, action) => {
@@ -30,7 +31,7 @@ export const userSlice = createSlice({
             state.token = null;
             state.username = null;
             state.role = null;
-            state.avatar = 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png';
+            state.avatar = defaultAvatar;
             localStorage.removeItem('token');
             localStorage.removeItem('user_id');
             localStorage.removeItem('username');

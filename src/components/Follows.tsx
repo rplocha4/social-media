@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import Loading from './UI/Loading';
 import Modal from './UI/Modal';
 import { Link, useNavigate } from 'react-router-dom';
+import { defaultAvatar } from '../types/types';
 
 function Follows({
   type,
@@ -44,10 +45,7 @@ function Follows({
                     }}
                   >
                     <img
-                      src={
-                        user.avatar ||
-                        'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-                      }
+                      src={user.avatar || defaultAvatar}
                       alt="avatar"
                       className="w-20 h-20 rounded-full"
                     />

@@ -1,5 +1,6 @@
 import React, { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
+import { defaultAvatar } from '../../types/types';
 
 const PostData: React.FC<{
   img: string;
@@ -52,11 +53,7 @@ const PostData: React.FC<{
     <div className="flex items-center gap-2">
       <img
         className="rounded-full self-start"
-        src={
-          img !== null
-            ? img
-            : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-        }
+        src={img !== null ? img : defaultAvatar}
         alt="user profile"
         style={{ height: '50px', width: '50px' }}
       />

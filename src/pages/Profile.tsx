@@ -22,6 +22,13 @@ import { RootState } from '../store/store';
 import Follows from '../components/Follows';
 import UserActions from '../components/UserActions';
 import { socket } from '../socket';
+import { defaultAvatar } from '../types/types';
+
+const typeFilter = {
+  posts: 'posts',
+  likes: 'likes',
+  comments: 'comments',
+};
 
 function Profile() {
   const { username, id } = useLoaderData() as {
@@ -74,20 +81,22 @@ function Profile() {
 
   const fetchData = useCallback(
     (filter: string) => {
+      setFilter(filter);
+      setLoading(true);
       switch (filter) {
-        case 'posts':
+        case typeFilter.posts:
           getPosts(username).then((res) => {
             setResults(res.data.data);
             setLoading(false);
           });
           break;
-        case 'likes':
+        case typeFilter.likes:
           getLikes(username).then((res) => {
             setResults(res.data.data);
             setLoading(false);
           });
           break;
-        case 'comments':
+        case typeFilter.comments:
           getComments(username).then((res) => {
             setResults(res.data.data);
             setLoading(false);
@@ -151,9 +160,8 @@ function Profile() {
   };
 
   useEffect(() => {
-    setLoading(true);
-    fetchData(filter);
-  }, [filter, fetchData]);
+    fetchData(typeFilter.posts);
+  }, [fetchData]);
 
   if (userIsLoading) {
     return <Loading />;
@@ -213,11 +221,7 @@ function Profile() {
           >
             <img
               className="rounded-full  border-2 border-gray-900"
-              src={
-                user.data.avatar
-                  ? user.data.avatar
-                  : 'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
-              }
+              src={user.data.avatar ? user.data.avatar : defaultAvatar}
               alt="user profile"
               style={{ height: '150px', width: '150px' }}
             />
@@ -312,19 +316,19 @@ function Profile() {
       <div className="flex justify-between items-center ">
         <button
           className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
-          onClick={() => setFilter('posts')}
+          onClick={() => fetchData(typeFilter.posts)}
         >
           Posts
         </button>
         <button
           className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
-          onClick={() => setFilter('likes')}
+          onClick={() => fetchData(typeFilter.likes)}
         >
           Likes
         </button>
         <button
           className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
-          onClick={() => setFilter('comments')}
+          onClick={() => fetchData(typeFilter.comments)}
         >
           Comments
         </button>

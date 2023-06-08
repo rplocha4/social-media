@@ -4,6 +4,7 @@ import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { login } from '../../store/userSlice';
 import { hideInfo, showInfo } from '../../store/uiSlice';
+import { defaultAvatar } from '../../types/types';
 
 const Login = () => {
   const navigate = useNavigate();
@@ -54,9 +55,7 @@ const Login = () => {
                 login({
                   ...data.user,
                   token: data.token,
-                  avatar:
-                    data.avatar ||
-                    'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png',
+                  avatar: data.avatar || defaultAvatar,
                 })
               );
 

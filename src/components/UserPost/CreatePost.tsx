@@ -9,6 +9,7 @@ import { AiOutlineGif } from 'react-icons/ai';
 import { RxCross1 } from 'react-icons/rx';
 import { useLazySearchUsersQuery } from '../../store/features/serverApi';
 import Loading from '../UI/Loading';
+import { socket } from '../../socket';
 
 // const buffer = new ArrayBuffer(32);
 
@@ -46,6 +47,17 @@ const CreatePost: React.FC<{
 
     const formData = new FormData();
     formData.append('content', content);
+    //check if @user is in content
+    const words = content.split(' ');
+    words.forEach((word) => {
+      if (word.startsWith('@')) {
+        const username = word.slice(1);
+        socket.emit('mention', {
+          username,
+          author: userSelector.username,
+        });
+      }
+    });
     formData.append('user_id', userSelector.user_id);
 
     if (image) {

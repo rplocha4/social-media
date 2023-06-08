@@ -8,6 +8,7 @@ const PostData: React.FC<{
   link: string;
   image: string;
 }> = ({ img, content, username, link, image }) => {
+  const navigate = useNavigate();
   // let imageData = '';
   // const [loading, setLoading] = React.useState(true);
 
@@ -15,6 +16,8 @@ const PostData: React.FC<{
   //   imageData = imageFromBinary(image);
   // }
   // const navigate = useNavigate();
+  const [linkHover, setLinkHover] = React.useState(false);
+  const linkRefs = React.useRef<HTMLAnchorElement[]>([]);
   const formattedContent = useMemo(() => {
     const words = content.split(' ');
     const newWords = words.map((word, i) => {
@@ -22,8 +25,19 @@ const PostData: React.FC<{
         return (
           <Link
             to={`/profile/${word.slice(1)}`}
-            className="text-blue-500 hover:underline"
+            className="text-blue-500 hover:underline z-10"
             key={i}
+            ref={(el) => {
+              if (el) {
+                linkRefs.current.push(el);
+              }
+            }}
+            onMouseEnter={() => {
+              setLinkHover(true);
+            }}
+            onMouseLeave={() => {
+              setLinkHover(false);
+            }}
           >
             {word}{' '}
           </Link>
@@ -35,7 +49,7 @@ const PostData: React.FC<{
   }, [content]);
 
   return (
-    <Link to={link} className="flex items-center gap-2 ">
+    <div className="flex items-center gap-2">
       <img
         className="rounded-full self-start"
         src={
@@ -57,18 +71,21 @@ const PostData: React.FC<{
           <p className="text-gray-500">@{username}</p>
         </div>
         <div
-          className="flex-1 flex-col flex gap-3 "
-          // onMouseDown={() => {
-          //   navigate(link);
-          // }}
+          className="flex-1 flex-col flex gap-3 cursor-pointer"
+          onClick={() => {
+            if (linkHover) {
+              return;
+            }
+            navigate(link);
+          }}
         >
-          <p className="break-all">{formattedContent}</p>
+          <div>{formattedContent}</div>
           {image && (
             <img src={image} alt="post" className="w-full h-80 object-cover" />
           )}
         </div>
       </div>
-    </Link>
+    </div>
   );
 };
 

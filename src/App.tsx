@@ -3,7 +3,7 @@ import ThemeToggler from './components/ThemeToggler/ThemeToggler';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { showNotification, toggleDarkMode } from './store/uiSlice';
+import { toggleDarkMode } from './store/uiSlice';
 import Search from './components/Search';
 import { RootState } from './store/store';
 import { useEffect } from 'react';
@@ -34,6 +34,17 @@ function App() {
     socket.on('follow', ({ follower }) => {
       displayNotification(`${follower} followed you`);
     });
+    socket.on('mention', ({ mentioner }) => {
+      displayNotification(`${mentioner} mentioned you in a post`);
+    });
+
+    return () => {
+      socket.off('chat message');
+      socket.off('like');
+      socket.off('comment');
+      socket.off('follow');
+      socket.off('mention');
+    };
   }, [dispatch, username, displayNotification]);
 
   useEffect(() => {

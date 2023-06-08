@@ -109,7 +109,10 @@ function Profile() {
     [getComments, getLikes, getPosts, username]
   );
 
-  const showMessage = (res: any) => {
+  const showMessage = (res: {
+    error: { data: { message: string } };
+    data: { message: string };
+  }) => {
     if (res.error) {
       dispatch(
         showInfo({
@@ -363,7 +366,14 @@ function Profile() {
 
 export default Profile;
 
-export async function loader({ params }: { params: any }) {
+// eslint-disable-next-line react-refresh/only-export-components
+export async function loader({
+  params,
+}: {
+  params: {
+    username: string;
+  };
+}) {
   const { username } = params;
   const res = await fetch(`http://localhost:3000/api/user/${username}`);
   const data = await res.json();

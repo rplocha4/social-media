@@ -168,7 +168,7 @@ function Chat() {
         <div className="flex flex-col gap-5">
           <div className="flex justify-between items-center gap-3">
             {!receiver.username ? (
-              <span className="text-xl font-bold self-end h-20">
+              <span className="text-xl font-bold self-end h-20 text-center flex justify-center items-center">
                 Select a user
               </span>
             ) : (
@@ -247,35 +247,36 @@ function Chat() {
       )}
 
       <div className="h-1/6"></div>
-
-      <form
-        action=""
-        onSubmit={submitHandler}
-        className="absolute bottom-5 w-4/5"
-      >
-        {receiverTyping && (
-          <div className="flex items-center -translate-y-5 translate-x-3">
-            <Typing />
-          </div>
-        )}
-        <span className="w-full rounded-xl  flex items-center justify-between bg-slate-900 p-2">
-          <input
-            type="text"
-            placeholder="Type a message"
-            name=""
-            id=""
-            className="w-full  p-2 rounded-xl bg-inherit outline-none"
-            value={message}
-            onChange={(e) => {
-              setMessage(e.target.value);
-              setTyping(e.target.value.length > 0 ? true : false);
-            }}
-          />
-          <button>
-            <IoSend className="hover:scale-110 " />
-          </button>
-        </span>
-      </form>
+      {receiver.username && (
+        <form
+          action=""
+          onSubmit={submitHandler}
+          className="absolute bottom-5 w-4/5"
+        >
+          {receiverTyping && (
+            <div className="flex items-center -translate-y-5 translate-x-3">
+              <Typing />
+            </div>
+          )}
+          <span className="w-full rounded-xl  flex items-center justify-between bg-slate-900 p-2">
+            <input
+              type="text"
+              placeholder="Type a message"
+              name=""
+              id=""
+              className="w-full  p-2 rounded-xl bg-inherit outline-none"
+              value={message}
+              onChange={(e) => {
+                setMessage(e.target.value);
+                setTyping(e.target.value.length > 0 ? true : false);
+              }}
+            />
+            <button>
+              <IoSend className="hover:scale-110 " />
+            </button>
+          </span>
+        </form>
+      )}
     </div>
   );
 }

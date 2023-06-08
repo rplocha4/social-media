@@ -64,7 +64,7 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
                 dispatch(
                   showInfo({
                     message: 'Comment updated',
-                    color: 'green',
+                    color: 'blue',
                   })
                 );
                 setTimeout(() => {
@@ -84,7 +84,6 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
             img={comment.avatar}
             content={comment.content}
             image={comment.image}
-            
             link={`/post/${comment.post_id}`}
           />
           <div className="absolute right-3 top-5 hover:cursor-pointer">
@@ -113,6 +112,15 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
                 onClick={() => {
                   deleteComment(comment.comment_id).then(() => {
                     onRefetch();
+                    dispatch(
+                      showInfo({
+                        message: 'Comment deleted',
+                        color: 'red',
+                      })
+                    );
+                    setTimeout(() => {
+                      dispatch(hideInfo());
+                    }, 3000);
                   });
 
                   setOptionsOpen(false);

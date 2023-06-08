@@ -1,4 +1,4 @@
-import React, { useState, useReducer, useMemo } from 'react';
+import { useState, useReducer, useMemo } from 'react';
 import { useGetUsersQuery } from '../../store/features/serverApi';
 import Loading from '../UI/Loading';
 import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
@@ -18,7 +18,7 @@ const filterReducer = (
 };
 
 function UserList() {
-  const { data, isLoading, refetch } = useGetUsersQuery('');
+  const { data, isLoading } = useGetUsersQuery('');
   const [filters, dispatch] = useReducer(filterReducer, {
     nameFilter: '',
     emailFilter: '',

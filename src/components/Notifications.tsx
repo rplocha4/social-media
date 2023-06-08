@@ -52,7 +52,7 @@ function Notifications({ onClose }: { onClose: () => void }) {
     <div className="flex flex-col gap-2 p-2 w-full h-full">
       <h1 className="text-2xl font-bold text-white">Notifications settings</h1>
       <form action="" onSubmit={submitHandler}>
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 p-2">
           <div className="flex items-center gap-2">
             <input
               type="checkbox"
@@ -102,7 +102,7 @@ function Notifications({ onClose }: { onClose: () => void }) {
             <p>Someone mentions you in post</p>
           </div>
         </div>
-        <button className="bg-slate-900 rounded-xl p-2 text-white">
+        <button className="bg-slate-900 rounded-xl p-2 text-white hover:bg-slate-800">
           Save changes
         </button>
       </form>

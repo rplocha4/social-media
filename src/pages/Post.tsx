@@ -10,7 +10,7 @@ import CreatePost from '../components/UserPost/CreatePost';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import Loading from '../components/UI/Loading';
-import { showInfo } from '../store/uiSlice';
+import { hideInfo, showInfo } from '../store/uiSlice';
 import { socket } from '../socket';
 
 function Post() {
@@ -28,9 +28,7 @@ function Post() {
 
   const createCommentHandler = (formData: FormData) => {
     if (!userSelector.user_id) {
-      dispatch(
-        showInfo({ infoMessage: 'You need to be logged in', color: 'red' })
-      );
+      dispatch(showInfo({ message: 'You need to be logged in', color: 'red' }));
     }
 
     formData.append('post_id', id);
@@ -38,10 +36,21 @@ function Post() {
       body: formData,
     }).then(() => {
       refetch();
-      socket.emit('comment', {
-        author: post.data.username,
-        commenter: userSelector.username,
-      });
+      dispatch(
+        showInfo({
+          message: 'Comment created successfully',
+          color: 'green',
+        })
+      );
+      setTimeout(() => {
+        dispatch(hideInfo());
+      }, 2000);
+
+      post.data.username !== userSelector.username &&
+        socket.emit('comment', {
+          author: post.data.username,
+          commenter: userSelector.username,
+        });
     });
   };
 
@@ -83,7 +92,14 @@ function Post() {
 }
 
 export default Post;
-export async function loader({ params }: { params: any }) {
+// eslint-disable-next-line react-refresh/only-export-components
+export function loader({
+  params,
+}: {
+  params: {
+    id: string;
+  };
+}) {
   const { id } = params;
   return id;
 }

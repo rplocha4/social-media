@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Loading from './UI/Loading';
 import Modal from './UI/Modal';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { defaultAvatar } from '../types/types';
 
 function Follows({
@@ -33,11 +33,16 @@ function Follows({
           }}
         >
           <div className="flex flex-col gap-2 min-h-40">
+            {
+              <p className="text-white font-bold flex justify-center text-2xl">
+                {data.length} {type}
+              </p>
+            }
             {data.map(
               (user: { user_id: string; username: string; avatar: string }) => {
                 return (
                   <div
-                    className="flex items-center gap-2 hover:cursor-pointer hover:underline p-2 hover:bg-slate-900 rounded-md "
+                    className="flex items-center gap-2 hover:cursor-pointer hover:underline p-2 hover:bg-zinc-800 rounded-md "
                     key={user.user_id}
                     onClick={() => {
                       setInfoOpen(false);

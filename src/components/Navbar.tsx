@@ -6,7 +6,7 @@ import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
 import { BsFillChatDotsFill } from 'react-icons/bs';
-import Modal from './UI/Modal';
+import { useLayoutEffect, useState } from 'react';
 
 function Navbar() {
   const uiSelector = useSelector((state: RootState) => state.ui);
@@ -14,11 +14,23 @@ function Navbar() {
   const username = localStorage.getItem('username');
   const darkTheme = uiSelector.darkMode;
   const dispatch = useDispatch();
+  const [width, setWidth] = useState(window.innerWidth);
+
+  useLayoutEffect(() => {
+    function updateSize() {
+      setWidth(window.innerWidth);
+    }
+    window.addEventListener('resize', updateSize);
+    updateSize();
+
+    return () => window.removeEventListener('resize', updateSize);
+  }, []);
+
   // const [showModal, setShowModal] = useState(false);
 
   return (
     <>
-      <div className="flex flex-col justify-between h-screen fixed  mt-10 overflow-hidden">
+      <div className="flex flex-col justify-between h-screen fixed mt-10 overflow-hidden">
         <div className="flex flex-col gap-3">
           <Link to="/home" className="">
             <span
@@ -28,7 +40,7 @@ function Navbar() {
           bg-slate-40`}
             >
               <AiFillHome className="" />
-              <p>Home</p>
+              {width > 1000 && <p>Home</p>}
             </span>
           </Link>
           <Link to="/chat" className="">
@@ -39,7 +51,8 @@ function Navbar() {
           bg-slate-40`}
             >
               <BsFillChatDotsFill className="" />
-              <p>Chat</p>
+
+              {width > 1000 && <p>Chat</p>}
             </span>
           </Link>
         </div>
@@ -62,11 +75,13 @@ function Navbar() {
                     width: '50px',
                   }}
                 />
-                <p>
-                  {username.length > 10
-                    ? username.slice(0, 10) + '...'
-                    : username}
-                </p>
+                {width > 1000 && (
+                  <p>
+                    {username.length > 10
+                      ? username.slice(0, 10) + '...'
+                      : username}
+                  </p>
+                )}
               </span>
             </Link>
             {/* <div
@@ -100,7 +115,7 @@ function Navbar() {
               }}
             >
               <FiLogOut className="" />
-              <p>Logout</p>
+              {width > 1000 && <p>Logout</p>}
             </span>
           </div>
         ) : (
@@ -112,7 +127,7 @@ function Navbar() {
           bg-slate-40`}
             >
               <FiLogIn className="" />
-              <p>Login</p>
+              {width > 1000 && <p>Login</p>}
             </span>
           </Link>
         )}

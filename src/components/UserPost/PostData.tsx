@@ -57,7 +57,7 @@ const PostData: React.FC<{
         alt="user profile"
         style={{ height: '50px', width: '50px' }}
       />
-      <div className="flex flex-col gap-2 ">
+      <div className="flex flex-col gap-2 w-full">
         <div className="flex gap-1 ">
           <Link
             to={`/profile/${username}`}
@@ -68,7 +68,7 @@ const PostData: React.FC<{
           <p className="text-gray-500">@{username}</p>
         </div>
         <div
-          className="flex-1 flex-col flex gap-3 cursor-pointer"
+          className="flex-1 flex-col flex gap-3 cursor-pointer w-full"
           onClick={() => {
             if (linkHover) {
               return;

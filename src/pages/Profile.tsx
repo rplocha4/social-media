@@ -367,13 +367,7 @@ function Profile() {
 export default Profile;
 
 // eslint-disable-next-line react-refresh/only-export-components
-export async function loader({
-  params,
-}: {
-  params: {
-    username: string;
-  };
-}) {
+export async function loader({ params }: any) {
   const { username } = params;
   const res = await fetch(`http://localhost:3000/api/user/${username}`);
   const data = await res.json();

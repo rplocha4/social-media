@@ -93,13 +93,7 @@ function Post() {
 
 export default Post;
 // eslint-disable-next-line react-refresh/only-export-components
-export function loader({
-  params,
-}: {
-  params: {
-    id: string;
-  };
-}) {
+export function loader({ params }: any) {
   const { id } = params;
   return id;
 }

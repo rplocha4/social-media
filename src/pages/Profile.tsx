@@ -21,6 +21,7 @@ import { setAvatar } from '../store/userSlice';
 import { RootState } from '../store/store';
 import Follows from '../components/Follows';
 import UserActions from '../components/UserActions';
+import { socket } from '../socket';
 
 function Profile() {
   const { username, id } = useLoaderData() as {
@@ -263,6 +264,11 @@ function Profile() {
                       follower: localStorage.getItem('user_id'),
                     }).then((res: any) => {
                       refetchFollowers();
+                      socket.emit('follow', {
+                        author: user.data.username,
+                        follower: userSelector.username,
+                      });
+
                       showMessage(res);
                     })
               }
@@ -271,7 +277,11 @@ function Profile() {
             </button>
           ) : (
             <div className="mt-5">
-              <UserActions isPrivate={user.data?.private} />
+              <UserActions
+                isPrivate={user.data?.private}
+                onChange={refetchUser}
+                user_id={id}
+              />
             </div>
           )}
         </div>

@@ -16,6 +16,7 @@ import { BsThreeDots } from 'react-icons/bs';
 import useClickOutside from '../../hooks/useClickOutside';
 import Modal from '../UI/Modal';
 import CreatePost from './CreatePost';
+import { socket } from '../../socket';
 
 const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   post,
@@ -39,6 +40,13 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   const ref = useRef<HTMLDivElement>(null);
   const [optionsOpen, setOptionsOpen] = useClickOutside(ref);
   const [editOpen, setEditOpen] = useState(false);
+  const likeHandler = () => {
+    if (userSelector.username === post.username) return;
+    socket.emit('like', {
+      liker: userSelector.username,
+      author: post.username,
+    });
+  };
 
   // useEffect(() => {
   //   const handleClickOutside = (event: MouseEvent) => {
@@ -193,6 +201,7 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
                       color: 'blue',
                     })
                   );
+                  likeHandler();
                   setTimeout(() => {
                     dispatch(hideInfo());
                   }, 2000);

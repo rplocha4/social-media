@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Loading from './UI/Loading';
 import Modal from './UI/Modal';
+import { Link, useNavigate } from 'react-router-dom';
 
 function Follows({
   type,
@@ -16,6 +17,7 @@ function Follows({
   isLoading: boolean;
 }) {
   const [infoOpen, setInfoOpen] = useState(false);
+  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loading />;
@@ -29,18 +31,25 @@ function Follows({
             setInfoOpen(false);
           }}
         >
-          <div className="flex flex-col gap-2 h-40">
+          <div className="flex flex-col gap-2 min-h-40">
             {data.map(
               (user: { user_id: string; username: string; avatar: string }) => {
                 return (
-                  <div className="flex items-center gap-2" key={user.user_id}>
+                  <div
+                    className="flex items-center gap-2 hover:cursor-pointer hover:underline p-2 hover:bg-slate-900 rounded-md "
+                    key={user.user_id}
+                    onClick={() => {
+                      setInfoOpen(false);
+                      navigate(`/profile/${user.username}`);
+                    }}
+                  >
                     <img
                       src={
                         user.avatar ||
                         'https://sbcf.fr/wp-content/uploads/2018/03/sbcf-default-avatar.png'
                       }
                       alt="avatar"
-                      className="w-10 h-10 rounded-full"
+                      className="w-20 h-20 rounded-full"
                     />
                     <p className="text-white">{user.username}</p>
                   </div>

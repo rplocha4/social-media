@@ -210,6 +210,16 @@ export const serverApi = createApi({
         },
       }),
     }),
+    setUserPrivate: builder.mutation({
+      query: ({ user_id, setPrivate }) => ({
+        url: `/user/${user_id}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { setPrivate },
+      }),
+    }),
   }),
 });
 
@@ -240,4 +250,5 @@ export const {
   useUpdatePostMutation,
   useUpdateCommentMutation,
   useGetUsersQuery,
+  useSetUserPrivateMutation,
 } = serverApi;

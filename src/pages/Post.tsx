@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import Loading from '../components/UI/Loading';
 import { showInfo } from '../store/uiSlice';
+import { socket } from '../socket';
 
 function Post() {
   const id = useLoaderData() as string;
@@ -31,11 +32,16 @@ function Post() {
         showInfo({ infoMessage: 'You need to be logged in', color: 'red' })
       );
     }
+
     formData.append('post_id', id);
     createComment({
       body: formData,
     }).then(() => {
       refetch();
+      socket.emit('comment', {
+        author: post.data.username,
+        commenter: userSelector.username,
+      });
     });
   };
 

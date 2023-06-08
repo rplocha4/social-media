@@ -1,5 +1,5 @@
 import React, { useRef, useState } from 'react';
-import UserData from '../UserPost/PostData';
+import PostData from '../UserPost/PostData';
 import { TComment } from '../../types/types';
 import { BsThreeDots } from 'react-icons/bs';
 import {
@@ -79,11 +79,12 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
 
       <div className="border-t border-gray-600 w-full px-2 py-5 relative">
         <div className="flex flex-col gap-3">
-          <UserData
+          <PostData
             username={comment.username}
             img={comment.avatar}
             content={comment.content}
             image={comment.image}
+            
             link={`/post/${comment.post_id}`}
           />
           <div className="absolute right-3 top-5 hover:cursor-pointer">

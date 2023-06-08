@@ -14,7 +14,7 @@ const PostData: React.FC<{
   // if (image.length > 0) {
   //   imageData = imageFromBinary(image);
   // }
-// const navigate = useNavigate();
+  // const navigate = useNavigate();
   const formattedContent = useMemo(() => {
     const words = content.split(' ');
     const newWords = words.map((word, i) => {
@@ -35,7 +35,7 @@ const PostData: React.FC<{
   }, [content]);
 
   return (
-    <div className="flex items-center gap-2 ">
+    <Link to={link} className="flex items-center gap-2 ">
       <img
         className="rounded-full self-start"
         src={
@@ -62,13 +62,13 @@ const PostData: React.FC<{
           //   navigate(link);
           // }}
         >
-          <p>{formattedContent}</p>
+          <p className="break-all">{formattedContent}</p>
           {image && (
             <img src={image} alt="post" className="w-full h-80 object-cover" />
           )}
         </div>
       </div>
-    </div>
+    </Link>
   );
 };
 

@@ -21,11 +21,18 @@ function App() {
   const { displayNotification } = useNotification();
 
   useEffect(() => {
-    socket.on('id', ({ id }) => {
-      socket.emit('username', { username });
-    });
+    socket.emit('username', { username });
     socket.on('chat message', ({ senderMsg }) => {
       displayNotification(`New message from ${senderMsg}`);
+    });
+    socket.on('like', ({ liker }) => {
+      displayNotification(`${liker} liked your post`);
+    });
+    socket.on('comment', ({ commenter }) => {
+      displayNotification(`${commenter} commented on your post`);
+    });
+    socket.on('follow', ({ follower }) => {
+      displayNotification(`${follower} followed you`);
     });
   }, [dispatch, username, displayNotification]);
 

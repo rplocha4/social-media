@@ -60,6 +60,7 @@ const Register = () => {
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'User successfully created') {
+              
               navigate('/login');
             }
           });

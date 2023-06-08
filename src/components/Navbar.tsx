@@ -1,15 +1,12 @@
-import { AiFillHome, AiOutlinePlusCircle } from 'react-icons/ai';
+import { AiFillHome } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
-import { FaUserAlt } from 'react-icons/fa';
 import { BsFillChatDotsFill } from 'react-icons/bs';
 import Modal from './UI/Modal';
-import CreatePost from './UserPost/CreatePost';
-import { useState } from 'react';
 
 function Navbar() {
   const uiSelector = useSelector((state: RootState) => state.ui);

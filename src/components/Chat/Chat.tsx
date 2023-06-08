@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { socket } from '../../socket';
 import { IoSend } from 'react-icons/io5';
 import Search from '../Search';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import {
   useLazyGetMessagesQuery,
@@ -12,7 +12,6 @@ import Loading from '../UI/Loading';
 import { Link } from 'react-router-dom';
 import Typing from '../UI/Typing/Typing';
 import PrevChats from './PrevChats';
-import { showNotification } from '../../store/uiSlice';
 import useNotification from '../../hooks/useNotification';
 
 // const convertDate = (date: string) => {
@@ -54,15 +53,6 @@ function Chat() {
   const scrollBottom = () => {
     messagesRef.current?.scrollTo(0, messagesRef.current?.scrollHeight);
   };
-
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    socket.connect();
-    return () => {
-      socket.disconnect();
-    };
-  }, []);
 
   useEffect(() => {
     scrollBottom();
@@ -265,9 +255,6 @@ function Chat() {
       >
         {receiverTyping && (
           <div className="flex items-center -translate-y-5 translate-x-3">
-            {/* <span className="text-xl font-bold">
-              {receiver.username} typing...
-            </span> */}
             <Typing />
           </div>
         )}

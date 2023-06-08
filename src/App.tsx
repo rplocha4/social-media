@@ -19,6 +19,9 @@ function App() {
   const username = localStorage.getItem('username');
   const navigate = useNavigate();
   const { displayNotification } = useNotification();
+  const notificationSettings = JSON.parse(
+    localStorage.getItem(`notificationSettings-${username}`) || '{}'
+  );
 
   useEffect(() => {
     socket.emit('username', { username });
@@ -26,16 +29,20 @@ function App() {
       displayNotification(`New message from ${senderMsg}`);
     });
     socket.on('like', ({ liker }) => {
-      displayNotification(`${liker} liked your post`);
+      notificationSettings.likes &&
+        displayNotification(`${liker} liked your post`);
     });
     socket.on('comment', ({ commenter }) => {
-      displayNotification(`${commenter} commented on your post`);
+      notificationSettings.comments &&
+        displayNotification(`${commenter} commented on your post`);
     });
     socket.on('follow', ({ follower }) => {
-      displayNotification(`${follower} followed you`);
+      notificationSettings.follows &&
+        displayNotification(`${follower} followed you`);
     });
     socket.on('mention', ({ mentioner }) => {
-      displayNotification(`${mentioner} mentioned you in a post`);
+      notificationSettings.mentions &&
+        displayNotification(`${mentioner} mentioned you in a post`);
     });
 
     return () => {
@@ -45,7 +52,7 @@ function App() {
       socket.off('follow');
       socket.off('mention');
     };
-  }, [dispatch, username, displayNotification]);
+  }, [dispatch, username, displayNotification, notificationSettings]);
 
   useEffect(() => {
     const token = localStorage.getItem('token');

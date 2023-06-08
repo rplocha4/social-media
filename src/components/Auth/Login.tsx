@@ -63,6 +63,22 @@ const Login = () => {
               // dispatch(
               //   login({ token: data.token, user_id: data.user.user_id, username:data.user.username })
               // );
+              const defaultNotificationSettings = {
+                likes: true,
+                comments: true,
+                follows: true,
+                mentions: true,
+              };
+              if (
+                !localStorage.getItem(
+                  `notificationSettings-${data.user.username}`
+                )
+              )
+                localStorage.setItem(
+                  `notificationSettings-${data.user.username}`,
+                  JSON.stringify(defaultNotificationSettings)
+                );
+
               dispatch(
                 showInfo({ message: 'Logged in successfully!', color: 'green' })
               );

@@ -17,12 +17,13 @@ import Profile from './pages/Profile.tsx';
 import { loader as profileLoader } from './pages/Profile.tsx';
 import Chat from './components/Chat/Chat.tsx';
 import Admin from './pages/Admin.tsx';
+import Events from './pages/Events.tsx';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <App />,
-    
+
     children: [
       {
         path: 'home',
@@ -42,6 +43,10 @@ const router = createBrowserRouter([
       {
         path: '/chat',
         element: <Chat />,
+      },
+      {
+        path: 'events',
+        element: <Events />,
       },
     ],
   },

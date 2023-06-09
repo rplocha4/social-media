@@ -1,11 +1,11 @@
 import { AiFillHome } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, NavLink } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
-import { BsFillChatDotsFill } from 'react-icons/bs';
+import { BsCalendarEvent, BsFillChatDotsFill } from 'react-icons/bs';
 import { useLayoutEffect, useState } from 'react';
 
 function Navbar() {
@@ -32,20 +32,29 @@ function Navbar() {
     <>
       <div className="flex flex-col justify-between h-screen fixed mt-10 overflow-hidden">
         <div className="flex flex-col gap-3">
-          <Link to="/home" className="">
+          <NavLink
+            to="/home"
+            className={({ isActive }) =>
+              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
+            }
+          >
             <span
-              className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl ${
+              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
                 darkTheme ? 'darkHover' : 'lightHover'
-              } 
-          bg-slate-40`}
+              } bg-slate-40 `}
             >
               <AiFillHome className="" />
               {width > 1000 && <p>Home</p>}
             </span>
-          </Link>
-          <Link to="/chat" className="">
+          </NavLink>
+          <NavLink
+            to="/chat"
+            className={({ isActive }) =>
+              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
+            }
+          >
             <span
-              className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl ${
+              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
                 darkTheme ? 'darkHover' : 'lightHover'
               } 
           bg-slate-40`}
@@ -54,14 +63,36 @@ function Navbar() {
 
               {width > 1000 && <p>Chat</p>}
             </span>
-          </Link>
+          </NavLink>
+          <NavLink
+            to="/events"
+            className={({ isActive }) =>
+              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
+            }
+          >
+            <span
+              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
+                darkTheme ? 'darkHover' : 'lightHover'
+              } 
+          bg-slate-40`}
+            >
+              <BsCalendarEvent className="" />
+
+              {width > 1000 && <p>Events</p>}
+            </span>
+          </NavLink>
         </div>
 
         {username !== null ? (
           <div className="flex flex-col items mb-20 gap-3">
-            <Link to={`/profile/${username}`} className="">
+            <NavLink
+              to={`/profile/${username}`}
+              className={({ isActive }) =>
+                `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
+              }
+            >
               <span
-                className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
+                className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl cursor-pointer ${
                   darkTheme ? 'darkHover' : 'lightHover'
                 }
             bg-slate-40`}
@@ -83,7 +114,7 @@ function Navbar() {
                   </p>
                 )}
               </span>
-            </Link>
+            </NavLink>
             {/* <div
               className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer flex-wrap ${
                 darkTheme ? 'darkHover' : 'lightHover'

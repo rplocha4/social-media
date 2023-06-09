@@ -220,6 +220,45 @@ export const serverApi = createApi({
         body: { setPrivate },
       }),
     }),
+    createEvent: builder.mutation({
+      query: ({ body }) => ({
+        url: `/events`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
+    getEvents: builder.query({
+      query: () => ({
+        url: `/events`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    joinEvent: builder.mutation({
+      query: ({ event_id, user_id }) => ({
+        url: `/events/${event_id}/join`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { user_id },
+      }),
+    }),
+    leaveEvent: builder.mutation({
+      query: ({ event_id, user_id }) => ({
+        url: `/events/${event_id}/resign`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { user_id },
+      }),
+    }),
   }),
 });
 
@@ -251,4 +290,8 @@ export const {
   useUpdateCommentMutation,
   useGetUsersQuery,
   useSetUserPrivateMutation,
+  useCreateEventMutation,
+  useGetEventsQuery,
+  useJoinEventMutation,
+  useLeaveEventMutation,
 } = serverApi;

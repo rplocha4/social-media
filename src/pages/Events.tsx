@@ -7,6 +7,7 @@ import Loading from '../components/UI/Loading';
 import CreateEvent from '../components/Events/CreateEvent';
 import EventCard from '../components/Events/EventCard';
 import { TEvent } from '../types/types';
+import EventsResults from '../components/Events/EventsResult';
 
 function Events() {
   const [filter, setFilter] = useState('all');
@@ -66,7 +67,7 @@ function Events() {
         {results.length === 0 ? (
           <p className="text-2xl font-bold p-5">No results</p>
         ) : (
-          <div className="flex flex-col bg-zinc-800 ">
+          <div className="flex flex-col bg-zinc-800 w-full">
             <h1
               className="
             text-2xl font-bold text-center p-5
@@ -75,7 +76,8 @@ function Events() {
               {filter === 'all' ? 'All events' : 'Your events'} (
               {results.length})
             </h1>
-            <div className="grid grid-cols-2 gap-5 bg-zinc-800 p-10 h-full ">
+            <EventsResults events={results} onRefetch={refetch} />
+            {/* <div className="grid grid-cols-2 gap-5 bg-zinc-800 p-10 h-full ">
               {results.map((event: TEvent) => {
                 return (
                   <EventCard
@@ -86,7 +88,7 @@ function Events() {
                   />
                 );
               })}
-            </div>
+            </div> */}
           </div>
         )}
       </div>

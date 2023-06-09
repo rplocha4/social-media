@@ -2,6 +2,7 @@ import React from 'react';
 import { useReducer } from 'react';
 import { useDispatch } from 'react-redux';
 import { hideInfo, showInfo } from '../store/uiSlice';
+import { FormControlLabel, Switch } from '@mui/material';
 
 const reducer = (
   state: {
@@ -49,60 +50,68 @@ function Notifications({ onClose }: { onClose: () => void }) {
   };
 
   return (
-    <div className="flex flex-col gap-2 p-2 w-full h-full">
-      <h1 className="text-2xl font-bold text-white">Notifications settings</h1>
-      <form action="" onSubmit={submitHandler}>
-        <div className="flex flex-col gap-2 p-2">
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              defaultChecked={setting.follows}
-              onChange={(e) =>
-                dispatch({ type: 'follows', payload: e.target.checked })
+    <div className="flex flex-col gap-10 p-5 w-full h-full ">
+      <h1 className="text-4xl font-bold text-white">Notifications settings</h1>
+      <form action="" onSubmit={submitHandler} className="flex flex-col">
+        <div className="flex flex-col gap-12 p-2">
+          <div className="flex items-center gap-2 text-3xl font-semibold">
+            <FormControlLabel
+              className="bg-inherit max-w-xs"
+              control={
+                <Switch
+                  checked={setting.follows}
+                  onChange={(e) =>
+                    dispatch({ type: 'follows', payload: e.target.checked })
+                  }
+                />
               }
+              label="Someone follows you"
             />
-            <p>Someone follows you</p>
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              defaultChecked={setting.likes}
-              onChange={(e) =>
-                dispatch({ type: 'likes', payload: e.target.checked })
+          <div className="flex items-center gap-2 text-3xl font-semibold">
+            <FormControlLabel
+              className="bg-inherit max-w-xs "
+              control={
+                <Switch
+                  checked={setting.likes}
+                  onChange={(e) =>
+                    dispatch({ type: 'likes', payload: e.target.checked })
+                  }
+                />
               }
+              label="Someone likes your post"
             />
-            <p>Someone likes your post</p>
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              defaultChecked={setting.comments}
-              onChange={(e) =>
-                dispatch({ type: 'comments', payload: e.target.checked })
+          <div className="flex items-center gap-2 text-3xl font-semibold">
+            <FormControlLabel
+              className="bg-inherit max-w-xs "
+              control={
+                <Switch
+                  checked={setting.comments}
+                  onChange={(e) =>
+                    dispatch({ type: 'comments', payload: e.target.checked })
+                  }
+                />
               }
+              label="Someone comments on your post"
             />
-            <p>Someone comments on your post</p>
           </div>
-          <div className="flex items-center gap-2">
-            <input
-              type="checkbox"
-              name=""
-              id=""
-              defaultChecked={setting.mentions}
-              onChange={(e) =>
-                dispatch({ type: 'mentions', payload: e.target.checked })
+          <div className="flex items-center gap-2 text-3xl font-semibold">
+            <FormControlLabel
+              className="bg-inherit max-w-xs "
+              control={
+                <Switch
+                  checked={setting.mentions}
+                  onChange={(e) =>
+                    dispatch({ type: 'mentions', payload: e.target.checked })
+                  }
+                />
               }
+              label="Someone mentions you in post"
             />
-            <p>Someone mentions you in post</p>
           </div>
         </div>
-        <button className="bg-slate-900 rounded-xl p-2 text-white hover:bg-slate-800">
+        <button className="bg-green-900 rounded-xl p-2 text-white hover:bg-green-800 self-end">
           Save changes
         </button>
       </form>

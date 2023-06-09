@@ -10,6 +10,7 @@ import {
   useFollowUserMutation,
   useUnfollowUserMutation,
   useGetFollowingQuery,
+  useLazyUserEventsQuery,
 } from '../store/features/serverApi';
 import Posts from '../components/UserPost/Posts';
 import Loading from '../components/UI/Loading';
@@ -22,12 +23,15 @@ import { RootState } from '../store/store';
 import Follows from '../components/Follows';
 import UserActions from '../components/UserActions';
 import { socket } from '../socket';
-import { defaultAvatar } from '../types/types';
+import { TEvent, defaultAvatar } from '../types/types';
+import EventCard from '../components/Events/EventCard';
+import EventsResult from '../components/Events/EventsResult';
 
 const typeFilter = {
   posts: 'posts',
   likes: 'likes',
   comments: 'comments',
+  events: 'events',
 };
 
 function Profile() {
@@ -74,6 +78,7 @@ function Profile() {
   const [getPosts] = useLazyGetUserPostsQuery();
   const [getLikes] = useLazyGetUserLikesQuery();
   const [getComments] = useLazyGetUserCommentsQuery();
+  const [userEvents] = useLazyUserEventsQuery();
 
   const [updateUser] = useUpdateUserMutation();
   const backgroundRef = React.useRef<HTMLInputElement>(null);
@@ -102,11 +107,18 @@ function Profile() {
             setLoading(false);
           });
           break;
+        case typeFilter.events:
+          userEvents(id).then((res) => {
+            setResults(res.data);
+            setLoading(false);
+          });
+          break;
+
         default:
           break;
       }
     },
-    [getComments, getLikes, getPosts, username]
+    [getComments, getLikes, getPosts, username, userEvents, id]
   );
 
   const showMessage = (res: {
@@ -335,6 +347,12 @@ function Profile() {
         >
           Comments
         </button>
+        <button
+          className="px-4 py-2 rounded-lg flex-1 hover:bg-gray-600"
+          onClick={() => fetchData(typeFilter.events)}
+        >
+          Events
+        </button>
       </div>
       {user.data.private && !isUserPage && !isFollowing ? (
         <div className="flex justify-center items-center p-2 text-xl font-bold text-blue-500">
@@ -345,12 +363,21 @@ function Profile() {
           {loading ? (
             <Loading />
           ) : results?.length > 0 ? (
-            <Posts
-              posts={results}
-              onRefetch={() => {
-                fetchData(filter);
-              }}
-            />
+            filter === typeFilter.events ? (
+              <EventsResult
+                events={results as TEvent[]}
+                onRefetch={() => {
+                  fetch(filter);
+                }}
+              />
+            ) : (
+              <Posts
+                posts={results}
+                onRefetch={() => {
+                  fetchData(filter);
+                }}
+              />
+            )
           ) : (
             <div className="flex justify-center items-center p-2 text-xl font-bold text-blue-500">
               <p>

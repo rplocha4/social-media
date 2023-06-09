@@ -15,6 +15,7 @@ type EventCardProps = {
     name: string;
     description: string;
     date: string;
+    image: string;
   };
   participants: {
     user_id: string;
@@ -48,7 +49,7 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
       )}
       <div className="flex flex-col hover:bg-zinc-700 p-5 rounded-xl cursor-pointer">
         <img
-          src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRnZc4nu61fo87fwxBfVNGokRj1TP8t6IrdEQ&usqp=CAU"
+          src={`${event.image ? event.image : ''}`}
           alt=""
           className="rounded-t-md"
         />

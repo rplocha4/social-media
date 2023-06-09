@@ -304,4 +304,5 @@ export const {
   useJoinEventMutation,
   useLeaveEventMutation,
   useLazyGetEventsQuery,
+  useLazyUserEventsQuery,
 } = serverApi;

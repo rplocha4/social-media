@@ -13,7 +13,8 @@ const ModalOverlay: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   return (
     <div
-      className={`${classes.animate} fixed left-1/4 top-32 w-3/6 h-auto bg-zinc-900 p-1 rounded-xl z-30 shadow-lg max-h-96 overflow-auto `}
+      className={`${classes.animate} fixed left-1/4 top-32 w-3/6 h-auto bg-zinc-900 p-1 rounded-xl z-30 shadow-lg overflow-auto `}
+      style={{ maxHeight: '70vh' }}
     >
       {children}
     </div>

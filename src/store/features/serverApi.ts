@@ -268,6 +268,100 @@ export const serverApi = createApi({
         },
       }),
     }),
+    createGroup: builder.mutation({
+      query: ({ body }) => ({
+        url: `/groups`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
+    getGroups: builder.query({
+      query: () => ({
+        url: `/groups`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    joinGroup: builder.mutation({
+      query: ({ group_id, user_id }) => ({
+        url: `/groups/${group_id}/request`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { user_id },
+      }),
+    }),
+    requestDecision: builder.mutation({
+      query: ({ group_id, user_id, decision, requestId }) => ({
+        url: `/groups/${group_id}/request/${requestId}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: { user_id, decision },
+      }),
+    }),
+    getGroupRequests: builder.query({
+      query: (group_id) => ({
+        url: `/groups/${group_id}/requests`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    getGroupMembers: builder.query({
+      query: (group_id) => ({
+        url: `/groups/${group_id}/users`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    createGroupPost: builder.mutation({
+      query: ({ body, gruop_id }) => ({
+        url: `/groups/${gruop_id}/posts`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
+    getGroupPosts: builder.query({
+      query: (group_id) => ({
+        url: `/groups/${group_id}/posts`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    leaveGroup: builder.mutation({
+      query: ({ group_id, user_id }) => ({
+        url: `/groups/${group_id}/users/${user_id}`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    sentRequest: builder.query({
+      query: ({ group_id, user_id }) => ({
+        url: `/groups/${group_id}/users/${user_id}/requests`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -305,4 +399,14 @@ export const {
   useLeaveEventMutation,
   useLazyGetEventsQuery,
   useLazyUserEventsQuery,
+  useCreateGroupMutation,
+  useGetGroupsQuery,
+  useJoinGroupMutation,
+  useRequestDecisionMutation,
+  useGetGroupRequestsQuery,
+  useGetGroupMembersQuery,
+  useCreateGroupPostMutation,
+  useGetGroupPostsQuery,
+  useLeaveGroupMutation,
+  useSentRequestQuery,
 } = serverApi;

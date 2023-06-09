@@ -3,6 +3,7 @@ import Loading from './UI/Loading';
 import Modal from './UI/Modal';
 import { useNavigate } from 'react-router-dom';
 import { defaultAvatar } from '../types/types';
+import ModalUserList from './UI/ModalUserList';
 
 function Follows({
   type,
@@ -27,40 +28,13 @@ function Follows({
   return (
     <>
       {infoOpen && (
-        <Modal
+        <ModalUserList
+          type={type}
+          data={data}
           onClose={() => {
             setInfoOpen(false);
           }}
-        >
-          <div className="flex flex-col gap-2 min-h-40">
-            {
-              <p className="text-white font-bold flex justify-center text-2xl">
-                {data.length} {type}
-              </p>
-            }
-            {data.map(
-              (user: { user_id: string; username: string; avatar: string }) => {
-                return (
-                  <div
-                    className="flex items-center gap-2 hover:cursor-pointer hover:underline p-2 hover:bg-zinc-800 rounded-md "
-                    key={user.user_id}
-                    onClick={() => {
-                      setInfoOpen(false);
-                      navigate(`/profile/${user.username}`);
-                    }}
-                  >
-                    <img
-                      src={user.avatar || defaultAvatar}
-                      alt="avatar"
-                      className="w-20 h-20 rounded-full"
-                    />
-                    <p className="text-white">{user.username}</p>
-                  </div>
-                );
-              }
-            )}
-          </div>
-        </Modal>
+        />
       )}
 
       <span

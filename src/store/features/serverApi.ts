@@ -259,6 +259,15 @@ export const serverApi = createApi({
         body: { user_id },
       }),
     }),
+    userEvents: builder.query({
+      query: (user_id) => ({
+        url: `/users/${user_id}/events`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -294,4 +303,5 @@ export const {
   useGetEventsQuery,
   useJoinEventMutation,
   useLeaveEventMutation,
+  useLazyGetEventsQuery,
 } = serverApi;

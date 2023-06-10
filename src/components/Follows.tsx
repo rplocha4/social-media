@@ -1,8 +1,5 @@
 import { useState } from 'react';
 import Loading from './UI/Loading';
-import Modal from './UI/Modal';
-import { useNavigate } from 'react-router-dom';
-import { defaultAvatar } from '../types/types';
 import ModalUserList from './UI/ModalUserList';
 
 function Follows({
@@ -19,7 +16,6 @@ function Follows({
   isLoading: boolean;
 }) {
   const [infoOpen, setInfoOpen] = useState(false);
-  const navigate = useNavigate();
 
   if (isLoading) {
     return <Loading />;

@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from 'react';
+import { useMemo, useState } from 'react';
 import {
   useGetGroupRequestsQuery,
   useRequestDecisionMutation,
@@ -18,7 +18,9 @@ function Requests({ id }: { id: string }) {
 
   const pendingRequests = useMemo(() => {
     if (requests) {
-      return requests.filter((request: any) => request.status === 'pending');
+      return requests.filter(
+        (request: { status: string }) => request.status === 'pending'
+      );
     }
   }, [requests]);
 
@@ -42,7 +44,13 @@ function Requests({ id }: { id: string }) {
         >
           <div className="flex flex-col gap-2">
             {requests?.map(
-              (request: any) =>
+              (request: {
+                user_id: string;
+                username: string;
+                avatar: string;
+                request_id: string;
+                status: string;
+              }) =>
                 request.status === 'pending' && (
                   <div className="flex flex-col gap-2" key={request.user_id}>
                     <div className="flex justify-between">
@@ -65,7 +73,7 @@ function Requests({ id }: { id: string }) {
                               user_id: request.user_id,
                               request_id: request.request_id,
                               decision: 'accepted',
-                            }).then((res) => {
+                            }).then(() => {
                               refetch();
                             });
                           }}
@@ -80,7 +88,8 @@ function Requests({ id }: { id: string }) {
                               user_id: request.user_id,
                               request_id: request.request_id,
                               decision: 'rejected',
-                            }).then((res) => {
+                            }).then(() => {
+                                
                               refetch();
                             });
                           }}

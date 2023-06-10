@@ -5,7 +5,6 @@ function Admin() {
   const role = localStorage.getItem('role');
 
   if (role !== 'admin') {
-    console.log('asds');
     return <Navigate to="/home" />;
   }
 

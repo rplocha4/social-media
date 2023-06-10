@@ -24,7 +24,6 @@ import Follows from '../components/Follows';
 import UserActions from '../components/UserActions';
 import { socket } from '../socket';
 import { TEvent, defaultAvatar } from '../types/types';
-import EventCard from '../components/Events/EventCard';
 import EventsResult from '../components/Events/EventsResult';
 
 const typeFilter = {

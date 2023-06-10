@@ -1,10 +1,9 @@
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { useLoaderData } from 'react-router';
 import {
   useCreateGroupPostMutation,
   useGetGroupQuery,
   useJoinGroupMutation,
-  useRequestDecisionMutation,
   useSentRequestQuery,
 } from '../store/features/serverApi';
 import Loading from '../components/UI/Loading';
@@ -50,7 +49,7 @@ function Group() {
     createGroupPost({
       body: formData,
       group_id: groupData.id,
-    }).then((res) => {
+    }).then(() => {
       //   console.log(res);
       dispatch(
         showInfo({
@@ -69,7 +68,7 @@ function Group() {
   if (isLoading) return <Loading />;
   if (isError) return <div>Something went wrong</div>;
 
-  //   console.log(groupData);
+  console.log(groupData);
 
   return (
     <div className="min-h-screen w-full flex flex-col">
@@ -82,7 +81,15 @@ function Group() {
       <div className="text-2xl hover:cursor-pointer">
         <Follows
           type={`${groupData.users.length === 1 ? ' Member' : ' Members'}`}
-          data={groupData.users}
+          data={groupData.users.map(
+            (user: { id: string; username: string; avatar: string }) => {
+              return {
+                user_id: user.id,
+                username: user.username,
+                avatar: user.avatar,
+              };
+            }
+          )}
           isLoading={isLoading}
         />
       </div>

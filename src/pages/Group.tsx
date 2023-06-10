@@ -13,18 +13,13 @@ import Follows from '../components/Follows';
 import { useDispatch } from 'react-redux';
 import { showInfo, hideInfo } from '../store/uiSlice';
 import Requests from '../components/Groups/Requests';
+import GroupActions from '../components/Groups/GroupActions';
 
 function Group() {
   const id = useLoaderData();
   const { data: groupData, isLoading, isError, refetch } = useGetGroupQuery(id);
   const [createGroupPost] = useCreateGroupPostMutation();
   const user_id = localStorage.getItem('user_id') || '';
-
-  const [requestJoin] = useJoinGroupMutation();
-  const { data: sentRequest, refetch: requestRefetch } = useSentRequestQuery({
-    group_id: id,
-    user_id,
-  });
 
   //   const [requestDecision] = useRequestDecisionMutation();
 
@@ -33,7 +28,7 @@ function Group() {
 
   const isMember = useMemo(() => {
     if (groupData) {
-      return groupData.users.some(
+      return groupData.users?.some(
         (user: { username: string }) => user.username === username
       );
     }
@@ -95,34 +90,7 @@ function Group() {
       </div>
 
       {!isMember ? (
-        sentRequest?.hasSentRequest ? (
-          <div className="bg-green-600 text-white rounded-md p-2 w-1/4 flex items-center justify-center">
-            Request sent
-          </div>
-        ) : (
-          <button
-            className="bg-blue-600 text-white rounded-md p-2 w-1/4"
-            onClick={() => {
-              requestJoin({
-                group_id: groupData.id,
-                user_id,
-              }).then(() => {
-                requestRefetch();
-                dispatch(
-                  showInfo({
-                    message: 'Request sent successfully',
-                    color: 'green',
-                  })
-                );
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 2000);
-              });
-            }}
-          >
-            Request join
-          </button>
-        )
+        <GroupActions group_id={groupData.id} />
       ) : (
         <>
           <div>{isOwner && <Requests id={groupData.id} />}</div>

@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const serverApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
-    // baseUrl: 'http://localhost:3000/api',
+    // baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
+    baseUrl: 'http://localhost:3000/api',
   }),
   endpoints: (builder) => ({
     getPosts: builder.query({
@@ -279,8 +279,8 @@ export const serverApi = createApi({
       }),
     }),
     getGroups: builder.query({
-      query: () => ({
-        url: `/groups`,
+      query: ({ userId }) => ({
+        url: `/groups/${userId}`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -318,7 +318,7 @@ export const serverApi = createApi({
     }),
     getGroup: builder.query({
       query: (group_id) => ({
-        url: `/groups/${group_id}`,
+        url: `/group/${group_id}`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -356,7 +356,7 @@ export const serverApi = createApi({
     leaveGroup: builder.mutation({
       query: ({ group_id, user_id }) => ({
         url: `/groups/${group_id}/users/${user_id}`,
-        method: 'POST',
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -366,6 +366,15 @@ export const serverApi = createApi({
       query: ({ group_id, user_id }) => ({
         url: `/groups/${group_id}/users/${user_id}/requests`,
         method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    cancelRequest: builder.mutation({
+      query: ({ group_id, user_id }) => ({
+        url: `/groups/${group_id}/requests/${user_id}`,
+        method: 'DELETE',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
         },
@@ -419,4 +428,5 @@ export const {
   useLeaveGroupMutation,
   useSentRequestQuery,
   useGetGroupQuery,
+  useCancelRequestMutation,
 } = serverApi;

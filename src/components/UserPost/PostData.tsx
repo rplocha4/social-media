@@ -44,8 +44,13 @@ const PostData: React.FC<{
           </Link>
         );
       }
-      return word + ' ';
+      return (
+        <p key={i} className="inline">
+          {word == '' ? ' ' : word}
+        </p>
+      );
     });
+
     return newWords;
   }, [content]);
 
@@ -76,7 +81,7 @@ const PostData: React.FC<{
             navigate(link);
           }}
         >
-          <div>{formattedContent}</div>
+          <div>{formattedContent.map((word) => word)}</div>
           {image && (
             <img src={image} alt="post" className="w-full h-80 object-cover" />
           )}

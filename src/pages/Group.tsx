@@ -68,7 +68,7 @@ function Group() {
   if (isLoading) return <Loading />;
   if (isError) return <div>Something went wrong</div>;
 
-  console.log(groupData);
+  //   console.log(groupData);
 
   return (
     <div className="min-h-screen w-full flex flex-col">

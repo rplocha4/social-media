@@ -14,7 +14,8 @@ function Events() {
   const user_id = localStorage.getItem('user_id') as string;
 
   const { data: events, isLoading, refetch } = useGetEventsQuery('');
-  const [userEvents] = useLazyUserEventsQuery();
+  const [userEvents, { isLoading: userEventsLoading }] =
+    useLazyUserEventsQuery();
   const [results, setResults] = useState<TEvent[]>([]);
   useEffect(() => {
     if (filter === 'all') {
@@ -28,7 +29,7 @@ function Events() {
     }
   }, [filter, events, userEvents, user_id]);
 
-  if (isLoading) return <Loading />;
+  if (isLoading || userEventsLoading) return <Loading />;
 
   return (
     <div className="flex flex-col  min-h-screen w-full">

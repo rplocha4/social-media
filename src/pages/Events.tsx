@@ -1,11 +1,10 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useGetEventsQuery,
   useLazyUserEventsQuery,
 } from '../store/features/serverApi';
 import Loading from '../components/UI/Loading';
 import CreateEvent from '../components/Events/CreateEvent';
-import EventCard from '../components/Events/EventCard';
 import { TEvent } from '../types/types';
 import EventsResults from '../components/Events/EventsResult';
 

@@ -50,17 +50,19 @@ const Register = () => {
 
         setSubmitting(false);
 
-        fetch('https:/localhost:3000/api/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values),
-        })
+        fetch(
+          'https://social-media-backend-tfft.onrender.com/api/auth/register',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             if (data.message === 'User successfully created') {
-              
               navigate('/login');
             }
           });

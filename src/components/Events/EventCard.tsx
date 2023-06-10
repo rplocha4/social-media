@@ -3,11 +3,9 @@ import {
   useJoinEventMutation,
   useLeaveEventMutation,
 } from '../../store/features/serverApi';
-import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
+import { useDispatch } from 'react-redux';
 import { hideInfo, showInfo } from '../../store/uiSlice';
 import ModalUserList from '../UI/ModalUserList';
-import { BsFillTrainLightrailFrontFill } from 'react-icons/bs';
 
 type EventCardProps = {
   event: {

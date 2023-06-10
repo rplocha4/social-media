@@ -1,4 +1,3 @@
-import React from 'react';
 import { TEvent } from '../../types/types';
 import EventCard from './EventCard';
 

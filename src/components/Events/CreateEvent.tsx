@@ -15,7 +15,6 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
     hasErrors: descriptionHasError,
     valueChangeHandler: descriptionChangeHandler,
     valueBlurHandler: descriptionBlurHandler,
-    reset: resetDescription,
   } = useInput(isNotEmpty);
   const {
     value: name,
@@ -23,7 +22,6 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
     hasErrors: nameHasError,
     valueChangeHandler: nameChangeHandler,
     valueBlurHandler: nameBlurHandler,
-    reset: resetName,
   } = useInput(isNotEmpty);
   const {
     value: date,
@@ -31,7 +29,6 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
     hasErrors: dateHasError,
     valueChangeHandler: dateChangeHandler,
     valueBlurHandler: dateBlurHandler,
-    reset: resetDate,
   } = useInput(isNotEmpty);
   const {
     value: image,
@@ -71,13 +68,13 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
         image,
       },
     })
-      .then((res) => {
+      .then(() => {
         dispatch(showInfo({ message: 'Event created', color: 'green' }));
         setTimeout(() => {
           dispatch(hideInfo());
         }, 3000);
       })
-      .catch((err) => {
+      .catch(() => {
         dispatch(showInfo({ message: 'Error creating event', color: 'red' }));
         setTimeout(() => {
           dispatch(hideInfo());

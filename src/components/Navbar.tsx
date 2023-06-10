@@ -7,6 +7,7 @@ import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
 import { BsCalendarEvent, BsFillChatDotsFill } from 'react-icons/bs';
 import { useLayoutEffect, useState } from 'react';
+import { MdGroups } from 'react-icons/md';
 
 function Navbar() {
   const uiSelector = useSelector((state: RootState) => state.ui);
@@ -79,6 +80,23 @@ function Navbar() {
               <BsCalendarEvent className="" />
 
               {width > 1000 && <p>Events</p>}
+            </span>
+          </NavLink>
+          <NavLink
+            to="/groups"
+            className={({ isActive }) =>
+              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
+            }
+          >
+            <span
+              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
+                darkTheme ? 'darkHover' : 'lightHover'
+              } 
+          bg-slate-40`}
+            >
+              <MdGroups className="" />
+
+              {width > 1000 && <p>Groups</p>}
             </span>
           </NavLink>
         </div>

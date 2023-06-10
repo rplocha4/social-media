@@ -10,6 +10,7 @@ import {
   createBrowserRouter,
 } from 'react-router-dom';
 import Post, { loader as postLoader } from './pages/Post.tsx';
+import Group, { loader as groupLoader } from './pages/Group.tsx';
 import Home from './pages/Home.tsx';
 import Register from './components/Auth/Register.tsx';
 import Login from './components/Auth/Login.tsx';
@@ -18,6 +19,7 @@ import { loader as profileLoader } from './pages/Profile.tsx';
 import Chat from './components/Chat/Chat.tsx';
 import Admin from './pages/Admin.tsx';
 import Events from './pages/Events.tsx';
+import Groups from './pages/Groups.tsx';
 
 const router = createBrowserRouter([
   {
@@ -47,6 +49,15 @@ const router = createBrowserRouter([
       {
         path: 'events',
         element: <Events />,
+      },
+      {
+        path: 'groups',
+        element: <Groups />,
+      },
+      {
+        path: 'group/:id',
+        element: <Group />,
+        loader: groupLoader,
       },
     ],
   },

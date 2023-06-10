@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 import Typing from '../UI/Typing/Typing';
 import PrevChats from './PrevChats';
 import useNotification from '../../hooks/useNotification';
+import { FiSearch } from 'react-icons/fi';
+import useClickOutside from '../../hooks/useClickOutside';
 
 // const convertDate = (date: string) => {
 //   const d = new Date(date);
@@ -49,6 +51,9 @@ function Chat() {
   const { displayNotification } = useNotification();
 
   const messagesRef = useRef<null | HTMLDivElement>(null);
+  const searchRef = useRef<null | HTMLDivElement>(null);
+
+  const [searchOpen, setSearchOpen] = useClickOutside(searchRef);
 
   const scrollBottom = () => {
     messagesRef.current?.scrollTo(0, messagesRef.current?.scrollHeight);
@@ -191,14 +196,25 @@ function Chat() {
           </div>
         </div>
 
-        <div className="absolute right-0">
-          <Search
-            onConfirm={(user) => {
-              setReceiver(
-                user as { username: string; avatar: string; id: string }
-              );
-            }}
-          />
+        <div className="absolute right-0" ref={searchRef}>
+          {searchOpen ? (
+            <Search
+              onConfirm={(user) => {
+                setReceiver(
+                  user as { username: string; avatar: string; id: string }
+                );
+              }}
+            />
+          ) : (
+            <FiSearch
+              onClick={() => {
+                setSearchOpen(true);
+              }}
+              className="hover:scale-110 mr-5 hover:cursor-pointer text-3xl font-bold self-end h-20 text-center flex justify-center items-center"
+            >
+              Search
+            </FiSearch>
+          )}
         </div>
       </div>
       {loadingMessages ? (

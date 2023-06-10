@@ -298,8 +298,8 @@ export const serverApi = createApi({
       }),
     }),
     requestDecision: builder.mutation({
-      query: ({ group_id, user_id, decision, requestId }) => ({
-        url: `/groups/${group_id}/request/${requestId}`,
+      query: ({ group_id, user_id, decision, request_id }) => ({
+        url: `/groups/${group_id}/request/${request_id}`,
         method: 'PUT',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -316,6 +316,15 @@ export const serverApi = createApi({
         },
       }),
     }),
+    getGroup: builder.query({
+      query: (group_id) => ({
+        url: `/groups/${group_id}`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
     getGroupMembers: builder.query({
       query: (group_id) => ({
         url: `/groups/${group_id}/users`,
@@ -326,8 +335,8 @@ export const serverApi = createApi({
       }),
     }),
     createGroupPost: builder.mutation({
-      query: ({ body, gruop_id }) => ({
-        url: `/groups/${gruop_id}/posts`,
+      query: ({ body, group_id }) => ({
+        url: `/groups/${group_id}/posts`,
         method: 'POST',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -409,4 +418,5 @@ export const {
   useGetGroupPostsQuery,
   useLeaveGroupMutation,
   useSentRequestQuery,
+  useGetGroupQuery,
 } = serverApi;

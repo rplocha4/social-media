@@ -4,15 +4,16 @@ import {
   useCreatePostMutation,
   useGetPostsQuery,
 } from '../store/features/serverApi';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
+// import { useSelector } from 'react-redux';
+// import { RootState } from '../store/store';
 import Loading from '../components/UI/Loading';
 import { useShowInfo } from '../components/context/ShowInfoProvider';
 export default function Home() {
-  const userSelector = useSelector((state: RootState) => state.user);
+  // const userSelector = useSelector((state: RootState) => state.user);
+  const user_id = localStorage.getItem('user_id') || '';
 
   const { displayInfo } = useShowInfo();
-  const { data, isLoading, refetch } = useGetPostsQuery(userSelector.user_id);
+  const { data, isLoading, refetch, error } = useGetPostsQuery(user_id);
 
   const [createPost] = useCreatePostMutation();
   if (isLoading) {
@@ -39,6 +40,13 @@ export default function Home() {
     //   refetch();
     // });
   };
+  if (error) {
+    return (
+      <div>
+        <h1>Error</h1>
+      </div>
+    );
+  }
   return (
     <div className="flex flex-col w-full ">
       <CreatePost

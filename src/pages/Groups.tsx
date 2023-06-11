@@ -32,7 +32,7 @@ function Groups() {
 
   const createGroupHandler = (formData: FormData) => {
     setCreatingGroup(false);
-    createGroup({ body: formData }).then((res) => {
+    createGroup({ body: formData }).then(() => {
       refetch();
     });
   };
@@ -88,7 +88,7 @@ function Groups() {
                             leaveGroup({
                               group_id: group.group_id,
                               user_id: userId,
-                            }).then((res) => {
+                            }).then(() => {
                               refetch();
                             });
                           }}

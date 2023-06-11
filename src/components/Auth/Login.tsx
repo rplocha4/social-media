@@ -42,7 +42,7 @@ const Login = () => {
         // alert(JSON.stringify(values, null, 2));
 
         setSubmitting(false);
-        fetch('http://localhost:3000/api/auth/login', {
+        fetch('https://social-media-backend-tfft.onrender.com/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',

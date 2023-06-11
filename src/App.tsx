@@ -1,5 +1,4 @@
 import './App.css';
-import ThemeToggler from './components/ThemeToggler/ThemeToggler';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';

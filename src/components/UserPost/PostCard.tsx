@@ -2,7 +2,6 @@ import { FaRegComment } from 'react-icons/fa';
 import {
   useDeletePostMutation,
   useLikePostMutation,
-  usePostReportMutation,
   useUnlikePostMutation,
   useUpdatePostMutation,
 } from '../../store/features/serverApi';

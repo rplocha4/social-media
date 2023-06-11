@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import Modal from './UI/Modal';
 import { usePostReportMutation } from '../store/features/serverApi';
 import { useShowInfo } from './context/ShowInfoProvider';

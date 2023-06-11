@@ -1,5 +1,8 @@
 import { io } from 'socket.io-client';
 
-const URL = 'https://social-media-backend-tfft.onrender.com:3001';
+const URL = 'https://social-media-backend-tfft.onrender.com';
 
-export const socket = io(URL);
+export const socket = io(URL,{
+    transports: ['websocket'],
+    
+});

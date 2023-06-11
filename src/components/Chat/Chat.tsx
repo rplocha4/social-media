@@ -58,6 +58,12 @@ function Chat() {
   const scrollBottom = () => {
     messagesRef.current?.scrollTo(0, messagesRef.current?.scrollHeight);
   };
+  const messageRef = useRef<null | HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (!receiver.username) return;
+    messageRef.current?.focus();
+  }, [receiver.username]);
 
   useEffect(() => {
     scrollBottom();
@@ -168,7 +174,7 @@ function Chat() {
   };
 
   return (
-    <div className=" w-full h-screen max-h-screen p-2 relative flex flex-col">
+    <div className=" w-full min-h-full max-h-screen p-2 relative flex flex-col">
       <div className="border-b flex justify-between ">
         <div className="flex flex-col gap-5">
           <div className="flex justify-between items-center gap-3">
@@ -286,6 +292,7 @@ function Chat() {
                 setMessage(e.target.value);
                 setTyping(e.target.value.length > 0 ? true : false);
               }}
+              ref={messageRef}
             />
             <button>
               <IoSend className="hover:scale-110 " />

@@ -45,7 +45,7 @@ const PostData: React.FC<{
         );
       }
       return (
-        <p key={i} className="inline">
+        <p key={i} className="inline break-all">
           {word == '' ? ' ' : word}
         </p>
       );

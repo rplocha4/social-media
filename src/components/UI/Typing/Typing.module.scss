@@ -2,7 +2,7 @@ $dot-width: 10px;
 $dot-color: #3b5998;
 $speed: 1.5s;
 
-.typing {
+@mixin typing {
   position: relative;
   
   span {
@@ -27,6 +27,12 @@ $speed: 1.5s;
       margin-left: $dot-width * 3;
     }
   }
+}
+
+
+
+.typing {
+  @include typing
 }
 
 

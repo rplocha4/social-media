@@ -380,6 +380,53 @@ export const serverApi = createApi({
         },
       }),
     }),
+    editUser: builder.mutation({
+      query: ({ body, user_id }) => ({
+        url: `/users/${user_id}`,
+        method: 'PUT',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
+    deleteUser: builder.mutation({
+      query: ({ user_id }) => ({
+        url: `/users/${user_id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    postReport: builder.mutation({
+      query: ({ body }) => ({
+        url: `/reports`,
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: body,
+      }),
+    }),
+    getReportedPosts: builder.query({
+      query: () => ({
+        url: `/reported-posts`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
+    getReportedComments: builder.query({
+      query: () => ({
+        url: `/reported-comments`,
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('token')}`,
+        },
+      }),
+    }),
   }),
 });
 
@@ -429,4 +476,9 @@ export const {
   useSentRequestQuery,
   useGetGroupQuery,
   useCancelRequestMutation,
+  useEditUserMutation,
+  useDeleteUserMutation,
+  usePostReportMutation,
+  useGetReportedPostsQuery,
+  useGetReportedCommentsQuery,
 } = serverApi;

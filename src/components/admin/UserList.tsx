@@ -1,7 +1,12 @@
 import { useState, useReducer, useMemo } from 'react';
-import { useGetUsersQuery } from '../../store/features/serverApi';
+import {
+  useDeleteUserMutation,
+  useGetUsersQuery,
+} from '../../store/features/serverApi';
 import Loading from '../UI/Loading';
 import { BsArrowDownShort, BsArrowUpShort } from 'react-icons/bs';
+import EditUser from './EditUser';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 const filterReducer = (
   state: { nameFilter: string; emailFilter: string },
@@ -18,11 +23,12 @@ const filterReducer = (
 };
 
 function UserList() {
-  const { data, isLoading } = useGetUsersQuery('');
+  const { data, isLoading, refetch } = useGetUsersQuery('');
   const [filters, dispatch] = useReducer(filterReducer, {
     nameFilter: '',
     emailFilter: '',
   });
+  const [editingId, setEditingId] = useState(-1);
 
   const [asc, setAsc] = useState(true);
   const [sort, setSort] = useState('username');
@@ -34,6 +40,9 @@ function UserList() {
       );
     });
   }, [data, filters.nameFilter, filters.emailFilter]);
+
+  const [deleteUser] = useDeleteUserMutation();
+  const { displayInfo } = useShowInfo();
 
   const sortedUsers = useMemo(() => {
     if (!filteredUsers) return;
@@ -159,7 +168,10 @@ function UserList() {
             </td>
           </tr>
           {sortedUsers.map(
-            (user: { user_id: string; username: string; email: string }) => (
+            (
+              user: { user_id: string; username: string; email: string },
+              i: number
+            ) => (
               <tr key={user.user_id}>
                 <td className="border border-slate-700 ">{user.username}</td>
                 <td className="border border-slate-700 ">{user.email}</td>
@@ -176,15 +188,34 @@ function UserList() {
                     className="
                   bg-blue-700 text-white rounded-md px-2 py-1 shadow-md hover:bg-blue-600 transition duration-300 ease-in-out 
                   "
+                    onClick={() => {
+                      setEditingId(i);
+                    }}
                   >
                     edit
                   </button>
+                  {editingId === i && (
+                    <EditUser
+                      {...user}
+                      onClose={() => setEditingId(-1)}
+                      onRefetch={refetch}
+                    />
+                  )}
                 </td>
                 <td className="border border-slate-700 ">
                   <button
                     className="
                   bg-red-700 text-white rounded-md px-2 py-1 shadow-md hover:bg-red-600 transition duration-300 ease-in-out
                   "
+                    onClick={() => {
+                      deleteUser({ user_id: user.user_id }).then(() => {
+                        displayInfo({
+                          message: 'User deleted',
+                          color: 'red',
+                        });
+                        refetch();
+                      });
+                    }}
                   >
                     delete
                   </button>

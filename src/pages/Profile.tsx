@@ -167,7 +167,7 @@ function Profile() {
   }
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col ">
       <div className="grid grid-rows-4 grid-cols-1">
         <div
           className="row-start-1 row-span-3 col-start-1 bg-gray-400 relative"

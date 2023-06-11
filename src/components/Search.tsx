@@ -31,8 +31,8 @@ function Search({
     }
     setLoading(true);
     getResults(value).then((res) => {
-      setResults(res.data.data);
       setLoading(false);
+      setResults(res?.data?.data);
     });
   };
 
@@ -41,7 +41,7 @@ function Search({
       <span
         className={`flex items-center gap-2 ${
           theme === 'dark' ? 'bg-gray-900' : 'bg-zinc-200'
-        } w-full   rounded-2xl p-3 my-2 border ${
+        } w-full rounded-2xl p-3 border ${
           focus
             ? 'border-blue-500'
             : theme === 'dark'
@@ -69,16 +69,13 @@ function Search({
           // value={search}
         />
       </span>
-      {loading ? (
-        <Loading />
-      ) : (
-        results.length > 0 &&
-        open && (
-          <div
-            className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl"
-            ref={ref}
-          >
-            {results.map(
+      {open && (
+        <div
+          className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl"
+          ref={ref}
+        >
+          {results.length > 0 ? (
+            results.map(
               (user: { user_id: string; username: string; avatar: string }) => {
                 return (
                   <div
@@ -91,6 +88,7 @@ function Search({
                         avatar: user.avatar || defaultAvatar,
                       });
                       setResults([]);
+                      setOpen(false);
                     }}
                   >
                     <img
@@ -103,9 +101,13 @@ function Search({
                   </div>
                 );
               }
-            )}
-          </div>
-        )
+            )
+          ) : loading ? (
+            <Loading />
+          ) : (
+            <p className="text-center">No results found</p>
+          )}
+        </div>
       )}
     </div>
   );

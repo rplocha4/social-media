@@ -33,17 +33,15 @@ function Groups() {
   const createGroupHandler = (formData: FormData) => {
     setCreatingGroup(false);
     createGroup({ body: formData }).then((res) => {
-      console.log(res);
       refetch();
     });
   };
 
   if (isLoading) return <Loading />;
   if (isError) return <div>Something went wrong</div>;
-  console.log(groups);
 
   return (
-    <div className="min-h-screen flex flex-col gap-5 p-10">
+    <div className="min-h-full flex flex-col gap-5 p-10">
       <div>
         <input
           type="text"

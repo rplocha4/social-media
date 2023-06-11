@@ -29,19 +29,19 @@ function Events() {
     }
   }, [filter, events, userEvents, user_id]);
 
-  if (isLoading || userEventsLoading) return <Loading />;
+  // if () return <Loading />;
 
   return (
-    <div className="flex flex-col  min-h-screen w-full">
+    <div className="flex flex-col w-full">
       <div className="flex justify-center w-full h-full">
         <button
-          className="text-5xl  font-bold py-2 px-4 w-1/2 border-r border-b hover:bg-zinc-800"
+          className="text-5xl  font-bold  w-1/2 border-r border-b hover:bg-zinc-800 p-5"
           onClick={() => setFilter('all')}
         >
           All events
         </button>
         <button
-          className="text-5xl  font-bold py-2 px-4 w-1/2 border-b  hover:bg-zinc-800"
+          className="text-5xl  font-bold  w-1/2 border-b  hover:bg-zinc-800 p-5"
           onClick={() => setFilter('yours')}
         >
           Yours events
@@ -63,21 +63,22 @@ function Events() {
           }}
         />
       )}
-      <div className="flex justify-center h-full">
-        {results.length === 0 ? (
-          <p className="text-2xl font-bold p-5">No results</p>
-        ) : (
-          <div className="flex flex-col bg-zinc-800 w-full">
-            <h1
-              className="
+      {!(isLoading || userEventsLoading) ? (
+        <div className="flex justify-center h-full">
+          {results.length === 0 ? (
+            <p className="text-2xl font-bold p-5">No results</p>
+          ) : (
+            <div className="flex flex-col bg-zinc-800 w-full">
+              <h1
+                className="
             text-2xl font-bold text-center p-5
             "
-            >
-              {filter === 'all' ? 'All events' : 'Your events'} (
-              {results.length})
-            </h1>
-            <EventsResults events={results} onRefetch={refetch} />
-            {/* <div className="grid grid-cols-2 gap-5 bg-zinc-800 p-10 h-full ">
+              >
+                {filter === 'all' ? 'All events' : 'Your events'} (
+                {results.length})
+              </h1>
+              <EventsResults events={results} onRefetch={refetch} />
+              {/* <div className="grid grid-cols-2 gap-5 bg-zinc-800 p-10 h-full ">
               {results.map((event: TEvent) => {
                 return (
                   <EventCard
@@ -89,9 +90,12 @@ function Events() {
                 );
               })}
             </div> */}
-          </div>
-        )}
-      </div>
+            </div>
+          )}
+        </div>
+      ) : (
+        <Loading />
+      )}
     </div>
   );
 }

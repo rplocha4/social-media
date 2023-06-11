@@ -25,7 +25,7 @@ const Modal: React.FC<{
   onClose: () => void;
   children: React.ReactNode;
 }> = ({ onClose, children }) => {
-  const portalElement = document.getElementById('overlays')!;
+  const portalElement = document.getElementById('overlays') as HTMLElement;
   return (
     <>
       {ReactDOM.createPortal(<Backdrop onClose={onClose} />, portalElement)}

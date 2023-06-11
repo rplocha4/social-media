@@ -6,17 +6,19 @@ import {
   useDeleteCommentMutation,
   useUpdateCommentMutation,
 } from '../../store/features/serverApi';
-import {  useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import CreatePost from '../UserPost/CreatePost';
 import Modal from '../UI/Modal';
 import useClickOutside from '../../hooks/useClickOutside';
 import { useShowInfo } from '../context/ShowInfoProvider';
+import CreateReport from '../CreateReport';
 
 const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   comment,
   onRefetch,
 }) => {
+  const [reportOpen, setReportOpen] = useState(false);
   const [deleteComment] = useDeleteCommentMutation();
   const userSelector = useSelector((state: RootState) => {
     return state.user;
@@ -75,37 +77,58 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
               }}
             />
           </div>
-          {userComment && optionsOpen && (
-            <div
-              className="absolute -right-32 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md "
-              ref={ref}
-            >
-              <span
-                className="hover:cursor-pointer hover:bg-blue-400 w-full bg-blue-600  flex items-center justify-center rounded-lg p-2"
-                onClick={() => {
-                  setOptionsOpen(false);
-                  setEditOpen(true);
-                }}
-              >
-                Edit
-              </span>
-              <span
-                className="hover:cursor-pointer hover:bg-red-400  bg-red-600 w-full flex items-center justify-center rounded-lg p-2"
-                onClick={() => {
-                  deleteComment(comment.comment_id).then(() => {
-                    onRefetch();
-                    displayInfo({
-                      message: 'Comment deleted',
-                      color: 'red',
-                    });
-                  });
+          <div
+            className="absolute -right-32 w-32 top-5 flex flex-col items-center justify-center  bg-gray-800 rounded-md "
+            ref={ref}
+          >
+            {optionsOpen && (
+              <>
+                {userComment ? (
+                  <>
+                    <span
+                      className="hover:cursor-pointer hover:bg-blue-400 w-full bg-blue-600  flex items-center justify-center rounded-lg p-2"
+                      onClick={() => {
+                        setOptionsOpen(false);
+                        setEditOpen(true);
+                      }}
+                    >
+                      Edit
+                    </span>
+                    <span
+                      className="hover:cursor-pointer hover:bg-red-400  bg-red-600 w-full flex items-center justify-center rounded-lg p-2"
+                      onClick={() => {
+                        deleteComment(comment.comment_id).then(() => {
+                          onRefetch();
+                          displayInfo({
+                            message: 'Comment deleted',
+                            color: 'red',
+                          });
+                        });
 
-                  setOptionsOpen(false);
-                }}
-              >
-                Delete
-              </span>
-            </div>
+                        setOptionsOpen(false);
+                      }}
+                    >
+                      Delete
+                    </span>
+                  </>
+                ) : (
+                  <span
+                    className="hover:cursor-pointer hover:bg-red-400  bg-red-600 w-full flex items-center justify-center rounded-lg p-2"
+                    onClick={() => {
+                      setReportOpen(true);
+                    }}
+                  >
+                    Report
+                  </span>
+                )}
+              </>
+            )}
+          </div>
+          {reportOpen && (
+            <CreateReport
+              comment_id={comment.comment_id}
+              onClose={() => setReportOpen(false)}
+            />
           )}
         </div>
       </div>

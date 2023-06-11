@@ -9,6 +9,7 @@ import { useLayoutEffect, useState } from 'react';
 import { MdGroups } from 'react-icons/md';
 import { useTheme } from './context/ThemeProvider';
 import { useShowInfo } from './context/ShowInfoProvider';
+import ThemeToggler from './ThemeToggler/ThemeToggler';
 
 function Navbar() {
   const { avatar } = useSelector((state: RootState) => state.user);
@@ -24,7 +25,7 @@ function Navbar() {
       setWidth(window.innerWidth);
     }
     window.addEventListener('resize', updateSize);
-    updateSize();
+    // updateSize();
 
     return () => window.removeEventListener('resize', updateSize);
   }, []);
@@ -32,152 +33,148 @@ function Navbar() {
   // const [showModal, setShowModal] = useState(false);
 
   return (
-    <>
-      <div className="flex flex-col justify-between h-screen fixed mt-10 overflow-hidden">
-        <div className="flex flex-col gap-3">
-          <NavLink
-            to="/home"
-            className={({ isActive }) =>
-              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
-            }
+    <div className="flex flex-col justify-between h-screen  overflow-hidden w-full ">
+      <div className="flex flex-col gap-3 items-center justify-center w-full">
+        <NavLink
+          to="/home"
+          className={({ isActive }) =>
+            `${isActive ? 'text-4xl ' : 'text-3xl text-gray-400'}`
+          }
+        >
+          <span
+            className={`p-4 flex items-center justify-center gap-2  font-bold rounded-xl ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            } bg-slate-40 `}
           >
-            <span
-              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              } bg-slate-40 `}
-            >
-              <AiFillHome className="" />
-              {width > 1000 && <p>Home</p>}
-            </span>
-          </NavLink>
-          <NavLink
-            to="/chat"
-            className={({ isActive }) =>
-              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
-            }
+            <AiFillHome className="" />
+            {width > 1000 && <p>Home</p>}
+          </span>
+        </NavLink>
+        <NavLink
+          to="/chat"
+          className={({ isActive }) =>
+            `${isActive ? 'text-4xl ' : 'text-3xl text-gray-400'}`
+          }
+        >
+          <span
+            className={`p-4 flex items-center justify-center gap-2  font-bold rounded-xl ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            } 
+          bg-slate-40`}
           >
-            <span
-              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              } 
-          bg-slate-40`}
-            >
-              <BsFillChatDotsFill className="" />
+            <BsFillChatDotsFill className="" />
 
-              {width > 1000 && <p>Chat</p>}
-            </span>
-          </NavLink>
-          <NavLink
-            to="/events"
-            className={({ isActive }) =>
-              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
-            }
+            {width > 1000 && <p>Chat</p>}
+          </span>
+        </NavLink>
+        <NavLink
+          to="/events"
+          className={({ isActive }) =>
+            `${isActive ? 'text-4xl ' : 'text-3xl text-gray-400'}`
+          }
+        >
+          <span
+            className={`p-4 flex items-center justify-center gap-2  font-bold rounded-xl ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            } 
+          bg-slate-40`}
           >
-            <span
-              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              } 
-          bg-slate-40`}
-            >
-              <BsCalendarEvent className="" />
+            <BsCalendarEvent className="" />
 
-              {width > 1000 && <p>Events</p>}
-            </span>
-          </NavLink>
-          <NavLink
-            to="/groups"
-            className={({ isActive }) =>
-              `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
-            }
+            {width > 1000 && <p>Events</p>}
+          </span>
+        </NavLink>
+        <NavLink
+          to="/groups"
+          className={({ isActive }) =>
+            `${isActive ? 'text-4xl ' : 'text-3xl text-gray-400'}`
+          }
+        >
+          <span
+            className={`p-4 flex items-center justify-center gap-2  font-bold rounded-xl ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            } 
+          bg-slate-40`}
           >
-            <span
-              className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              } 
-          bg-slate-40`}
-            >
-              <MdGroups className="" />
+            <MdGroups className="" />
 
-              {width > 1000 && <p>Groups</p>}
-            </span>
-          </NavLink>
-        </div>
-
-        {username !== null ? (
-          <div className="flex flex-col items mb-20 gap-3">
-            <NavLink
-              to={`/profile/${username}`}
-              className={({ isActive }) =>
-                `${isActive ? 'text-4xl text-white' : 'text-3xl text-gray-400'}`
-              }
-            >
-              <span
-                className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl cursor-pointer ${
-                  theme === 'dark' ? 'darkHover' : 'lightHover'
-                }
-            bg-slate-40`}
-              >
-                <img
-                  src={avatar}
-                  alt=""
-                  className="rounded-full"
-                  style={{
-                    height: '50px',
-                    width: '50px',
-                  }}
-                />
-                {width > 1000 && (
-                  <p>
-                    {username.length > 10
-                      ? username.slice(0, 10) + '...'
-                      : username}
-                  </p>
-                )}
-              </span>
-            </NavLink>
-            {/* <div
-              className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer flex-wrap ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              }
-          bg-slate-40`}
-              onClick={() => setShowModal(true)}
-            >
-              <AiOutlinePlusCircle />
-              Create a post
-            </div> */}
-            <span
-              className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              }
-          bg-slate-40`}
-              onClick={() => {
-                dispatch(logout());
-                window.location.reload();
-                displayInfo({
-                  message: 'Successfully logged out',
-                  color: 'green',
-                });
-              }}
-            >
-              <FiLogOut className="" />
-              {width > 1000 && <p>Logout</p>}
-            </span>
-          </div>
-        ) : (
-          <Link to="/login" className="">
-            <span
-              className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl mb-20 cursor-pointer ${
-                theme === 'dark' ? 'darkHover' : 'lightHover'
-              }
-          bg-slate-40`}
-            >
-              <FiLogIn className="" />
-              {width > 1000 && <p>Login</p>}
-            </span>
-          </Link>
+            {width > 1000 && <p>Groups</p>}
+          </span>
+        </NavLink>
+        {width > 1000 && (
+          <span
+            className={`p-4 text-3xl flex flex-col items-center text-gray-400 justify-center gap-2  font-bold rounded-xl bg-slate-40`}
+          >
+            <p className=" text-center">Toggle theme</p>
+            <ThemeToggler />
+          </span>
         )}
       </div>
-    </>
+
+      {username !== null ? (
+        <div className="flex flex-col items pb-5 gap-3">
+          <NavLink
+            to={`/profile/${username}`}
+            className={({ isActive }) =>
+              `${isActive ? 'text-4xl ' : 'text-3xl text-gray-400'}`
+            }
+          >
+            <span
+              className={`p-4 flex items-center justify-center gap-2  font-bold rounded-xl cursor-pointer ${
+                theme === 'dark' ? 'darkHover' : 'lightHover'
+              }
+            bg-slate-40`}
+            >
+              <img
+                src={avatar}
+                alt=""
+                className="rounded-full"
+                style={{
+                  height: '50px',
+                  width: '50px',
+                }}
+              />
+              {width > 1000 && (
+                <p>
+                  {username.length > 10
+                    ? username.slice(0, 10) + '...'
+                    : username}
+                </p>
+              )}
+            </span>
+          </NavLink>
+          <span
+            className={` flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            }
+          bg-slate-40`}
+            onClick={() => {
+              dispatch(logout());
+              window.location.reload();
+              displayInfo({
+                message: 'Successfully logged out',
+                color: 'green',
+              });
+            }}
+          >
+            <FiLogOut className="" />
+            {width > 1000 && <p>Logout</p>}
+          </span>
+        </div>
+      ) : (
+        <Link to="/login" className="">
+          <span
+            className={`p-4 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl pb-5 cursor-pointer ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            }
+          bg-slate-40`}
+          >
+            <FiLogIn className="" />
+            {width > 1000 && <p>Login</p>}
+          </span>
+        </Link>
+      )}
+    </div>
   );
 }
 

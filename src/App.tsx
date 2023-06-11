@@ -82,9 +82,8 @@ function App() {
 
   return (
     <div className={`${theme} min-h-screen w-full`}>
-      <ThemeToggler />
-      <div className="flex justify-center items-center w-full  ">
-        <div className="self-start w-1/6 h-full px-2 ">
+      <div className="flex justify-center w-full  ">
+        <div className="self-start w-1/6 sticky top-0 h-full ">
           <Navbar />
         </div>
         <div className="flex flex-col w-3/6 min-h-full border border-gray-800 grow ">
@@ -111,7 +110,7 @@ function App() {
         )}
       </div>
       {uiSelector.showNotification && (
-        <div className=" fixed  right-10 top-10 rounded-xl px-5 py-2 ease-linear bg-blue-800 ">
+        <div className=" fixed  right-10 top-10 rounded-xl px-5 py-2 ease-linear  bg-blue-800 ">
           <p className="text-center">{uiSelector.notificationMessage}</p>
         </div>
       )}

@@ -45,44 +45,36 @@ const UserActions: React.FC<{
             className="absolute right-0 -bottom-20 bg-slate-900 w-32 flex flex-col items-center justify-center rounded-md"
             ref={ref}
           >
-            {isPrivate === 0 ? (
-              <button
-                className="font-bold cursor-pointer hover:bg-slate-800 rounded-md p-2 w-full "
-                onClick={() => {
-                  setPrivate({ user_id, setPrivate: 1 }).then(() => {
-                    displayInfo({
-                      message: 'Successfully made private',
-                      color: 'green',
-                    });
+            <button
+              className="font-bold cursor-pointer hover:bg-slate-800 rounded-md p-2 w-full "
+              onClick={() => {
+                isPrivate === 0
+                  ? setPrivate({ user_id, setPrivate: 1 }).then(() => {
+                      displayInfo({
+                        message: 'Successfully made private',
+                        color: 'green',
+                      });
 
-                    setOptionsOpen(false);
-                    setTimeout(() => {
-                      onChange();
-                    }, 2000);
-                  });
-                }}
-              >
-                Make private
-              </button>
-            ) : (
-              <button
-                className="text-white font-bold cursor-pointer hover:bg-slate-800 rounded-md p-2 w-full"
-                onClick={() => {
-                  setPrivate({ user_id, setPrivate: 0 }).then(() => {
-                    displayInfo({
-                      message: 'Successfully made public',
-                      color: 'green',
+                      setOptionsOpen(false);
+                      setTimeout(() => {
+                        onChange();
+                      }, 2000);
+                    })
+                  : setPrivate({ user_id, setPrivate: 0 }).then(() => {
+                      displayInfo({
+                        message: 'Successfully made public',
+                        color: 'green',
+                      });
+                      setOptionsOpen(false);
+                      setTimeout(() => {
+                        onChange();
+                      }, 2000);
                     });
-                    setOptionsOpen(false);
-                    setTimeout(() => {
-                      onChange();
-                    }, 2000);
-                  });
-                }}
-              >
-                Make public
-              </button>
-            )}
+              }}
+            >
+              {isPrivate === 0 ? 'Make private' : 'Make public'}
+            </button>
+
             <button
               className="
           font-bold cursor-pointer hover:bg-slate-800 rounded-md p-2 w-full"

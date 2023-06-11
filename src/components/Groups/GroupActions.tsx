@@ -3,7 +3,6 @@ import {
   useSentRequestQuery,
   useCancelRequestMutation,
 } from '../../store/features/serverApi';
-import { useDispatch } from 'react-redux';
 import { useShowInfo } from '../context/ShowInfoProvider';
 
 export default function GroupActions({ group_id }: { group_id: string }) {
@@ -14,7 +13,6 @@ export default function GroupActions({ group_id }: { group_id: string }) {
     group_id,
     user_id,
   });
-  const dispatch = useDispatch();
   const { displayInfo } = useShowInfo();
 
   return (

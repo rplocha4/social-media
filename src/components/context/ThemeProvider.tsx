@@ -7,6 +7,7 @@ const ThemeContext = React.createContext({
   },
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useTheme = () => React.useContext(ThemeContext);
 
 export default function ThemeProvider({

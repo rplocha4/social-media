@@ -1,7 +1,5 @@
 import { useRef, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
-import { useSelector } from 'react-redux';
-import { RootState } from '../store/store';
 import { useLazySearchUsersQuery } from '../store/features/serverApi';
 import Loading from './UI/Loading';
 import useClickOutside from '../hooks/useClickOutside';
@@ -17,7 +15,6 @@ function Search({
 }) {
   const [focus, setFocus] = useState(false);
   const [results, setResults] = useState([]);
-  const uiSelector = useSelector((state: RootState) => state.ui);
   const [loading, setLoading] = useState(false);
   // const theme ==='dark' = uiSelector.darkMode;
   const { theme } = useTheme();

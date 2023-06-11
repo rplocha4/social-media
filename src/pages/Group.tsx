@@ -8,7 +8,6 @@ import Loading from '../components/UI/Loading';
 import CreatePost from '../components/UserPost/CreatePost';
 import PostData from '../components/UserPost/PostData';
 import Follows from '../components/Follows';
-import { useDispatch } from 'react-redux';
 import Requests from '../components/Groups/Requests';
 import GroupActions from '../components/Groups/GroupActions';
 import { useShowInfo } from '../components/context/ShowInfoProvider';
@@ -20,9 +19,6 @@ function Group() {
   const user_id = localStorage.getItem('user_id') || '';
   const { displayInfo } = useShowInfo();
 
-  //   const [requestDecision] = useRequestDecisionMutation();
-
-  const dispatch = useDispatch();
   const username = localStorage.getItem('username') || '';
 
   const isMember = useMemo(() => {

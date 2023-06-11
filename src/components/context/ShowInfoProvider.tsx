@@ -9,6 +9,7 @@ const ShowInfoContext = React.createContext({
   color: 'green',
 });
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const useShowInfo = () => React.useContext(ShowInfoContext);
 
 function ShowInfoProvider({ children }: { children: React.ReactNode }) {

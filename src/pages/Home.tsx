@@ -4,7 +4,7 @@ import {
   useCreatePostMutation,
   useGetPostsQuery,
 } from '../store/features/serverApi';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import Loading from '../components/UI/Loading';
 import { useShowInfo } from '../components/context/ShowInfoProvider';
@@ -13,7 +13,6 @@ export default function Home() {
 
   const { displayInfo } = useShowInfo();
   const { data, isLoading, refetch } = useGetPostsQuery(userSelector.user_id);
-  const dispatch = useDispatch();
 
   const [createPost] = useCreatePostMutation();
   if (isLoading) {

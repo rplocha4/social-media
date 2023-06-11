@@ -7,7 +7,7 @@ import {
   useGetPostQuery,
 } from '../store/features/serverApi';
 import CreatePost from '../components/UserPost/CreatePost';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import Loading from '../components/UI/Loading';
 import { socket } from '../socket';
@@ -24,7 +24,6 @@ function Post() {
     isLoading: commentsLoading,
     refetch,
   } = useGetPostCommentsQuery(id);
-  const dispatch = useDispatch();
   const { displayInfo } = useShowInfo();
 
   const createCommentHandler = (formData: FormData) => {

@@ -9,7 +9,7 @@ import { TPost } from '../../types/types';
 import PostData from './PostData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import { BsThreeDots } from 'react-icons/bs';
 import useClickOutside from '../../hooks/useClickOutside';
@@ -22,12 +22,8 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   post,
   onRefetch,
 }) => {
-  // console.log(post);
-
   const [isLiking, setIsLiking] = useState(post.liked === 1 ? true : false);
   const [likes, setLikes] = useState(post.likes);
-  // const [optionsOpen, setOptionsOpen] = useState(false);
-  const dispatch = useDispatch();
   const userSelector = useSelector((state: RootState) => {
     return state.user;
   });

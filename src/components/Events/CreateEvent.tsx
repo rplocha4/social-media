@@ -2,7 +2,6 @@ import React from 'react';
 import Modal from '../UI/Modal';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import { useCreateEventMutation } from '../../store/features/serverApi';
-import { useDispatch } from 'react-redux';
 import useInput from '../../hooks/useInput';
 import { useShowInfo } from '../context/ShowInfoProvider';
 
@@ -45,7 +44,6 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
   //   const [image, setImage] = React.useState('');
   const descriptionRef = React.useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(descriptionRef.current, description);
-  const dispatch = useDispatch();
   const { displayInfo } = useShowInfo();
 
   const [createEvent] = useCreateEventMutation();

@@ -2,7 +2,6 @@ import React from 'react';
 import { BsThreeDots } from 'react-icons/bs';
 import useClickOutside from '../hooks/useClickOutside';
 import { useSetUserPrivateMutation } from '../store/features/serverApi';
-import { useDispatch } from 'react-redux';
 import Modal from './UI/Modal';
 import Notifications from './Notifications';
 import { useShowInfo } from './context/ShowInfoProvider';
@@ -16,7 +15,6 @@ const UserActions: React.FC<{
   const [optionsOpen, setOptionsOpen] = useClickOutside(ref);
   const [notification, setNotification] = React.useState(false);
   const [setPrivate] = useSetUserPrivateMutation();
-  const dispatch = useDispatch();
   const { displayInfo } = useShowInfo();
 
   return (

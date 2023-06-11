@@ -3,7 +3,6 @@ import {
   useJoinEventMutation,
   useLeaveEventMutation,
 } from '../../store/features/serverApi';
-import { useDispatch } from 'react-redux';
 import ModalUserList from '../UI/ModalUserList';
 import { useShowInfo } from '../context/ShowInfoProvider';
 
@@ -35,7 +34,6 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
     participants.some((p) => p.username === username)
   );
 
-  const dispatch = useDispatch();
 
   return (
     <>

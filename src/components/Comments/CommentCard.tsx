@@ -6,7 +6,7 @@ import {
   useDeleteCommentMutation,
   useUpdateCommentMutation,
 } from '../../store/features/serverApi';
-import { useDispatch, useSelector } from 'react-redux';
+import {  useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import CreatePost from '../UserPost/CreatePost';
 import Modal from '../UI/Modal';
@@ -29,21 +29,6 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   const ref = useRef<HTMLDivElement>(null);
   const [optionsOpen, setOptionsOpen] = useClickOutside(ref);
 
-  const dispatch = useDispatch();
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (ref.current && !ref.current.contains(event.target as Node)) {
-  //       setOptionsOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener('mousedown', handleClickOutside);
-
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [ref]);
   return (
     <>
       {editOpen && (

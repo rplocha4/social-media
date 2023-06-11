@@ -380,7 +380,9 @@ export default Profile;
 // eslint-disable-next-line react-refresh/only-export-components
 export async function loader({ params }: any) {
   const { username } = params;
-  const res = await fetch(`http://localhost:3000/api/user/${username}`);
+  const res = await fetch(
+    `https://social-media-backend-tfft.onrender.com/api/user/${username}`
+  );
   const data = await res.json();
   const id = data.data.user_id;
 

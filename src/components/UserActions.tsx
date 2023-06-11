@@ -3,9 +3,9 @@ import { BsThreeDots } from 'react-icons/bs';
 import useClickOutside from '../hooks/useClickOutside';
 import { useSetUserPrivateMutation } from '../store/features/serverApi';
 import { useDispatch } from 'react-redux';
-import { showInfo } from '../store/uiSlice';
 import Modal from './UI/Modal';
 import Notifications from './Notifications';
+import { useShowInfo } from './context/ShowInfoProvider';
 
 const UserActions: React.FC<{
   isPrivate: number;
@@ -17,6 +17,7 @@ const UserActions: React.FC<{
   const [notification, setNotification] = React.useState(false);
   const [setPrivate] = useSetUserPrivateMutation();
   const dispatch = useDispatch();
+  const { displayInfo } = useShowInfo();
 
   return (
     <>
@@ -51,17 +52,14 @@ const UserActions: React.FC<{
                 className="font-bold cursor-pointer hover:bg-slate-800 rounded-md p-2 w-full "
                 onClick={() => {
                   setPrivate({ user_id, setPrivate: 1 }).then(() => {
-                    dispatch(
-                      showInfo({
-                        message: 'Successfully made private',
-                        color: 'green',
-                      })
-                    );
+                    displayInfo({
+                      message: 'Successfully made private',
+                      color: 'green',
+                    });
+
                     setOptionsOpen(false);
                     setTimeout(() => {
                       onChange();
-
-                      dispatch(showInfo({ message: '' }));
                     }, 2000);
                   });
                 }}
@@ -73,16 +71,12 @@ const UserActions: React.FC<{
                 className="text-white font-bold cursor-pointer hover:bg-slate-800 rounded-md p-2 w-full"
                 onClick={() => {
                   setPrivate({ user_id, setPrivate: 0 }).then(() => {
-                    dispatch(
-                      showInfo({
-                        message: 'Successfully made public',
-                        color: 'green',
-                      })
-                    );
+                    displayInfo({
+                      message: 'Successfully made public',
+                      color: 'green',
+                    });
                     setOptionsOpen(false);
-
                     setTimeout(() => {
-                      dispatch(showInfo({ message: '' }));
                       onChange();
                     }, 2000);
                   });

@@ -10,8 +10,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store/store';
 import CreatePost from '../UserPost/CreatePost';
 import Modal from '../UI/Modal';
-import { hideInfo, showInfo } from '../../store/uiSlice';
 import useClickOutside from '../../hooks/useClickOutside';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   comment,
@@ -24,6 +24,7 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
   const userComment = userSelector.username === comment.username;
   const [editOpen, setEditOpen] = useState(false);
   const [editComment] = useUpdateCommentMutation();
+  const { displayInfo } = useShowInfo();
 
   const ref = useRef<HTMLDivElement>(null);
   const [optionsOpen, setOptionsOpen] = useClickOutside(ref);
@@ -61,15 +62,11 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
               }).then(() => {
                 setEditOpen(false);
                 onRefetch();
-                dispatch(
-                  showInfo({
-                    message: 'Comment updated',
-                    color: 'blue',
-                  })
-                );
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 3000);
+                displayInfo({
+                  message: 'Comment updated',
+                  color: 'blue',
+                });
+
                 setOptionsOpen(false);
               });
             }}
@@ -112,15 +109,10 @@ const CommentCard: React.FC<{ comment: TComment; onRefetch: () => void }> = ({
                 onClick={() => {
                   deleteComment(comment.comment_id).then(() => {
                     onRefetch();
-                    dispatch(
-                      showInfo({
-                        message: 'Comment deleted',
-                        color: 'red',
-                      })
-                    );
-                    setTimeout(() => {
-                      dispatch(hideInfo());
-                    }, 3000);
+                    displayInfo({
+                      message: 'Comment deleted',
+                      color: 'red',
+                    });
                   });
 
                   setOptionsOpen(false);

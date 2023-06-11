@@ -20,6 +20,8 @@ import Chat from './components/Chat/Chat.tsx';
 import Admin from './pages/Admin.tsx';
 import Events from './pages/Events.tsx';
 import Groups from './pages/Groups.tsx';
+import ThemeProvider from './components/context/ThemeProvider.tsx';
+import ShowInfoProvider from './components/context/ShowInfoProvider.tsx';
 
 const router = createBrowserRouter([
   {
@@ -82,7 +84,11 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <Provider store={store}>
-      <RouterProvider router={router} />
+      <ThemeProvider>
+        <ShowInfoProvider>
+          <RouterProvider router={router} />
+        </ShowInfoProvider>
+      </ThemeProvider>
     </Provider>
   </React.StrictMode>
 );

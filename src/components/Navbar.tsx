@@ -3,17 +3,19 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
-import { hideInfo, showInfo } from '../store/uiSlice';
 import { logout } from '../store/userSlice';
 import { BsCalendarEvent, BsFillChatDotsFill } from 'react-icons/bs';
 import { useLayoutEffect, useState } from 'react';
 import { MdGroups } from 'react-icons/md';
+import { useTheme } from './context/ThemeProvider';
+import { useShowInfo } from './context/ShowInfoProvider';
 
 function Navbar() {
-  const uiSelector = useSelector((state: RootState) => state.ui);
   const { avatar } = useSelector((state: RootState) => state.user);
   const username = localStorage.getItem('username');
-  const darkTheme = uiSelector.darkMode;
+  const { theme } = useTheme();
+  const { displayInfo } = useShowInfo();
+
   const dispatch = useDispatch();
   const [width, setWidth] = useState(window.innerWidth);
 
@@ -41,7 +43,7 @@ function Navbar() {
           >
             <span
               className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               } bg-slate-40 `}
             >
               <AiFillHome className="" />
@@ -56,7 +58,7 @@ function Navbar() {
           >
             <span
               className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               } 
           bg-slate-40`}
             >
@@ -73,7 +75,7 @@ function Navbar() {
           >
             <span
               className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               } 
           bg-slate-40`}
             >
@@ -90,7 +92,7 @@ function Navbar() {
           >
             <span
               className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               } 
           bg-slate-40`}
             >
@@ -111,7 +113,7 @@ function Navbar() {
             >
               <span
                 className={`py-2 flex items-center justify-center gap-2  font-bold rounded-xl cursor-pointer ${
-                  darkTheme ? 'darkHover' : 'lightHover'
+                  theme === 'dark' ? 'darkHover' : 'lightHover'
                 }
             bg-slate-40`}
               >
@@ -135,7 +137,7 @@ function Navbar() {
             </NavLink>
             {/* <div
               className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer flex-wrap ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               }
           bg-slate-40`}
               onClick={() => setShowModal(true)}
@@ -145,22 +147,16 @@ function Navbar() {
             </div> */}
             <span
               className={`p-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               }
           bg-slate-40`}
               onClick={() => {
                 dispatch(logout());
                 window.location.reload();
-
-                dispatch(
-                  showInfo({
-                    message: 'Successfully logged out',
-                    color: 'green',
-                  })
-                );
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 2000);
+                displayInfo({
+                  message: 'Successfully logged out',
+                  color: 'green',
+                });
               }}
             >
               <FiLogOut className="" />
@@ -171,7 +167,7 @@ function Navbar() {
           <Link to="/login" className="">
             <span
               className={`py-2 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl mb-20 cursor-pointer ${
-                darkTheme ? 'darkHover' : 'lightHover'
+                theme === 'dark' ? 'darkHover' : 'lightHover'
               }
           bg-slate-40`}
             >

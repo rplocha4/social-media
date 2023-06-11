@@ -3,19 +3,19 @@ import ThemeToggler from './components/ThemeToggler/ThemeToggler';
 import { Navigate, Outlet, useNavigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleDarkMode } from './store/uiSlice';
 import Search from './components/Search';
 import { RootState } from './store/store';
 import { useEffect } from 'react';
 import { login } from './store/userSlice';
 import { socket } from './socket';
 import useNotification from './hooks/useNotification';
+import { useTheme } from './components/context/ThemeProvider';
+import { useShowInfo } from './components/context/ShowInfoProvider';
 function App() {
   const dispatch = useDispatch();
   const uiSelector = useSelector((state: RootState) => state.ui);
-  // const userSelector = useSelector((state: RootState) => state.user);
-  const darkTheme = uiSelector.darkMode;
-  // const { username } = useSelector((state: RootState) => state.user);
+  const { theme } = useTheme();
+  const { showInfo, infoMessage, color } = useShowInfo();
   const username = localStorage.getItem('username');
   const navigate = useNavigate();
   const { displayNotification } = useNotification();
@@ -81,8 +81,8 @@ function App() {
   }
 
   return (
-    <div className={`${darkTheme ? 'dark' : 'light'} min-h-screen w-full`}>
-      <ThemeToggler onToggle={() => dispatch(toggleDarkMode())} />
+    <div className={`${theme} min-h-screen w-full`}>
+      <ThemeToggler />
       <div className="flex justify-center items-center w-full  ">
         <div className="self-start w-1/6 h-full px-2 ">
           <Navbar />
@@ -101,12 +101,12 @@ function App() {
             }}
           />
         </div>
-        {uiSelector.showInfo && (
+        {showInfo && (
           <div
             className=" fixed bottom-10 rounded-xl px-5 py-2 ease-linear "
-            style={{ backgroundColor: uiSelector.color }}
+            style={{ backgroundColor: color }}
           >
-            <p className="text-center">{uiSelector.infoMessage}</p>
+            <p className="text-center">{infoMessage}</p>
           </div>
         )}
       </div>

@@ -1,19 +1,15 @@
-import React from 'react';
 import classes from './ThemeToggler.module.css';
-import { useSelector } from 'react-redux';
-import { RootState } from '../../store/store';
-const ThemeToggler: React.FC<{ onToggle: () => void }> = ({ onToggle }) => {
-  const uiSelector = useSelector((state: RootState) => state.ui);
-  const darkTheme = uiSelector.darkMode;
+import { useTheme } from '../context/ThemeProvider';
+const ThemeToggler = () => {
+  const { theme, toggleTheme } = useTheme();
+
   return (
     <div className={`${classes.toggleSwitch}`}>
       <label>
         <input
           type="checkbox"
-          checked={darkTheme}
-          onChange={() => {
-            onToggle();
-          }}
+          checked={theme === 'dark' ? true : false}
+          onChange={toggleTheme}
         />
         <span className={`${classes.slider}`}></span>
       </label>

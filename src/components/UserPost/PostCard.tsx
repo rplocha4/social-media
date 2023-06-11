@@ -10,13 +10,13 @@ import PostData from './PostData';
 import { AiFillHeart, AiOutlineHeart } from 'react-icons/ai';
 import { useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideInfo, showInfo } from '../../store/uiSlice';
 import { RootState } from '../../store/store';
 import { BsThreeDots } from 'react-icons/bs';
 import useClickOutside from '../../hooks/useClickOutside';
 import Modal from '../UI/Modal';
 import CreatePost from './CreatePost';
 import { socket } from '../../socket';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
   post,
@@ -47,20 +47,7 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
       author: post.username,
     });
   };
-
-  // useEffect(() => {
-  //   const handleClickOutside = (event: MouseEvent) => {
-  //     if (ref.current && !ref.current.contains(event.target as Node)) {
-  //       setOptionsOpen(false);
-  //     }
-  //   };
-
-  //   document.addEventListener('mousedown', handleClickOutside);
-
-  //   return () => {
-  //     document.removeEventListener('mousedown', handleClickOutside);
-  //   };
-  // }, [ref]);
+  const { displayInfo } = useShowInfo();
 
   return (
     <>
@@ -75,15 +62,10 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
               editPost({ post_id: post.post_id, body: data }).then(() => {
                 onRefetch();
                 setEditOpen(false);
-                dispatch(
-                  showInfo({
-                    message: 'Successfully edited post',
-                    color: 'green',
-                  })
-                );
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 2000);
+                displayInfo({
+                  message: 'Successfully edited post',
+                  color: 'green',
+                });
               });
             }}
             data={post.content}
@@ -129,15 +111,10 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
                 onClick={() => {
                   deletePost(post.post_id).then(() => {
                     onRefetch();
-                    dispatch(
-                      showInfo({
-                        message: 'Successfully deleted post',
-                        color: 'green',
-                      })
-                    );
-                    setTimeout(() => {
-                      dispatch(hideInfo());
-                    }, 2000);
+                    displayInfo({
+                      message: 'Successfully deleted post',
+                      color: 'green',
+                    });
                   });
                   setOptionsOpen(false);
                 }}
@@ -160,15 +137,11 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
               className="flex justify-center items-center gap-2  hover:text-red-400 hover:cursor-pointer"
               onClick={() => {
                 if (userSelector.user_id === null) {
-                  dispatch(
-                    showInfo({
-                      message: 'You must be logged in to like posts',
-                      color: 'red',
-                    })
-                  );
-                  setTimeout(() => {
-                    dispatch(hideInfo());
-                  }, 2000);
+                  displayInfo({
+                    message: 'You must be logged in to like posts',
+                    color: 'red',
+                  });
+
                   return;
                 }
 
@@ -179,15 +152,10 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
                   });
                   setIsLiking(false);
                   setLikes((prev) => prev - 1);
-                  dispatch(
-                    showInfo({
-                      message: 'Successfully unliked post',
-                      color: 'blue',
-                    })
-                  );
-                  setTimeout(() => {
-                    dispatch(hideInfo());
-                  }, 2000);
+                  displayInfo({
+                    message: 'Successfully unliked post',
+                    color: 'blue',
+                  });
                 } else {
                   likePost({
                     post_id: post.post_id,
@@ -195,16 +163,12 @@ const PostCard: React.FC<{ post: TPost; onRefetch: () => void }> = ({
                   });
                   setIsLiking(true);
                   setLikes((prev) => prev + 1);
-                  dispatch(
-                    showInfo({
-                      message: 'Successfully liked post',
-                      color: 'blue',
-                    })
-                  );
+                  displayInfo({
+                    message: 'Successfully liked post',
+                    color: 'blue',
+                  });
+
                   likeHandler();
-                  setTimeout(() => {
-                    dispatch(hideInfo());
-                  }, 2000);
                 }
               }}
             >

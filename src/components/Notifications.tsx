@@ -1,8 +1,7 @@
 import React from 'react';
 import { useReducer } from 'react';
-import { useDispatch } from 'react-redux';
-import { hideInfo, showInfo } from '../store/uiSlice';
 import { FormControlLabel, Switch } from '@mui/material';
+import { useShowInfo } from './context/ShowInfoProvider';
 
 const reducer = (
   state: {
@@ -35,7 +34,7 @@ function Notifications({ onClose }: { onClose: () => void }) {
   const [setting, dispatch] = useReducer(reducer, {
     ...JSON.parse(initialState),
   });
-  const dispatch2 = useDispatch();
+  const { displayInfo } = useShowInfo();
   const submitHandler = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     localStorage.setItem(
@@ -43,10 +42,7 @@ function Notifications({ onClose }: { onClose: () => void }) {
       JSON.stringify(setting)
     );
     onClose();
-    dispatch2(showInfo({ message: 'Settings saved!', color: 'green' }));
-    setTimeout(() => {
-      dispatch2(hideInfo());
-    }, 2000);
+    displayInfo({ message: 'Settings saved!', color: 'green' });
   };
 
   return (

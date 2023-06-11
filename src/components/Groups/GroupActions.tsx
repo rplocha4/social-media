@@ -1,11 +1,10 @@
-import React from 'react';
 import {
   useJoinGroupMutation,
   useSentRequestQuery,
   useCancelRequestMutation,
 } from '../../store/features/serverApi';
-import { hideInfo, showInfo } from '../../store/uiSlice';
 import { useDispatch } from 'react-redux';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 export default function GroupActions({ group_id }: { group_id: string }) {
   const user_id = localStorage.getItem('user_id') || '';
@@ -16,6 +15,7 @@ export default function GroupActions({ group_id }: { group_id: string }) {
     user_id,
   });
   const dispatch = useDispatch();
+  const { displayInfo } = useShowInfo();
 
   return (
     <>
@@ -30,15 +30,10 @@ export default function GroupActions({ group_id }: { group_id: string }) {
                 user_id,
               }).then(() => {
                 requestRefetch();
-                dispatch(
-                  showInfo({
-                    message: 'Request canceled successfully',
-                    color: 'green',
-                  })
-                );
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 2000);
+                displayInfo({
+                  message: 'Request canceled successfully',
+                  color: 'green',
+                });
               });
             }}
           >
@@ -54,15 +49,10 @@ export default function GroupActions({ group_id }: { group_id: string }) {
               user_id,
             }).then(() => {
               requestRefetch();
-              dispatch(
-                showInfo({
-                  message: 'Request sent successfully',
-                  color: 'green',
-                })
-              );
-              setTimeout(() => {
-                dispatch(hideInfo());
-              }, 2000);
+              displayInfo({
+                message: 'Request sent successfully',
+                color: 'green',
+              });
             });
           }}
         >

@@ -4,8 +4,8 @@ import {
   useLeaveEventMutation,
 } from '../../store/features/serverApi';
 import { useDispatch } from 'react-redux';
-import { hideInfo, showInfo } from '../../store/uiSlice';
 import ModalUserList from '../UI/ModalUserList';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 type EventCardProps = {
   event: {
@@ -27,6 +27,7 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
   const [showParticipants, setShowParticipants] = React.useState(false);
   const username = localStorage.getItem('username') as string;
   const user_id = localStorage.getItem('user_id') as string;
+  const { displayInfo } = useShowInfo();
 
   const [joinEvent] = useJoinEventMutation();
   const [leaveEvent] = useLeaveEventMutation();
@@ -75,10 +76,10 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
               joinEvent({ event_id: event.id, user_id }).then(() => {
                 setJoined(true);
                 onRefetch();
-                dispatch(showInfo({ message: 'Joined event', color: 'green' }));
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 3000);
+                displayInfo({
+                  message: 'Joined event',
+                  color: 'green',
+                });
               });
             }}
           >
@@ -91,10 +92,10 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
               leaveEvent({ event_id: event.id, user_id }).then(() => {
                 setJoined(false);
                 onRefetch();
-                dispatch(showInfo({ message: 'Left event', color: 'red' }));
-                setTimeout(() => {
-                  dispatch(hideInfo());
-                }, 3000);
+                displayInfo({
+                  message: 'Left event',
+                  color: 'red',
+                });
               });
             }}
           >

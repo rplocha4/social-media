@@ -10,8 +10,8 @@ import CreatePost from '../components/UserPost/CreatePost';
 import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../store/store';
 import Loading from '../components/UI/Loading';
-import { hideInfo, showInfo } from '../store/uiSlice';
 import { socket } from '../socket';
+import { useShowInfo } from '../components/context/ShowInfoProvider';
 
 function Post() {
   const id = useLoaderData() as string;
@@ -25,10 +25,14 @@ function Post() {
     refetch,
   } = useGetPostCommentsQuery(id);
   const dispatch = useDispatch();
+  const { displayInfo } = useShowInfo();
 
   const createCommentHandler = (formData: FormData) => {
     if (!userSelector.user_id) {
-      dispatch(showInfo({ message: 'You need to be logged in', color: 'red' }));
+      displayInfo({
+        message: 'You need to be logged in',
+        color: 'red',
+      });
     }
 
     formData.append('post_id', id);
@@ -36,15 +40,10 @@ function Post() {
       body: formData,
     }).then(() => {
       refetch();
-      dispatch(
-        showInfo({
-          message: 'Comment created successfully',
-          color: 'green',
-        })
-      );
-      setTimeout(() => {
-        dispatch(hideInfo());
-      }, 2000);
+      displayInfo({
+        message: 'Comment created successfully',
+        color: 'green',
+      });
 
       post.data.username !== userSelector.username &&
         socket.emit('comment', {

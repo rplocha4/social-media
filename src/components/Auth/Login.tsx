@@ -3,12 +3,13 @@ import { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router';
 import { login } from '../../store/userSlice';
-import { hideInfo, showInfo } from '../../store/uiSlice';
 import { defaultAvatar } from '../../types/types';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 const Login = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const { displayInfo } = useShowInfo();
 
   useEffect(() => {
     if (localStorage.getItem('token')) {
@@ -41,7 +42,7 @@ const Login = () => {
         // alert(JSON.stringify(values, null, 2));
 
         setSubmitting(false);
-    fetch('http://localhost:3000/api/auth/login', {
+        fetch('http://localhost:3000/api/auth/login', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
@@ -78,20 +79,15 @@ const Login = () => {
                   JSON.stringify(defaultNotificationSettings)
                 );
 
-              dispatch(
-                showInfo({ message: 'Logged in successfully!', color: 'green' })
-              );
-              setTimeout(() => {
-                dispatch(hideInfo());
-              }, 2000);
+              displayInfo({
+                message: 'Logged in successfully!',
+                color: 'green',
+              });
               data.user.role === 'admin'
                 ? navigate('/admin')
                 : navigate('/home');
             } else {
-              dispatch(showInfo({ message: data.message, color: 'red' }));
-              setTimeout(() => {
-                dispatch(hideInfo());
-              }, 2000);
+              displayInfo({ message: data.message, color: 'red' });
             }
           });
       }}

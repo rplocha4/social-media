@@ -6,6 +6,7 @@ import { useLazySearchUsersQuery } from '../store/features/serverApi';
 import Loading from './UI/Loading';
 import useClickOutside from '../hooks/useClickOutside';
 import { defaultAvatar } from '../types/types';
+import { useTheme } from './context/ThemeProvider';
 
 function Search({
   onConfirm,
@@ -18,7 +19,9 @@ function Search({
   const [results, setResults] = useState([]);
   const uiSelector = useSelector((state: RootState) => state.ui);
   const [loading, setLoading] = useState(false);
-  const darkTheme = uiSelector.darkMode;
+  // const theme ==='dark' = uiSelector.darkMode;
+  const { theme } = useTheme();
+
   const [getResults] = useLazySearchUsersQuery();
   const ref = useRef<HTMLDivElement>(null);
 
@@ -40,11 +43,11 @@ function Search({
     <div className={`p-2 flex flex-col relative`}>
       <span
         className={`flex items-center gap-2 ${
-          darkTheme ? 'bg-gray-900' : 'bg-zinc-200'
+          theme === 'dark' ? 'bg-gray-900' : 'bg-zinc-200'
         } w-full   rounded-2xl p-3 my-2 border ${
           focus
             ? 'border-blue-500'
-            : darkTheme
+            : theme === 'dark'
             ? 'border-gray-900'
             : 'border-zinc-200'
         }`}

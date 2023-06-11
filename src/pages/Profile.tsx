@@ -17,7 +17,6 @@ import Loading from '../components/UI/Loading';
 import { BsCalendar3WeekFill } from 'react-icons/bs';
 import { AiOutlineEdit } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { hideInfo, showInfo } from '../store/uiSlice';
 import { setAvatar } from '../store/userSlice';
 import { RootState } from '../store/store';
 import Follows from '../components/Follows';
@@ -25,6 +24,7 @@ import UserActions from '../components/UserActions';
 import { socket } from '../socket';
 import { TEvent, defaultAvatar } from '../types/types';
 import EventsResult from '../components/Events/EventsResult';
+import { useShowInfo } from '../components/context/ShowInfoProvider';
 
 const typeFilter = {
   posts: 'posts',
@@ -45,6 +45,7 @@ function Profile() {
   const [loading, setLoading] = React.useState(true);
   const [profileHover, setProfileHover] = React.useState(false);
   const [backgroundHover, setBackgroundHover] = React.useState(false);
+  const { displayInfo } = useShowInfo();
 
   const userSelector = useSelector((state: RootState) => state.user);
 
@@ -125,25 +126,15 @@ function Profile() {
     data: { message: string };
   }) => {
     if (res.error) {
-      dispatch(
-        showInfo({
-          message: res.error.data.message,
-          color: 'red',
-        })
-      );
-      setTimeout(() => {
-        dispatch(hideInfo());
-      }, 2000);
+      displayInfo({
+        message: res.error.data.message,
+        color: 'red',
+      });
     } else {
-      dispatch(
-        showInfo({
-          message: res.data.message,
-          color: 'green',
-        })
-      );
-      setTimeout(() => {
-        dispatch(hideInfo());
-      }, 2000);
+      displayInfo({
+        message: res.data.message,
+        color: 'green',
+      });
     }
   };
 
@@ -159,16 +150,10 @@ function Profile() {
       const avatar = res.data.avatar;
 
       dispatch(setAvatar(avatar));
-
-      dispatch(
-        showInfo({
-          message: `${type} updated successfully`,
-          color: 'green',
-        })
-      );
-      setTimeout(() => {
-        dispatch(hideInfo());
-      }, 2000);
+      displayInfo({
+        message: `${type} updated successfully`,
+        color: 'green',
+      });
       refetchUser();
     });
   };

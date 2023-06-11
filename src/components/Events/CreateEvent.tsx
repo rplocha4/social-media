@@ -3,8 +3,8 @@ import Modal from '../UI/Modal';
 import useAutosizeTextArea from '../../hooks/useAutosizeTextArea';
 import { useCreateEventMutation } from '../../store/features/serverApi';
 import { useDispatch } from 'react-redux';
-import { hideInfo, showInfo } from '../../store/uiSlice';
 import useInput from '../../hooks/useInput';
+import { useShowInfo } from '../context/ShowInfoProvider';
 
 const isNotEmpty = (value: string) => value.trim() !== '';
 
@@ -46,6 +46,7 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
   const descriptionRef = React.useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(descriptionRef.current, description);
   const dispatch = useDispatch();
+  const { displayInfo } = useShowInfo();
 
   const [createEvent] = useCreateEventMutation();
 
@@ -69,16 +70,16 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
       },
     })
       .then(() => {
-        dispatch(showInfo({ message: 'Event created', color: 'green' }));
-        setTimeout(() => {
-          dispatch(hideInfo());
-        }, 3000);
+        displayInfo({
+          message: 'Event created',
+          color: 'green',
+        });
       })
       .catch(() => {
-        dispatch(showInfo({ message: 'Error creating event', color: 'red' }));
-        setTimeout(() => {
-          dispatch(hideInfo());
-        }, 3000);
+        displayInfo({
+          message: 'Error creating event',
+          color: 'red',
+        });
       });
 
     onClose();

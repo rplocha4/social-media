@@ -3,23 +3,22 @@ import { useLoaderData } from 'react-router';
 import {
   useCreateGroupPostMutation,
   useGetGroupQuery,
-  useJoinGroupMutation,
-  useSentRequestQuery,
 } from '../store/features/serverApi';
 import Loading from '../components/UI/Loading';
 import CreatePost from '../components/UserPost/CreatePost';
 import PostData from '../components/UserPost/PostData';
 import Follows from '../components/Follows';
 import { useDispatch } from 'react-redux';
-import { showInfo, hideInfo } from '../store/uiSlice';
 import Requests from '../components/Groups/Requests';
 import GroupActions from '../components/Groups/GroupActions';
+import { useShowInfo } from '../components/context/ShowInfoProvider';
 
 function Group() {
   const id = useLoaderData();
   const { data: groupData, isLoading, isError, refetch } = useGetGroupQuery(id);
   const [createGroupPost] = useCreateGroupPostMutation();
   const user_id = localStorage.getItem('user_id') || '';
+  const { displayInfo } = useShowInfo();
 
   //   const [requestDecision] = useRequestDecisionMutation();
 
@@ -46,15 +45,10 @@ function Group() {
       group_id: groupData.id,
     }).then(() => {
       //   console.log(res);
-      dispatch(
-        showInfo({
-          message: 'Post in group created successfully',
-          color: 'green',
-        })
-      );
-      setTimeout(() => {
-        dispatch(hideInfo());
-      }, 2000);
+      displayInfo({
+        message: 'Post in group created successfully',
+        color: 'green',
+      });
 
       refetch();
     });

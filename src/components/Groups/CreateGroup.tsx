@@ -25,26 +25,46 @@ function CreateGroup({
       <form
         action=""
         onSubmit={submitHandler}
-        className="flex flex-col p-2 gap-4"
+        className="flex flex-col items-center p-2 gap-4"
       >
         <input
           type="text"
           name="group_name"
+          className="
+            p-2
+            rounded-xl
+            bg-zinc-800
+            text-white
+            border-2
+            border-gray-500
+            
+          "
           id="group_name"
+          placeholder="Group name"
           onChange={(e) => setGroupName(e.target.value)}
           value={groupName}
         />
+        <div className="flex items-center gap-2 p-2 rounded-xl text-white">
+          <p>Group image</p>
 
-        <input
-          type="file"
-          name="group_image"
-          id="group_image"
-          accept="image/*"
-          onChange={(event) => {
-            event.target.files && setGroupImage(event.target.files[0]);
-          }}
-        />
-        <button type="submit">Create</button>
+          <input
+            type="file"
+            name="group_image"
+            id="group_image"
+            accept="image/*"
+            onChange={(event) => {
+              event.target.files && setGroupImage(event.target.files[0]);
+            }}
+          />
+        </div>
+        <button
+          type="submit"
+          className="p-2 rounded-xl bg-green-800 text-white border-2 border-green-500
+        
+        "
+        >
+          Create
+        </button>
       </form>
     </Modal>
   );

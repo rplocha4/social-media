@@ -10,6 +10,7 @@ import { MdGroups } from 'react-icons/md';
 import { useTheme } from './context/ThemeProvider';
 import { useShowInfo } from './context/ShowInfoProvider';
 import ThemeToggler from './ThemeToggler/ThemeToggler';
+import { RiAdminFill } from 'react-icons/ri';
 
 function Navbar() {
   const { avatar } = useSelector((state: RootState) => state.user);
@@ -125,7 +126,8 @@ function Navbar() {
             }
                 bg-slate-40`}
           >
-            <p>Admin</p>
+            <RiAdminFill />
+            {width > 1000 && <p>Admin</p>}
           </span>
         </NavLink>
       )}

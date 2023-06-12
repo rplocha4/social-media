@@ -5,6 +5,7 @@ import {
 } from '../../store/features/serverApi';
 import ModalUserList from '../UI/ModalUserList';
 import { useShowInfo } from '../context/ShowInfoProvider';
+import { useTheme } from '../context/ThemeProvider';
 
 type EventCardProps = {
   event: {
@@ -33,7 +34,7 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
   const [joined, setJoined] = React.useState(
     participants.some((p) => p.username === username)
   );
-
+  const { theme } = useTheme();
 
   return (
     <>
@@ -44,7 +45,11 @@ function EventCard({ event, participants, onRefetch }: EventCardProps) {
           data={participants}
         />
       )}
-      <div className="flex flex-col hover:bg-zinc-700 p-5 rounded-xl cursor-pointer">
+      <div
+        className={`flex flex-col p-5 rounded-xl cursor-pointer ${
+          theme === 'dark' ? 'hover:bg-zinc-700' : 'hover:bg-zinc-200'
+        }`}
+      >
         <img
           src={`${event.image ? event.image : ''}`}
           alt=""

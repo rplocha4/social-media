@@ -1,10 +1,10 @@
-// Render Prop
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import { useNavigate } from 'react-router';
 
 const Register = () => {
   const navigate = useNavigate();
+  const [errorMessage, setErrorMessage] = useState('');
   useEffect(() => {
     if (localStorage.getItem('token')) {
       navigate('/home');
@@ -48,7 +48,7 @@ const Register = () => {
       onSubmit={(values, { setSubmitting }) => {
         // alert(JSON.stringify(values, null, 2));
 
-        setSubmitting(false);
+        setSubmitting(true);
 
         fetch(
           'https://social-media-backend-tfft.onrender.com/api/auth/register',
@@ -62,15 +62,29 @@ const Register = () => {
         )
           .then((res) => res.json())
           .then((data) => {
+            setSubmitting(false);
             if (data.message === 'User successfully created') {
               navigate('/login');
+            } else {
+              setErrorMessage(data.message);
             }
           });
       }}
     >
       {({ isSubmitting }) => (
         <Form className="flex justify-center items-center h-screen bg-slate-600">
-          <div className="bg-slate-800  w-2/6 p-10 flex flex-col justify-around items-start rounded-2xl  gap-2">
+          <div className="bg-slate-800  w-2/6 p-10 flex flex-col justify-around items-center rounded-2xl  gap-2">
+            {errorMessage ? (
+              <div className="text-red-700 text-2xl p-2 rounded-xl">
+                <h2>
+                  <span className="font-bold">Error:</span> {errorMessage}
+                </h2>
+              </div>
+            ) : (
+              <h1 className="text-4xl font-bold text-white self-center pb-5">
+                Register
+              </h1>
+            )}
             <div className="flex flex-col">
               <Field
                 type="email"
@@ -132,7 +146,7 @@ const Register = () => {
               disabled={isSubmitting}
               className="p-3 bg-slate-950 rounded-2xl"
             >
-              Submit
+              {isSubmitting ? 'Submitting...' : 'Submit'}
             </button>
             <div>
               <p className="text-gray-400">

@@ -1,6 +1,6 @@
 import { AiFillHome } from 'react-icons/ai';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useNavigate } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { FiLogIn, FiLogOut } from 'react-icons/fi';
 import { logout } from '../store/userSlice';
@@ -16,9 +16,11 @@ function Navbar() {
   const username = localStorage.getItem('username');
   const { theme } = useTheme();
   const { displayInfo } = useShowInfo();
+  const isAdmin = localStorage.getItem('role') === 'admin';
 
   const dispatch = useDispatch();
   const [width, setWidth] = useState(window.innerWidth);
+  const navigate = useNavigate();
 
   useLayoutEffect(() => {
     function updateSize() {
@@ -110,6 +112,23 @@ function Navbar() {
           </span>
         )}
       </div>
+      {isAdmin && (
+        <NavLink
+          to="/admin"
+          className={({ isActive }) =>
+            `${isActive ? 'text-4xl ' : 'text-3xl text-gray-400'}`
+          }
+        >
+          <span
+            className={`p-4 flex items-center justify-center gap-2  font-bold rounded-xl cursor-pointer ${
+              theme === 'dark' ? 'darkHover' : 'lightHover'
+            }
+                bg-slate-40`}
+          >
+            <p>Admin</p>
+          </span>
+        </NavLink>
+      )}
 
       {username !== null ? (
         <div className="flex flex-col items pb-5 gap-3">
@@ -143,14 +162,15 @@ function Navbar() {
               )}
             </span>
           </NavLink>
+
           <span
-            className={` flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
+            className={`p-4 flex items-center justify-center gap-2 text-3xl font-bold rounded-xl cursor-pointer ${
               theme === 'dark' ? 'darkHover' : 'lightHover'
             }
           bg-slate-40`}
             onClick={() => {
               dispatch(logout());
-              window.location.reload();
+              navigate('/login');
               displayInfo({
                 message: 'Successfully logged out',
                 color: 'green',

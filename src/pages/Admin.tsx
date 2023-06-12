@@ -3,6 +3,7 @@ import UserList from '../components/admin/UserList';
 import { useShowInfo } from '../components/context/ShowInfoProvider';
 import { useState } from 'react';
 import Reports from '../components/admin/Reports';
+import { Link } from 'react-router-dom';
 
 function Admin() {
   const role = localStorage.getItem('role');
@@ -15,6 +16,12 @@ function Admin() {
 
   return (
     <div>
+      <Link
+        to="/"
+        className="absolute top-5 left-5 bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 rounded"
+      >
+        Home
+      </Link>
       <div className="flex justify-center gap-10 p-5">
         <button
           className={`${

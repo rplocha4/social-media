@@ -16,7 +16,6 @@ function Search({
   const [focus, setFocus] = useState(false);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
-  // const theme ==='dark' = uiSelector.darkMode;
   const { theme } = useTheme();
 
   const [getResults] = useLazySearchUsersQuery();
@@ -31,8 +30,8 @@ function Search({
     }
     setLoading(true);
     getResults(value).then((res) => {
-      setLoading(false);
       setResults(res?.data?.data);
+      setLoading(false);
     });
   };
 

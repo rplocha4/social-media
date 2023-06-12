@@ -68,11 +68,6 @@ function App() {
   }, [dispatch]);
 
   useEffect(() => {
-    // if url is /, redirect to /home
-    // if (!username) {
-    //   navigate('/login');
-    //   return;
-    // }
     if (window.location.pathname === '/') navigate('/home');
   }, [navigate]);
   if (!username) {
@@ -86,9 +81,6 @@ function App() {
           <Navbar />
         </div>
         <div className="flex flex-col w-3/6 min-h-full border border-gray-800 grow ">
-          {/* <div className="w-full flex justify-center items-center p-2">
-            Tweet
-          </div> */}
           <Outlet />
         </div>
         <div className="w-2/6 h-full self-start ">
@@ -109,7 +101,7 @@ function App() {
         )}
       </div>
       {uiSelector.showNotification && (
-        <div className=" fixed  right-10 top-10 rounded-xl px-5 py-2 ease-linear  bg-blue-800 ">
+        <div className=" fixed right-10 top-10 rounded-xl px-5 py-2 ease-linear bg-blue-800 ">
           <p className="text-center">{uiSelector.notificationMessage}</p>
         </div>
       )}

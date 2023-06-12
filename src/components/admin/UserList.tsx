@@ -23,7 +23,7 @@ const filterReducer = (
 };
 
 function UserList() {
-  const { data, isLoading, refetch } = useGetUsersQuery('');
+  const { data, isLoading, refetch, isError } = useGetUsersQuery('');
   const [filters, dispatch] = useReducer(filterReducer, {
     nameFilter: '',
     emailFilter: '',
@@ -32,6 +32,9 @@ function UserList() {
 
   const [asc, setAsc] = useState(true);
   const [sort, setSort] = useState('username');
+  const [deleteUser] = useDeleteUserMutation();
+  const { displayInfo } = useShowInfo();
+
   const filteredUsers = useMemo(() => {
     return data?.data?.filter((user: { username: string; email: string }) => {
       return (
@@ -40,9 +43,6 @@ function UserList() {
       );
     });
   }, [data, filters.nameFilter, filters.emailFilter]);
-
-  const [deleteUser] = useDeleteUserMutation();
-  const { displayInfo } = useShowInfo();
 
   const sortedUsers = useMemo(() => {
     if (!filteredUsers) return;
@@ -76,6 +76,16 @@ function UserList() {
 
   if (isLoading) {
     return <Loading />;
+  }
+  if (isError) {
+    return (
+      <div
+        className="
+    flex h-full w-full justify-center items-center flex-col text-4xl font bold"
+      >
+        Something went wrong
+      </div>
+    );
   }
 
   // console.log(data);

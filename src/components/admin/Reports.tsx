@@ -8,7 +8,7 @@ import { defaultAvatar } from '../../types/types';
 import { useMemo, useState } from 'react';
 
 function Reports() {
-  const { data: posts, isLoading, error } = useGetReportedPostsQuery('');
+  const { data: posts, isLoading, isError } = useGetReportedPostsQuery('');
   const { data: comments, isLoading: commentsLoading } =
     useGetReportedCommentsQuery('');
 
@@ -24,10 +24,12 @@ function Reports() {
 
   if (filter === 'post' && isLoading) return <Loading />;
   if (filter === 'comment' && commentsLoading) return <Loading />;
-  if (error)
+  if (isError)
     return (
       <div>
-        <h1>Error</h1>
+        <h1 className="text-3xl text-center font-bold">
+          Something went wrong, please try reload the page
+        </h1>
       </div>
     );
 

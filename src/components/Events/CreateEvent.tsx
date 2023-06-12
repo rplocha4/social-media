@@ -38,10 +38,6 @@ function CreateEvent({ onClose }: { onClose: () => void }) {
     reset: resetImage,
   } = useInput(isNotEmpty);
 
-  //   const [description, setDescription] = React.useState('');
-  //   const [name, setName] = React.useState('');
-  //   const [date, setDate] = React.useState('');
-  //   const [image, setImage] = React.useState('');
   const descriptionRef = React.useRef<HTMLTextAreaElement>(null);
   useAutosizeTextArea(descriptionRef.current, description);
   const { displayInfo } = useShowInfo();

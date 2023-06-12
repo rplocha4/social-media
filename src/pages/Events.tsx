@@ -88,18 +88,7 @@ function Events() {
                 {results.length})
               </h1>
               <EventsResults events={results} onRefetch={refetch} />
-              {/* <div className="grid grid-cols-2 gap-5 bg-zinc-800 p-10 h-full ">
-              {results.map((event: TEvent) => {
-                return (
-                  <EventCard
-                    key={event.id}
-                    event={event}
-                    participants={event.users}
-                    onRefetch={refetch}
-                  />
-                );
-              })}
-            </div> */}
+
             </div>
           )}
         </div>

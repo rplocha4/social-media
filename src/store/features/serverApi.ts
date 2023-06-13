@@ -155,8 +155,8 @@ export const serverApi = createApi({
       }),
     }),
     getFollowers: builder.query({
-      query: (user_id) => ({
-        url: `/followers/${user_id}`,
+      query: (username) => ({
+        url: `/followers/${username}`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -164,8 +164,8 @@ export const serverApi = createApi({
       }),
     }),
     getFollowing: builder.query({
-      query: (user_id) => ({
-        url: `/following/${user_id}`,
+      query: (username) => ({
+        url: `/following/${username}`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,
@@ -260,8 +260,8 @@ export const serverApi = createApi({
       }),
     }),
     userEvents: builder.query({
-      query: (user_id) => ({
-        url: `/users/${user_id}/events`,
+      query: (username) => ({
+        url: `/users/${username}/events`,
         method: 'GET',
         headers: {
           Authorization: `Bearer ${localStorage.getItem('token')}`,

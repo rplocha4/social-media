@@ -12,7 +12,7 @@ import { useTheme } from '../components/context/ThemeProvider';
 function Events() {
   const [filter, setFilter] = useState('all');
   const [creatingEvent, setCreatingEvent] = useState(false);
-  const user_id = localStorage.getItem('user_id') as string;
+  const username = localStorage.getItem('username') as string;
   const { theme } = useTheme();
 
   const { data: events, isLoading, refetch } = useGetEventsQuery('');
@@ -24,12 +24,12 @@ function Events() {
       if (!events) return;
       setResults(events as TEvent[]);
     } else {
-      userEvents(user_id).then((res) => {
+      userEvents(username).then((res) => {
         if (!res.data) return;
         setResults(res.data as TEvent[]);
       });
     }
-  }, [filter, events, userEvents, user_id]);
+  }, [filter, events, userEvents, username]);
 
   // if () return <Loading />;
 
@@ -88,7 +88,6 @@ function Events() {
                 {results.length})
               </h1>
               <EventsResults events={results} onRefetch={refetch} />
-
             </div>
           )}
         </div>

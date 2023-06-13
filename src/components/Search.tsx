@@ -24,12 +24,12 @@ function Search({
   const [open, setOpen] = useClickOutside(ref);
 
   const getSearchResults = (value: string) => {
-    if (value.length === 0) {
+    if (value.trim().length === 0) {
       setResults([]);
       return;
     }
     setLoading(true);
-    getResults(value).then((res) => {
+    getResults(value.trim()).then((res) => {
       setResults(res?.data?.data);
       setLoading(false);
     });
@@ -73,7 +73,9 @@ function Search({
           className="flex flex-col p-2 w-60 h-80 overflow-y-scroll absolute top-20 bg-slate-900 rounded-xl"
           ref={ref}
         >
-          {results.length > 0 ? (
+          {loading ? (
+            <Loading />
+          ) : results.length > 0 ? (
             results.map(
               (user: { user_id: string; username: string; avatar: string }) => {
                 return (
@@ -101,8 +103,6 @@ function Search({
                 );
               }
             )
-          ) : loading ? (
-            <Loading />
           ) : (
             <p className="text-center">No results found</p>
           )}

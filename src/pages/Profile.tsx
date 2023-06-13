@@ -34,9 +34,8 @@ const typeFilter = {
 };
 
 function Profile() {
-  const { username, id } = useLoaderData() as {
+  const { username } = useLoaderData() as {
     username: string;
-    id: string;
   };
 
   // const userSelector = useSelector((state: RootState) => state.user);
@@ -53,15 +52,19 @@ function Profile() {
     data: followers,
     isLoading: followersLoading,
     refetch: refetchFollowers,
-  } = useGetFollowersQuery(id);
+  } = useGetFollowersQuery(username);
   const { data: following, isLoading: followingLoading } =
-    useGetFollowingQuery(id);
+    useGetFollowingQuery(username);
 
   const isFollowing = followers
     ? followers.followers.some((f: { user_id: string }) => {
         return f.user_id == userSelector.user_id;
       })
     : false;
+
+  const { data: userData } = useGetUserQuery(username);
+
+  const id = userData?.data.user_id;
 
   const [follow] = useFollowUserMutation();
   const [unfollow] = useUnfollowUserMutation();
@@ -108,7 +111,7 @@ function Profile() {
           });
           break;
         case typeFilter.events:
-          userEvents(id).then((res) => {
+          userEvents(username).then((res) => {
             setResults(res.data);
             setLoading(false);
           });
@@ -118,7 +121,7 @@ function Profile() {
           break;
       }
     },
-    [getComments, getLikes, getPosts, username, userEvents, id]
+    [getComments, getLikes, getPosts, username, userEvents]
   );
 
   const showMessage = (res: {
@@ -380,11 +383,5 @@ export default Profile;
 // eslint-disable-next-line react-refresh/only-export-components
 export async function loader({ params }: any) {
   const { username } = params;
-  const res = await fetch(
-    `https://social-media-backend-tfft.onrender.com/api/user/${username}`
-  );
-  const data = await res.json();
-  const id = data.data.user_id;
-
-  return { username, id };
+  return { username };
 }

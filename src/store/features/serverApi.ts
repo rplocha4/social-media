@@ -3,8 +3,8 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 export const serverApi = createApi({
   reducerPath: 'api',
   baseQuery: fetchBaseQuery({
-    baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
-    // baseUrl: 'http://localhost:3000/api',
+    // baseUrl: 'https://social-media-backend-tfft.onrender.com/api',
+    baseUrl: 'http://localhost:3000/api',
   }),
   endpoints: (builder) => ({
     getPosts: builder.query({

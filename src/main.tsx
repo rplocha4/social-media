@@ -62,6 +62,10 @@ const router = createBrowserRouter([
         element: <Group />,
         loader: groupLoader,
       },
+      {
+        path: '*',
+        element: <Navigate to="/home" />,
+      },
     ],
   },
   {

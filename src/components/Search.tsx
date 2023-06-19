@@ -1,10 +1,11 @@
-import { useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { AiOutlineSearch } from 'react-icons/ai';
 import { useLazySearchUsersQuery } from '../store/features/serverApi';
 import Loading from './UI/Loading';
 import useClickOutside from '../hooks/useClickOutside';
 import { defaultAvatar } from '../types/types';
 import { useTheme } from './context/ThemeProvider';
+import useDebounce from '../hooks/useDebounce';
 
 function Search({
   onConfirm,
@@ -16,6 +17,8 @@ function Search({
   const [focus, setFocus] = useState(false);
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const [debouncedSearch] = useDebounce({ value: search, delay: 200 });
   const { theme } = useTheme();
 
   const [getResults] = useLazySearchUsersQuery();
@@ -23,17 +26,29 @@ function Search({
 
   const [open, setOpen] = useClickOutside(ref);
 
-  const getSearchResults = (value: string) => {
-    if (value.trim().length === 0) {
+  // const getSearchResults = (value: string) => {
+  //   if (value.trim().length === 0) {
+  //     setResults([]);
+  //     return;
+  //   }
+  //   setLoading(true);
+  //   getResults(value.trim()).then((res) => {
+  //     setResults(res?.data?.data);
+  //     setLoading(false);
+  //   });
+  // };
+
+  useEffect(() => {
+    if (debouncedSearch.trim().length === 0) {
       setResults([]);
       return;
     }
     setLoading(true);
-    getResults(value.trim()).then((res) => {
+    getResults(debouncedSearch.trim()).then((res) => {
       setResults(res?.data?.data);
       setLoading(false);
     });
-  };
+  }, [debouncedSearch, getResults]);
 
   return (
     <div className={`p-2 flex flex-col relative`}>
@@ -62,8 +77,7 @@ function Search({
             // setOpen(false);
           }}
           onChange={(e) => {
-            // setSearch(e.target.value);
-            getSearchResults(e.target.value);
+            setSearch(e.target.value);
           }}
           // value={search}
         />

@@ -20,16 +20,12 @@ function Events() {
     useLazyUserEventsQuery();
   const [results, setResults] = useState<TEvent[]>([]);
 
-  const [loading, setLoading] = useState(isLoading || isUserEventsLoading);
-
   useEffect(() => {
     if (filter === 'all') {
       if (!events) return;
       setResults(events as TEvent[]);
     } else {
-      setLoading(true);
       userEvents(username).then((res) => {
-        setLoading(false);
         if (!res.data) return;
         setResults(res.data as TEvent[]);
       });
@@ -74,7 +70,7 @@ function Events() {
           }}
         />
       )}
-      {!loading ? (
+      {!(isLoading && isUserEventsLoading) ? (
         <div className="flex justify-center h-full">
           {results.length === 0 ? (
             <p className="text-2xl font-bold p-5">No results</p>

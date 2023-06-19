@@ -256,7 +256,7 @@ function Profile() {
           {!isUserPage ? (
             <button
               className="mt-10 border rounded-lg px-3 py-1 darkHover"
-              onClick={() =>
+              onClick={() => {
                 isFollowing
                   ? unfollow({
                       user_id: id,
@@ -276,8 +276,8 @@ function Profile() {
                       });
 
                       showMessage(res);
-                    })
-              }
+                    });
+              }}
             >
               {isFollowing ? 'Unfollow' : 'Follow'}
             </button>

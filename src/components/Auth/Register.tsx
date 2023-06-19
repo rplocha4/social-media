@@ -50,13 +50,16 @@ const Register = () => {
 
         setSubmitting(true);
 
-        fetch('https://social-media-backend-tfft.onrender.com/auth/register', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(values),
-        })
+        fetch(
+          'https://social-media-backend-tfft.onrender.com/api/auth/register',
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(values),
+          }
+        )
           .then((res) => res.json())
           .then((data) => {
             setSubmitting(false);

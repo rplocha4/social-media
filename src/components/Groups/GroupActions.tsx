@@ -3,17 +3,24 @@ import {
   useSentRequestQuery,
   useCancelRequestMutation,
 } from '../../store/features/serverApi';
+import Loading from '../UI/Loading';
 import { useShowInfo } from '../context/ShowInfoProvider';
 
 export default function GroupActions({ group_id }: { group_id: string }) {
   const user_id = localStorage.getItem('user_id') || '';
   const [requestJoin] = useJoinGroupMutation();
   const [cancelRequest] = useCancelRequestMutation();
-  const { data: sentRequest, refetch: requestRefetch } = useSentRequestQuery({
+  const {
+    data: sentRequest,
+    refetch: requestRefetch,
+    isLoading,
+  } = useSentRequestQuery({
     group_id,
     user_id,
   });
   const { displayInfo } = useShowInfo();
+
+  if (isLoading) return <Loading />;
 
   return (
     <>

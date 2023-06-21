@@ -15,22 +15,24 @@ function Events() {
   const username = localStorage.getItem('username') as string;
   const { theme } = useTheme();
 
-  const { data: events, isLoading, refetch } = useGetEventsQuery('');
-  const [userEvents, { isLoading: isUserEventsLoading }] =
+  const { data: events, isFetching, refetch } = useGetEventsQuery('');
+  const [userEvents, { isFetching: isUserEventsFetching }] =
     useLazyUserEventsQuery();
   const [results, setResults] = useState<TEvent[]>([]);
 
   useEffect(() => {
     if (filter === 'all') {
-      if (!events) return;
-      setResults(events as TEvent[]);
+      refetch().then((res) => {
+        if (!res.data) return;
+        setResults(res.data as TEvent[]);
+      });
     } else {
       userEvents(username).then((res) => {
         if (!res.data) return;
         setResults(res.data as TEvent[]);
       });
     }
-  }, [filter, events, userEvents, username]);
+  }, [filter, events, userEvents, username, refetch]);
 
   // if () return <Loading />;
 
@@ -70,7 +72,7 @@ function Events() {
           }}
         />
       )}
-      {!(isLoading && isUserEventsLoading) ? (
+      {!isFetching && !isUserEventsFetching ? (
         <div className="flex justify-center h-full">
           {results.length === 0 ? (
             <p className="text-2xl font-bold p-5">No results</p>
